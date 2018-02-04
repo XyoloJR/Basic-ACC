@@ -1,0 +1,19 @@
+body{
+    margin : 0;
+}
+
+#mainScreen{
+    position : relative;
+    background-image : url('../img/backgd1080.png');
+    width : 1405px;
+    height : 1080px;
+}
+
+.plane{
+    background-image: url('../img/planeIcon.png');
+    position : absolute;
+    width : 15px;
+    height : 15px;
+    top : 90px;
+    left : 150px;
+}
