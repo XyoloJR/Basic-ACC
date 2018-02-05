@@ -41,7 +41,8 @@ form p{
     margin : 10px 5px;
 }
 
-input, select{
+input, select, option{
+    padding : 2px;
     background-color: #EEE;
     font-size: 0.8em;
 }
@@ -49,3 +50,21 @@ input, select{
 input[type=number]{
     max-width: 120px;
 }
+
+@keyframes un1_0{
+    from{left: 1539px; top: 2078px }
+    to{left: 1509px; top: 1624px;}
+}
+@keyframes un1_1{
+    from{left: 1509px; top: 1624px;}
+    to{left: 1764px; top: 999px;}
+}
+@keyframes un1_2{
+    from{left: 1764px; top: 999px;}
+    to{left: 2708px; top: 235px;}
+}
+@keyframes un2_0{
+    from{}
+    to{left: 1509px; top: 1624px;}
+}
+@keyframes un2_1{ to{left: 1509px; top: 1624px;}}

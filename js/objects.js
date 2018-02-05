@@ -25,7 +25,7 @@ var JUVEN = {"x":2841, "y":1203};
 var SANTO = {"x":2265, "y":1803};
 var JAMBI = {"x":2500, "y":2186};
 var SICIL = {"x":3030, "y":2482};
-//pseudo points for routes entry
+//pseudo points for alternativ entry for UN1 and UN64
 var BIELA = {"x":3322, "y":1045};
 var MINOR = {"x":1569, "y":2322};
 
@@ -46,10 +46,10 @@ function Route(start, passPoints){
 
 var UM3 = new Route(SICIL, [JAMBI, MTL, MINDI, CFA, VULCA]);
 var UM4 = new Route(ATN, [BURGO, LSE, LTP, GRENA, SANTO, JAMBI]);
-var UN1 = new Route(MINOR, [MAJOR, MTL, LTP, MOZAO, SEVET, RAPID]);
+var UN1 = new Route(MAJOR, [MTL, LTP, MOZAO, SEVET, RAPID]);
 var UN2 = new Route(FRI, [MELKA, LIMAN, LSE, MINDI, LANZA, MEN, GAI]);
-var UN64EO = new Route(BIELA, [JUVEN, BOSUA, GRENA, MTL, SPIDY, ETORI, GAI]);
-var UN64OE = new Route(GAI, [ETORI, SPIDY, MTL, GRENA, BOSUA, JUVEN, BIELA]);
+var UN64EO = new Route(JUVEN, [BOSUA, GRENA, MTL, SPIDY, ETORI, GAI]);
+var UN64OE = new Route(GAI, [ETORI, SPIDY, MTL, GRENA, BOSUA, JUVEN]);
 
 var ROUTES = [UM3, UM4, UN1, UN2, UN64EO, UN64OE]
 

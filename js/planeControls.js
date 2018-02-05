@@ -14,6 +14,8 @@ function putPlane(planeElt, point){
     planeElt.style.left = String(point.x - PLANE_SIZE) + "px";
     planeElt.style.top = String(point.y - PLANE_SIZE) + "px";
 }
+
+
 var planeList= [];
 
 var screenElt = document.getElementById('mainScreen');
@@ -39,6 +41,10 @@ function goOnAir(event){
     planeElt.style.width = "31px";
     planeElt.style.height = "31px";
     putPlane(planeElt, plane.startPoint);
-    //animPlane(planeElt, plane);
+    var animPlane = "un1_0 10s linear, un1_1 12s linear 10s, un1_2 23s linear 22s";
+    planeElt.style.animation = animPlane;
+    //animPlane = animPlane(planeElt, plane);
     screenElt.appendChild(planeElt);
 }
+
+function animPlane(){};
