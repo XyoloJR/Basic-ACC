@@ -42,7 +42,7 @@ form p{
 }
 
 input, select, option{
-    padding : 2px;
+    padding : 4px;
     background-color: #EEE;
     font-size: 0.8em;
 }
@@ -51,17 +51,33 @@ input[type=number]{
     max-width: 120px;
 }
 
-@keyframes un1_0{
+@keyframes toMtl{
     to{left: 1509px; top: 1624px;}
 }
-@keyframes un1_1{
+@keyframes toLtp{
     to{left: 1764px; top: 999px;}
 }
-@keyframes un1_2{
+@keyframes toRapid{
     to{left: 2708px; top: 235px;}
 }
-@keyframes un2_0{
-    from{}
-    to{left: 1509px; top: 1624px;}
+@keyframes toLse{
+    to{left: 1600px; top: 833px;}
 }
-@keyframes un2_1{ to{left: 1509px; top: 1624px;}}
+@keyframes toMen{
+    to{left: 759px; top: 1631px;}
+}
+@keyframes toCfa{
+    to{left: 736px; top: 851px;}
+}
+@keyframes toVulca{
+    to{left: 692px, top: 601px}
+}
+@keyframes toJambi {
+    to{left: 2485px, top: 2171px}
+}
+@keyframes toGai {
+    to{left: 150px, top: 2073px}
+}
+@keyframes toBiela {
+    to{left: 3307px, top: 1030px}
+}

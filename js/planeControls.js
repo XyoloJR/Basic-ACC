@@ -34,19 +34,46 @@ function goOnAir(event){
     );
     console.log(plane);
     planeList.push(plane);
-    var planeElt = document.createElement('div');
-    planeElt.id = plane.name;
-    planeElt.style.backgroundImage ="url('../img/planeIcon.png')";
-    planeElt.style.position = "absolute";
-    planeElt.style.width = "31px";
-    planeElt.style.height = "31px";
-    putPlane(planeElt, plane.startPoint);
+    var planeElt = createPlaneElt(plane.name, plane.startPoint)
+    /*
     var animPlane = "un1_0 linear 10s forwards," +
                     " un1_1 12s linear 10s forwards,"+
-                    " un1_2 30s linear 22s forwards";
-    planeElt.style.animation = animPlane;
+                    " un1_2 30s linear 22s forwards";*/
+    planeElt.style.animation = animText(plane);
     //animPlane = animPlane(planeElt, plane);
     screenElt.appendChild(planeElt);
 }
 
-function animPlane(){};
+function createPlaneElt(planeName, position){
+    var planeElt = document.createElement('div');
+    planeElt.id = planeName;
+    planeElt.style.backgroundImage ="url('../img/planeIcon.png')";
+    planeElt.style.position = "absolute";
+    planeElt.style.width = "31px";
+    planeElt.style.height = "31px";
+    planeElt.style.left = String(position.x - PLANE_SIZE) + "px";
+    planeElt.style.top = String(position.y - PLANE_SIZE) + "px";
+    return planeElt;
+}
+
+function animText(plane){
+    var route = plane.route;
+    var animText = [];
+    var delay = 0;
+    route.anims.forEach(function(anim){
+        if (animText.length != 0) {
+            animText += ", ";
+        }
+        var animTime = time(plane.speed, anim.dist);
+        console.log("anim duration " + animTime);
+        animText += anim.name + " " + animTime + "s linear " + delay + "s forwards";
+        delay += animTime;
+    })
+    console.log(animText)
+    return animText;
+};
+
+function time(kts, distPx){
+    VPxPerS = kts * NmToPx / 3600;
+    return Math.round(distPx / VPxPerS);
+}
