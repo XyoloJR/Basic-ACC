@@ -20,7 +20,7 @@ body{
     height : 2162px;
     padding: 200px;
 }
-input{
+input, select{
     background-color: #EEE;
     font-size: 0.7em;
 }

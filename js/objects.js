@@ -1,32 +1,37 @@
 //Points definition expressed in px coordinates
-var gai = {"x":165, "y":2088};
-var etori = {"x":755, "y":1893};
-var men = {"x":774, "y":1646};
-var cfa = {"x":751, "y":866};
-var vulca = {"x":707, "y":616};
-var spidy = {"x":996, "y":1814};
-var lanza = {"x":973, "y":1457};
-var mindi = {"x":1163, "y":1277};
-var major = {"x":1554 , "y":2093};//distance controled
-var mtl = {"x":1524, "y":1639};
-var ltp = {"x":1779, "y":1014};
-var lse = {"x":1615, "y":848};
-var burgo = {"x":1340, "y":383};
-var atn = {"x":1237, "y":207};
-var liman = {"x":1842, "y":661};
-var melka = {"x":2269, "y":309};
-var fri = {"x":2514, "y":106};
-var rapid = {"x":2723, "y":250};
-var sevet = {"x":2401, "y":512};
-var mozao = {"x":2086, "y":765};
-var grena = {"x":2056, "y":1463};
-var bosua = {"x":2486, "y":1321};
-var juven = {"x":2841, "y":1203};
-var santo = {"x":2265, "y":1803};
-var jambi = {"x":2500, "y":2186};
-var sicil = {"x":3030, "y":2482};
+var GAI = {"x":165, "y":2088};
+var ETORI = {"x":755, "y":1893};
+var MEN = {"x":774, "y":1646};
+var CFA = {"x":751, "y":866};
+var VULCA = {"x":707, "y":616};
+var SPIDY = {"x":996, "y":1814};
+var LANZA = {"x":973, "y":1457};
+var MINDI = {"x":1163, "y":1277};
+var MAJOR = {"x":1554 , "y":2093};//distance controled
+var MTL = {"x":1524, "y":1639};
+var LTP = {"x":1779, "y":1014};
+var LSE = {"x":1615, "y":848};
+var BURGO = {"x":1340, "y":383};
+var ATN = {"x":1237, "y":207};
+var LIMAN = {"x":1842, "y":661};
+var MELKA = {"x":2269, "y":309};
+var FRI = {"x":2514, "y":106};
+var RAPID = {"x":2723, "y":250};
+var SEVET = {"x":2401, "y":512};
+var MOZAO = {"x":2086, "y":765};
+var GRENA = {"x":2056, "y":1463};
+var BOSUA = {"x":2486, "y":1321};
+var JUVEN = {"x":2841, "y":1203};
+var SANTO = {"x":2265, "y":1803};
+var JAMBI = {"x":2500, "y":2186};
+var SICIL = {"x":3030, "y":2482};
+//pseudo points for routes entry
+var BIELA = {"x":3322, "y":1045};
+var MINOR = {"x":1570, "y":2322};
 
-
+var POINTS = [ATN, BIELA, BOSUA, BURGO, CFA, ETORI, FRI, GAI, GRENA, JAMBI, JUVEN,
+                    LANZA, LIMAN, LSE, LTP, MAJOR, MELKA, MEN, MINDI, MOZAO, MTL,
+                    RAPID, SANTO, SEVET, SICIL, SPIDY, VULCA];
 
 //conversion factor
 var NmToPx = 10.84;
@@ -39,25 +44,17 @@ function Route(start, passPoints){
     this.passPoints = passPoints;
 }
 
-var UM3 = new Route(sicil, [jambi, mtl, mindi, cfa, vulca]);
-var UM4 = new Route(atn, [burgo, lse, ltp, grena, santo, jambi]);
-var UN1 = new Route(major, [mtl, ltp, mozao, sevet, rapid]);
-var UN2 = new Route(fri, [melka, liman, lse, mindi, lanza, men, gai]);
-//may need start/end point further than juven
-var UN64EO = new Route(juven,[bosua, grena, mtl, spidy, etori, gai]);
-var UN64OE = new Route(gai, [etori, spidy, mtl, grena, bosua, juven]);
+var UM3 = new Route(SICIL, [JAMBI, MTL, MINDI, CFA, VULCA]);
+var UM4 = new Route(ATN, [BURGO, LSE, LTP, GRENA, SANTO, JAMBI]);
+var UN1 = new Route(MINOR, [MAJOR, MTL, LTP, MOZAO, SEVET, RAPID]);
+var UN2 = new Route(FRI, [MELKA, LIMAN, LSE, MINDI, LANZA, MEN, GAI]);
+var UN64EO = new Route(BIELA, [JUVEN, BOSUA, GRENA, MTL, SPIDY, ETORI, GAI]);
+var UN64OE = new Route(GAI, [ETORI, SPIDY, MTL, GRENA, BOSUA, JUVEN, BIELA]);
 
-var routes = [UM3, UM4, UN1, UN2, UN64OE, UN64EO]
+var ROUTES = [UM3, UM4, UN1, UN2, UN64EO, UN64OE]
 
 
-function Plane(name, route,fl,speed, nextPoint, startPoint){
-    this.name = name;
-    this.route = route;
-    this.fl = fl;
-    this.speed = speed;
-    this.nextPoint = nextPoint;
-    this.startPoint = startPoint;
-}
+
 
 /*
 //distance tests
@@ -65,14 +62,14 @@ function Plane(name, route,fl,speed, nextPoint, startPoint){
 var ouestPoint= {"x":295, "y":2045};
 var eastPoint= {"x":2764 , "y":1231};
 console.log(pxDist(ouestPoint, eastPoint)/240);
-//based on etori-bosua, distance 164Nm
-console.log(pxDist(etori, grena)/126, pxDist(mtl, grena)/52,
-            pxDist(mtl, ltp)/62, pxDist(lse, mindi)/57,
-            pxDist(ltp, grena)/49, pxDist(mtl, cfa)/100,
+//based on etori-BOSUA, distance 164Nm
+console.log(pxDist(ETORI, GRENA)/126, pxDist(MTL, GRENA)/52,
+            pxDist(MTL, LTP)/62, pxDist(LSE, MINDI)/57,
+            pxDist(LTP, GRENA)/49, pxDist(MTL, CFA)/100,
 );
 
 
-//mtl-major px distance
+//MTL-MAJOR px distance
 console.log(42*NmToPx);
-console.log(pxDist(major,mtl));
+console.log(pxDist(MAJOR,MTL));
 */

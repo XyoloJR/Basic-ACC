@@ -1,4 +1,14 @@
-PLANE_SIZE = 15;
+var PLANE_SIZE = 15;
+var timeFactor = 1;
+
+function Plane(name, route, fl, speed){
+    this.name = name;
+    this.route = route;
+    this.fl = fl;
+    this.speed = speed;
+    this.nextPoint = route.passPoints[0];
+    this.startPoint = route.startPoint;
+}
 
 function putPlane(planeElt, point){
     planeElt.style.left = String(point.x - PLANE_SIZE) + "px";
@@ -14,12 +24,13 @@ launchElt.addEventListener('submit',goOnAir);
 
 function goOnAir(event){
     event.preventDefault();
-    var plane = new Plane(launchElt["name"].value,
-                            UN1,
-                            launchElt["fl"].valueAsNumber,
-                            launchElt["speed"].valueAsNumber,
-                            etori,
-                            gai);
+    var plane = new Plane(
+        launchElt["name"].value,
+        ROUTES[launchElt["route"].selectedIndex],
+        launchElt["fl"].valueAsNumber,
+        launchElt["speed"].valueAsNumber,
+    );
+    console.log(plane);
     planeList.push(plane);
     var planeElt = document.createElement('div');
     planeElt.id = plane.name;
@@ -28,5 +39,6 @@ function goOnAir(event){
     planeElt.style.width = "31px";
     planeElt.style.height = "31px";
     putPlane(planeElt, plane.startPoint);
+    //animPlane(planeElt, plane);
     screenElt.appendChild(planeElt);
 }
