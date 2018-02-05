@@ -41,7 +41,9 @@ function goOnAir(event){
     planeElt.style.width = "31px";
     planeElt.style.height = "31px";
     putPlane(planeElt, plane.startPoint);
-    var animPlane = "un1_0 10s linear, un1_1 12s linear 10s, un1_2 23s linear 22s";
+    var animPlane = "un1_0 linear 10s forwards," +
+                    " un1_1 12s linear 10s forwards,"+
+                    " un1_2 30s linear 22s forwards";
     planeElt.style.animation = animPlane;
     //animPlane = animPlane(planeElt, plane);
     screenElt.appendChild(planeElt);

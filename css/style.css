@@ -52,15 +52,12 @@ input[type=number]{
 }
 
 @keyframes un1_0{
-    from{left: 1539px; top: 2078px }
     to{left: 1509px; top: 1624px;}
 }
 @keyframes un1_1{
-    from{left: 1509px; top: 1624px;}
     to{left: 1764px; top: 999px;}
 }
 @keyframes un1_2{
-    from{left: 1764px; top: 999px;}
     to{left: 2708px; top: 235px;}
 }
 @keyframes un2_0{
