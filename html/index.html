@@ -7,8 +7,40 @@
     </head>
     <body>
         <div id="mainScreen">
-            <div id="planeName" class="plane"></div>
+            <!--<div id="planeName" class="plane">-->
+                <!--
+                <div id="planeInfos">
+
+                </div>
+                -->
+            </div>
         </div>
-        <script src='../js/objects.js'></script>
+
+        <div id="controls">
+            <div id='radarist'></div>
+            <div id='organist'></div>
+
+            <div id='planeControls'>
+                <form id="launch">
+                    velocity :
+                    <input type="number" name="speed" min="10" max="70" value="45">x10 kts
+                    <br>
+                    name :
+                    <input type="text" name="name" size="10">
+                    <br>
+                    FL :
+                    <input type="number" name="fl" min="245" max="660" value="300" step="5">
+                    <br>
+                    position :
+                    <input type="text" name="position" size="8" value="GAI">
+                    <br>
+                    <input type="submit" name="launch" value="Launch">
+
+                </form>
+
+            </div>
+        </div>
+        <script src="../js/objects.js"></script>
+        <script src="../js/planeControls.js" charset="utf-8"></script>
     </body>
 </html>

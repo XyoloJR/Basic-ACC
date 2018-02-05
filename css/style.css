@@ -3,17 +3,38 @@ body{
 }
 
 #mainScreen{
+    display : inline-block;
     position : relative;
-    background-image : url('../img/backgd1080.png');
-    width : 1405px;
-    height : 1080px;
+    background-image : url('../img/fullBackgd.png');
+    width : 3332px;
+    height : 2562px;
+}
+#controls{
+    display : inline-block;
+    position : absolute;
+    left : 3333px;
+    top : 0px;
+    background-color: #777;
+    font-size: 3em;
+    width : 800px;
+    height : 2162px;
+    padding: 200px;
+}
+input{
+    background-color: #EEE;
+    font-size: 0.7em;
 }
 
 .plane{
     background-image: url('../img/planeIcon.png');
     position : absolute;
-    width : 15px;
-    height : 15px;
+    width : 31px;
+    height : 31px;
     top : 90px;
     left : 150px;
+}
+
+
+input[type=number]{
+    max-width: 70px;
 }
