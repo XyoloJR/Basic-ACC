@@ -1,5 +1,6 @@
 var PLANE_SIZE = 15;
 var timeFactor = 1;
+console.log("timeFactor : x"+timeFactor)
 
 function Plane(name, route, fl, speed){
     this.name = name;
@@ -74,6 +75,6 @@ function animText(plane){
 };
 
 function time(kts, distPx){
-    VPxPerS = kts * NmToPx / 3600;
+    VPxPerS = kts * NmToPx *timeFactor/ 3600;
     return Math.round(distPx / VPxPerS);
 }

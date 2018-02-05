@@ -70,14 +70,14 @@ input[type=number]{
     to{left: 736px; top: 851px;}
 }
 @keyframes toVulca{
-    to{left: 692px, top: 601px}
+    to{left: 692px; top: 601px;}
 }
 @keyframes toJambi {
-    to{left: 2485px, top: 2171px}
+    to{left: 2485px; top: 2171px;}
 }
 @keyframes toGai {
-    to{left: 150px, top: 2073px}
+    to{left: 150px; top: 2073px;}
 }
 @keyframes toBiela {
-    to{left: 3307px, top: 1030px}
+    to{left: 3307px; top: 1030px;}
 }
