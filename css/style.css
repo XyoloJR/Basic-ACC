@@ -16,9 +16,9 @@ body{
     top : 0px;
     background-color: #777;
     font-size: 3em;
-    width : 800px;
-    height : 2162px;
-    padding: 200px;
+    width : 1120px;
+    height : 2262px;
+    padding: 150px;
 }
 
 
@@ -37,11 +37,12 @@ form{
 }
 
 form p{
-    font-size: 1.2em;
+    font-size: 1em;
     margin : 10px 5px;
 }
 
 input, select, option{
+    margin-right : 60px;
     padding : 4px;
     background-color: #EEE;
     font-size: 0.8em;
@@ -49,6 +50,10 @@ input, select, option{
 
 input[type=number]{
     max-width: 120px;
+}
+input[type=submit]{
+    background-color: #DDD;
+    border : 1px black solid inset;
 }
 
 @keyframes toMtl{

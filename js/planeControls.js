@@ -36,10 +36,7 @@ function goOnAir(event){
     console.log(plane);
     planeList.push(plane);
     var planeElt = createPlaneElt(plane.name, plane.startPoint)
-    /*
-    var animPlane = "un1_0 linear 10s forwards," +
-                    " un1_1 12s linear 10s forwards,"+
-                    " un1_2 30s linear 22s forwards";*/
+
     planeElt.style.animation = animText(plane);
     //animPlane = animPlane(planeElt, plane);
     screenElt.appendChild(planeElt);
