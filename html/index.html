@@ -22,26 +22,31 @@
 
             <div id='planeControls'>
                 <form id="launch">
-                    name :
-                    <input type="text" name="name" size="10">
-                    <br>
-                    velocity :
-                    <input type="number" name="speed" min="10" max="70" value="45">x10 kts
-                    <br>
-                    FL :
-                    <input type="number" name="fl" min="245" max="660" value="300" step="5">
-                    <br>
-                    route:
-                    <select name="route">
-                        //order match constant ROUTES definition, see ../js/object.js
-                        <option name="route">UM3</option>
-                        <option name="route">UM4</option>
-                        <option name="route">UN1</option>
-                        <option name="route">UN2</option>
-                        <option name="route">UN64 Est-Ouest</option>
-                        <option name="route">UN64 Ouest-Est</option>
+                    <p>
+                        name :
+                        <input type="text" name="name" size="8">
+                    </p>
+                    <p>
+                        velocity(kts) :
+                        <input type="number" name="speed" min="100" max="700" value="450" step="10">
+                    </p>
+                    <p>
+                        FL :
+                        <input type="number" name="fl" min="245" max="660" value="300" step="5">
+                    </p>
+                    <p>
+                        route:
+                        <select name="route">
+                            //order match constant ROUTES definition, see ../js/object.js
+
+                            <option name="route">UM3</option>
+                            <option name="route">UM4</option>
+                            <option name="route">UN1</option>
+                            <option name="route">UN2</option>
+                            <option name="route">UN64 Est-Ouest</option>
+                            <option name="route" value="UN64 Ouest-Est">UN64 Ouest-Est</option>
                     </select>
-                    <br>
+                    </p>
                     <input type="submit" name="launch" value="Launch">
 
                 </form>

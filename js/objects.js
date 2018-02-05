@@ -27,7 +27,7 @@ var JAMBI = {"x":2500, "y":2186};
 var SICIL = {"x":3030, "y":2482};
 //pseudo points for routes entry
 var BIELA = {"x":3322, "y":1045};
-var MINOR = {"x":1570, "y":2322};
+var MINOR = {"x":1569, "y":2322};
 
 var POINTS = [ATN, BIELA, BOSUA, BURGO, CFA, ETORI, FRI, GAI, GRENA, JAMBI, JUVEN,
                     LANZA, LIMAN, LSE, LTP, MAJOR, MELKA, MEN, MINDI, MOZAO, MTL,
