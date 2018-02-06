@@ -2,8 +2,9 @@ var PLANE_SIZE = 15;
 var timeFactor = 1;
 console.log("timeFactor : x"+timeFactor)
 
-function Plane(name, route, fl, speed){
+function Plane(name, route, fl, speed, isState){
     this.name = name;
+    this.isState = isState
     this.route = route;
     this.fl = fl;
     this.speed = speed;
@@ -23,6 +24,7 @@ function goOnAir(event){
         ROUTES[launchElt["route"].selectedIndex],
         launchElt["fl"].valueAsNumber,
         launchElt["speed"].valueAsNumber,
+        launchElt["state"].checked
     );
     console.log(plane);
     planeList.push(plane);
@@ -34,6 +36,7 @@ function createPlaneElt(plane, position){
     var iconElt = document.createElement('div');
     iconElt.setAttribute("class", "planeIcon");
     var infosElt = document.createElement('ul');
+
     var planeElt = document.createElement('div');
     planeElt.id = plane.name;
     planeElt.setAttribute("class", "plane");

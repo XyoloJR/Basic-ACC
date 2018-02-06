@@ -35,7 +35,7 @@ body{
 }
 
 form{
-    width : 800px;
+    width : 1000px;
 }
 
 form p{
@@ -44,7 +44,7 @@ form p{
 }
 
 input, select, option{
-    margin-right : 50px;
+    margin-right : 100px;
     padding : 4px;
     background-color: #EEE;
     font-size: 0.8em;
@@ -57,7 +57,7 @@ input[type=submit]{
     background-color: #DDD;
     border : 1px black solid inset;
 }
-/*Classic Routes*/
+/*Classic route or direct order*/
 @keyframes toBiela {
     to{left: 3322px; top: 1045px;}
 }
@@ -109,7 +109,3 @@ input[type=submit]{
 @keyframes toVulca{
     to{left: 707px; top: 616px;}
 }
-
-
-
-/*Direct order
