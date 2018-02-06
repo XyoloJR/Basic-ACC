@@ -20,16 +20,18 @@ body{
     height : 2262px;
     padding: 150px;
 }
-
-
-
-.plane{
-    background-image: url('../img/planeIcon.png');
-    position : absolute;
+.planeIcon{
+    background-image : url('../img/planeIcon.png');
+    position : relative;
     width : 31px;
     height : 31px;
-    top : 90px;
-    left : 150px;
+    left : -15px;
+    top : -15px;
+}
+
+.plane{
+    overflow : visible;
+    position : absolute;
 }
 
 form{
@@ -55,34 +57,35 @@ input[type=submit]{
     background-color: #DDD;
     border : 1px black solid inset;
 }
-
+/*Classic Routes*/
 @keyframes toMtl{
-    to{left: 1509px; top: 1624px;}
+    to{left: 1524px; top: 1639px;}
 }
 @keyframes toLtp{
-    to{left: 1764px; top: 999px;}
+    to{left: 1779px; top: 1015px;}
 }
 @keyframes toRapid{
-    to{left: 2708px; top: 235px;}
+    to{left: 2723px; top: 250px;}
 }
 @keyframes toLse{
-    to{left: 1600px; top: 833px;}
+    to{left: 1615px; top: 848px;}
 }
 @keyframes toMen{
-    to{left: 759px; top: 1631px;}
+    to{left: 774px; top: 1646px;}
 }
 @keyframes toCfa{
-    to{left: 736px; top: 851px;}
+    to{left: 751px; top: 866px;}
 }
 @keyframes toVulca{
-    to{left: 692px; top: 601px;}
+    to{left: 707px; top: 616px;}
 }
 @keyframes toJambi {
-    to{left: 2485px; top: 2171px;}
+    to{left: 2500px; top: 2186px;}
 }
 @keyframes toGai {
-    to{left: 150px; top: 2073px;}
+    to{left: 165px; top: 2088px;}
 }
 @keyframes toBiela {
-    to{left: 3307px; top: 1030px;}
+    to{left: 3322px; top: 1045px;}
 }
+/*Direct order
