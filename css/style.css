@@ -20,6 +20,11 @@ body{
     height : 2262px;
     padding: 150px;
 }
+
+.plane{
+    overflow : visible;
+    position : absolute;
+}
 .planeIcon{
     background-image : url('../img/planeIcon.png');
     position : relative;
@@ -28,11 +33,21 @@ body{
     left : -15px;
     top : -15px;
 }
-
-.plane{
-    overflow : visible;
-    position : absolute;
+.infoBox{
+    font-family: sans-serif;
+    margin : 0;
+    color : white;
+    position : relative;
+    font-size: 2em;
+    width : 200px;
+    height : 260px;
+    left : 15px;
+    top : 50px;
 }
+.infoBox ul{
+    list-style: none;
+}
+
 
 form{
     width : 1000px;

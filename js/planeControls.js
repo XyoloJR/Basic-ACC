@@ -7,6 +7,7 @@ function Plane(name, route, fl, speed, isState){
     this.isState = isState
     this.route = route;
     this.fl = fl;
+    this.climb = " -"
     this.speed = speed;
     this.nextPoint = route.passPoints[0];
     this.startPoint = route.startPoint;
@@ -33,18 +34,55 @@ function goOnAir(event){
 }
 
 function createPlaneElt(plane, position){
-    var iconElt = document.createElement('div');
-    iconElt.setAttribute("class", "planeIcon");
-    var infosElt = document.createElement('ul');
-
     var planeElt = document.createElement('div');
     planeElt.id = plane.name;
     planeElt.setAttribute("class", "plane");
     planeElt.style.left = position.x + "px";
     planeElt.style.top = position.y + "px";
+
+    var iconElt = document.createElement('div');
+    iconElt.setAttribute("class", "planeIcon");
+
+    var infoBox = document.createElement('div');
+    infoBox.setAttribute("class", "infoBox");
+    infoBox.appendChild(flightDetails(plane));
+
     planeElt.appendChild(iconElt);
+    planeElt.appendChild(infoBox);
     planeElt.style.animation = animatePlane(plane, iconElt);
     return planeElt;
+}
+
+function flightDetails(plane){
+    var infosElt = document.createElement('ul');
+
+    var speedElt = document.createElement('li');
+    speedElt.appendChild(document.createTextNode(plane.speed));
+    if (plane.isState){
+        var noWNotif = document.createElement('span');
+        noWNotif.setAttribute("class", "now");
+        noWNotif.textContent = " noW";
+        speedElt.appendChild(noWNotif);
+    }
+    infosElt.appendChild(speedElt);
+
+    var nameElt = document.createElement('li');
+    nameElt.appendChild(document.createTextNode(plane.name));
+    infosElt.appendChild(nameElt);
+
+    var flElt = document.createElement('li');
+    flElt.appendChild(document.createTextNode(plane.fl + plane.climb));
+    infosElt.appendChild(flElt);
+
+    var exitElt = document.createElement('li');
+    exitElt.appendChild(document.createTextNode(plane.route.exit.point +" "));
+    var sector = document.createElement('span');
+    sector.setAttribute("class", "exitSectorOff");
+    sector.textContent = plane.route.exit.sector;
+    exitElt.appendChild(sector);
+    infosElt.appendChild(exitElt);
+
+    return infosElt;
 }
 
 function animatePlane(plane, iconElt){
