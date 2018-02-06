@@ -4,6 +4,7 @@ body{
 
 #mainScreen{
     display : inline-block;
+    overflow : hidden;
     position : relative;
     background-image : url('../img/fullBackgd.png');
     width : 3332px;
@@ -19,6 +20,10 @@ body{
     width : 1120px;
     height : 2262px;
     padding: 150px;
+}
+#dialogBox{
+    text-align: center;
+    font-size: 1.5em;
 }
 
 .plane{

@@ -1,6 +1,7 @@
 var PLANE_SIZE = 15;
 var timeFactor = 1;
-console.log("timeFactor : x"+timeFactor)
+var MAX_PLANES = 50;
+console.log("timeFactor : x" + timeFactor)
 
 function Plane(name, route, fl, speed, isState){
     this.name = name;
@@ -19,27 +20,41 @@ function Plane(name, route, fl, speed, isState){
     }
 }
 
-var planeList= [];
+var planesList= [];
+var planeNames=[];
 var screenElt = document.getElementById('mainScreen');
+var DialogElt = document.getElementById('dialogBox');
 var launchElt = document.getElementById('launch');
 launchElt.addEventListener('submit',goOnAir);
 
 function goOnAir(event){
     event.preventDefault();
-    var plane = new Plane(
-        launchElt["name"].value,
-        ROUTES[launchElt["route"].selectedIndex],
-        launchElt["fl"].valueAsNumber,
-        launchElt["speed"].valueAsNumber,
-        launchElt["state"].checked
-    );
-    console.log(plane);
-    planeList.push(plane);
-    var planeElt = createPlaneElt(plane, plane.startPoint)
-    screenElt.appendChild(planeElt);
+    nameGiven = launchElt["name"].value
+    if (!(planeNames.indexOf(nameGiven)<0)){
+        DialogElt.textContent = "!!!---AVION DEJA EN VOL---!!!";
+        DialogElt.style.color = "darkred";
+        setTimeout(function(){
+                        DialogElt.textContent = "Status ok";
+                        DialogElt.style.color = "black";
+                    }, 5000
+        );
+    } else {
+        var plane = new Plane(
+            nameGiven,
+            ROUTES[launchElt["route"].selectedIndex],
+            launchElt["fl"].valueAsNumber,
+            launchElt["speed"].valueAsNumber,
+            launchElt["state"].checked
+        );
+        var planeElt = createPlaneElt(plane, plane.startPoint);
+        screenElt.appendChild(planeElt);
+    }
 }
 
 function createPlaneElt(plane, position){
+    planesList.push(plane);
+    plane.id = planeNames.push(plane.name) - 1;
+    console.log(planeNames);
     var planeElt = document.createElement('div');
     planeElt.id = plane.name;
     planeElt.setAttribute("class", "plane");
@@ -88,10 +103,8 @@ function flightDetailsList(plane){
     setTimeout(function(){
         sector.className ="exitSectorOn";
     }, flightTime(plane.speed, plane.route.halfWay));
-    console.log(flightTime(plane.speed, plane.route.halfWay));
     exitElt.appendChild(sector);
     infosElt.appendChild(exitElt);
-
     return infosElt;
 }
 
@@ -105,13 +118,20 @@ function animatePlane(plane, iconElt){
         }
         var animTime = flightTime(plane.speed, anim.dist);
         animPosition += anim.name + " " + animTime + "ms linear " + delay + "ms forwards";
-        setTimeout(function(){iconElt.style.transform = "rotate("+anim.angle+")";}, delay);
+        setTimeout(function(){
+                        iconElt.style.transform = "rotate("+anim.angle+")";
+                    }, delay
+        );
         delay += animTime;
     })
-
     setTimeout(function(){
-            screenElt.removeChild(document.getElementById(plane.name));
-    },delay);
+                    var planeId = planeNames.indexOf(plane.name);
+                    planeNames.splice(planeId, 1);
+                    planesList.splice(planeId, 1);
+                    console.log(planesList);
+                    screenElt.removeChild(document.getElementById(plane.name));
+                }, delay
+    );
     return animPosition;
 }
 
