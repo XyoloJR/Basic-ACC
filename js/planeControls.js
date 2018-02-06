@@ -11,6 +11,12 @@ function Plane(name, route, fl, speed, isState){
     this.speed = speed;
     this.nextPoint = route.passPoints[0];
     this.startPoint = route.startPoint;
+    this.exitPoint = route.exit.point
+    if (route == UM4){
+        this.exitSector = "I" + (fl > 365 ? 3 : 2);
+    } else {
+        this.exitSector = route.exit.sector
+    }
 }
 
 var planeList= [];
@@ -57,7 +63,7 @@ function flightDetails(plane){
     var infosElt = document.createElement('ul');
 
     var speedElt = document.createElement('li');
-    speedElt.appendChild(document.createTextNode(plane.speed));
+    speedElt.appendChild(document.createTextNode(plane.speed/10));
     if (plane.isState){
         var noWNotif = document.createElement('span');
         noWNotif.setAttribute("class", "now");
@@ -75,10 +81,10 @@ function flightDetails(plane){
     infosElt.appendChild(flElt);
 
     var exitElt = document.createElement('li');
-    exitElt.appendChild(document.createTextNode(plane.route.exit.point +" "));
+    exitElt.appendChild(document.createTextNode(plane.exitPoint +" "));
     var sector = document.createElement('span');
     sector.setAttribute("class", "exitSectorOff");
-    sector.textContent = plane.route.exit.sector;
+    sector.textContent = plane.exitSector;
     exitElt.appendChild(sector);
     infosElt.appendChild(exitElt);
 
@@ -94,15 +100,18 @@ function animatePlane(plane, iconElt){
             animPosition += ", ";
         }
         var animTime = flightTime(plane.speed, anim.dist);
-        animPosition += anim.name + " " + animTime + "s linear " + delay + "s forwards";
-        setTimeout(function(){iconElt.style.transform = "rotate("+anim.angle+")";}, delay*1000);
+        animPosition += anim.name + " " + animTime + "ms linear " + delay + "ms forwards";
+        setTimeout(function(){iconElt.style.transform = "rotate("+anim.angle+")";}, delay);
         delay += animTime;
     })
-    console.log(animPosition)
+    setTimeout(function(){
+            screenElt.removeChild(document.getElementById(plane.name));
+    },delay);
     return animPosition;
 }
 
+
 function flightTime(kts, distPx){
     VPxPerS = kts * NmToPx *timeFactor/ 3600;
-    return Math.round(distPx / VPxPerS);
+    return Math.round(1000 * distPx / VPxPerS);
 }

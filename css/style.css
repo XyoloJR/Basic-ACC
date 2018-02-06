@@ -36,16 +36,23 @@ body{
 .infoBox{
     font-family: sans-serif;
     margin : 0;
+    padding: 0;
     color : white;
     position : relative;
     font-size: 2em;
-    width : 200px;
-    height : 260px;
+    width : 220px;
+    height : 180px;
     left : 15px;
     top : 50px;
 }
-.infoBox ul{
+.infoBox ul,li{
     list-style: none;
+}
+.now{
+    color : red;
+}
+.exitSectorOff{
+    color : black;
 }
 
 

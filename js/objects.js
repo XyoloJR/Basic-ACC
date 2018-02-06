@@ -48,7 +48,7 @@ function Route(start, exitInfos, passPoints, anims){
 
 var UM3 = new Route(
     SICIL,
-    {point:"CFA",sector:"N"},
+    {point:"CFA",sector:"N3"},
     [MTL, MINDI, CFA, VULCA],
     [{name: "toMtl", dist: pxDist(SICIL, MTL), angle: "-16deg"},
     {name: "toCfa", dist: pxDist(MTL, CFA), angle: "0deg"},
@@ -64,7 +64,7 @@ var UM4 = new Route(
 );
 var UN1 = new Route(
     MAJOR,
-    {point:"SEVET", sector:"G"},
+    {point:"SEVET", sector:"G2"},
     [MTL, LTP, MOZAO, RAPID],
     [{name: "toMtl", dist :pxDist(MAJOR, MTL), angle: "-42deg"},
     {name: "toLtp", dist :pxDist(MTL, LTP), angle: "-22deg"},
@@ -72,7 +72,7 @@ var UN1 = new Route(
 );
 var UN2 = new Route(
     FRI,
-    {point:"MEN", sector:"O"},
+    {point:"MEN", sector:"OS"},
     [LSE, MINDI, LANZA, MEN, GAI],
     [{name: "toLse", dist :pxDist(FRI, LSE), angle: "6deg"},
     {name: "toMen", dist :pxDist(LSE, MEN), angle: "1deg"},
@@ -80,14 +80,14 @@ var UN2 = new Route(
 );
 var UN64EO = new Route(
     BIELA,
-    {point:"ETORI", sector:"O"},
+    {point:"ETORI", sector:"OS"},
     [GRENA, MTL, SPIDY, GAI],
     [{name: "toMtl", dist :pxDist(BIELA, MTL), angle: "27deg"},
     {name: "toGai", dist :pxDist(MTL, GAI), angle: "27deg"}]
 );
 var UN64OE = new Route(
     GAI,
-    {point:"JUVEN", sector:"I"},
+    {point:"JUVEN", sector:"M2"},
     [MTL, GRENA, BOSUA, BIELA],
     [{name: "toMtl", dist :pxDist(GAI, MTL), angle: "27deg"},
     {name:"toBiela", dist :pxDist(MTL, BIELA), angle: "27deg"}]
