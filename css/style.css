@@ -4,6 +4,7 @@ body{
 
 #mainScreen{
     display : inline-block;
+    overflow : hidden;
     position : relative;
     background-image : url('../img/fullBackgd.png');
     width : 3332px;
@@ -20,6 +21,15 @@ body{
     height : 2262px;
     padding: 150px;
 }
+#dialogBox{
+    text-align: center;
+    font-size: 1.5em;
+}
+
+.plane{
+    overflow : visible;
+    position : absolute;
+}
 .planeIcon{
     background-image : url('../img/planeIcon.png');
     position : relative;
@@ -28,14 +38,34 @@ body{
     left : -15px;
     top : -15px;
 }
-
-.plane{
-    overflow : visible;
-    position : absolute;
+.infoBox{
+    font-family: sans-serif;
+    margin : 0;
+    padding: 0;
+    color : white;
+    position : relative;
+    font-size: 2em;
+    width : 220px;
+    height : 180px;
+    left : 15px;
+    top : 50px;
+}
+.infoBox ul,li{
+    list-style: none;
+}
+.now{
+    color : red;
+}
+.exitSectorOff{
+    color : black;
+}
+.exitSectorOn{
+    color : white;
 }
 
+
 form{
-    width : 800px;
+    width : 1000px;
 }
 
 form p{
@@ -44,7 +74,7 @@ form p{
 }
 
 input, select, option{
-    margin-right : 50px;
+    margin-right : 100px;
     padding : 4px;
     background-color: #EEE;
     font-size: 0.8em;
@@ -57,35 +87,55 @@ input[type=submit]{
     background-color: #DDD;
     border : 1px black solid inset;
 }
-/*Classic Routes*/
-@keyframes toMtl{
-    to{left: 1524px; top: 1639px;}
+/*Classic route or direct order*/
+@keyframes toBiela {
+    to{left: 3322px; top: 1045px;}
 }
-@keyframes toLtp{
-    to{left: 1779px; top: 1015px;}
-}
-@keyframes toRapid{
-    to{left: 2723px; top: 250px;}
-}
-@keyframes toLse{
-    to{left: 1615px; top: 848px;}
-}
-@keyframes toMen{
-    to{left: 774px; top: 1646px;}
+@keyframes toBusua {
+    to{left: 2486px; top: 1321px}
 }
 @keyframes toCfa{
     to{left: 751px; top: 866px;}
 }
-@keyframes toVulca{
-    to{left: 707px; top: 616px;}
-}
-@keyframes toJambi {
-    to{left: 2500px; top: 2186px;}
+@keyframes toEtori {
+    to{left: 755px; top: 1893px;}
 }
 @keyframes toGai {
     to{left: 165px; top: 2088px;}
 }
-@keyframes toBiela {
-    to{left: 3322px; top: 1045px;}
+@keyframes toGrena {
+    to{left: 2056px; top: 1463px;}
 }
-/*Direct order
+@keyframes toJambi {
+    to{left: 2500px; top: 2186px;}
+}
+@keyframes toLanza{
+    to{left: 973px; top: 1457px;}
+}
+@keyframes toLse{
+    to{left: 1615px; top: 848px;}
+}
+@keyframes toLtp{
+    to{left: 1779px; top: 1015px;}
+}
+@keyframes toMen{
+    to{left: 774px; top: 1646px;}
+}
+@keyframes toMindi {
+    to{left: 1163px; top: 1277px;}
+}
+@keyframes toMozao {
+    to{left: 2086px; top: 765px;}
+}
+@keyframes toMtl{
+    to{left: 1524px; top: 1639px;}
+}
+@keyframes toRapid{
+    to{left: 2723px; top: 250px;}
+}
+@keyframes toSpidy {
+    to{left: 996px; top: 1814px;}
+}
+@keyframes toVulca{
+    to{left: 707px; top: 616px;}
+}

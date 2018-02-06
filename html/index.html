@@ -6,28 +6,22 @@
         <title>ACC</title>
     </head>
     <body>
-        <div id="mainScreen">
-            <!--<div id="planeName" class="plane">-->
-                <!--
-                <div id="planeInfos">
+        <div id='mainScreen'>
 
-                </div>
-                -->
-            </div>
         </div>
 
-        <div id="controls">
+        <div id='controls'>
             <div id='radarist'>
                 <fieldset>
                     <legend>heading change(à venir)</legend>
-                    <form>
+                    <form id='heading'>
                         <input type="number" name="heading" min="0" max="360" value="">
                         <input type="submit" style="visibility : hidden" value="Order given">
                     </form>
                 </fieldset>
                 <fieldset>
                     <legend>direct route(à venir)</legend>
-                    <form>
+                    <form id='direct'>
                         <input type="text" name="direct" value="">
                         <input type="submit" style="visibility : hidden" value="Direct route given">
                     </form>
@@ -38,13 +32,13 @@
             <div id='planeControls'>
                 <fieldset>
                     <legend>Add a plane</legend>
-                    <form id="launch">
+                    <form id='launch'>
                         <p>
-                            name : <input type="text" name="name" size="8" required>
+                            Callsing : <input type="text" name="name" size="8" required>
                             state aircraft <input type="checkbox" name="state" >
                         </p>
                         <p>
-                            velocity(kts) :
+                            Ground speed(kts) :
                             <input type="number" name="speed" min="300" max="700" value="450" step="10">
                             FL :
                             <input type="number" name="fl" min="245" max="660" value="300" step="5">
@@ -63,6 +57,21 @@
                         </p>
                         <input type="submit" name="launch" value=" Launch ">
                     </form>
+                </fieldset>
+                <p id='dialogBox'>Status ok</p>
+                <fieldset>
+                    <legend>FL change</legend>
+                    <form id='Fl'>
+                        New FL : <input type="text" name="newFl" value="">
+                        <br>
+                        Plane Name : <input type="text" name="planeName" value="">
+                        <input type="submit" name="submit" value="Envoyer">
+                    </form>
+                </fieldset>
+                <fieldset>
+                    <legend>tester toutes les routes</legend>
+                        vitesse * 1000kts <input id="routetest" type="number">
+                        <input type="button" id="test" value="lancer le test">
                 </fieldset>
             </div>
         </div>

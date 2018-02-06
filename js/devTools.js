@@ -2,8 +2,12 @@
 
 function testRoutes(velocity){
     ROUTES.forEach(function(route){
-        screenElt.appendChild(createPlaneElt(new Plane("",route,200,velocity*1000), route.startPoint));
+        var plane = new Plane(route.exit.point,route,200,velocity*1000, false);
+        screenElt.appendChild(createPlaneElt(plane, route.startPoint));
     });
 }
 
-//testRoutes(20);
+var boutonTest = document.getElementById('test');
+boutonTest.addEventListener('click', function(){
+    testRoutes(document.getElementById('routetest').value);
+});
