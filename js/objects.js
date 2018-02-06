@@ -48,42 +48,42 @@ function Route(start, passPoints, anims){
 var UM3 = new Route(
     SICIL,
     [JAMBI, MTL, MINDI, CFA, VULCA],
-    [{name: "toMtl", dist :pxDist(SICIL, MTL)},
-    {name: "toCfa", dist :pxDist(MTL, CFA)},
-    {name: "toVulca", dist :pxDist(CFA, VULCA)}]
+    [{name: "toMtl", dist: pxDist(SICIL, MTL), angle: "-16deg"},
+    {name: "toCfa", dist: pxDist(MTL, CFA), angle: "0deg"},
+    {name: "toVulca", dist: pxDist(CFA, VULCA), angle:"35deg"}]
 );
 var UM4 = new Route(
     ATN,
     [BURGO, LSE, LTP, GRENA, SANTO, JAMBI],
-    [{name: "toLse", dist :pxDist(ATN, LSE)},
-    {name: "toLtp", dist :pxDist(LSE, LTP)},
-    {name: "toJambi", dist :pxDist(LTP, JAMBI)}]
+    [{name: "toLse", dist: pxDist(ATN, LSE), angle: "14deg"},
+    {name: "toLtp", dist: pxDist(LSE, LTP), angle: "-2deg"},
+    {name: "toJambi", dist: pxDist(LTP, JAMBI), angle: "13deg"}]
 );
 var UN1 = new Route(
     MAJOR,
     [MTL, LTP, MOZAO, SEVET, RAPID],
-    [{name: "toMtl", dist :pxDist(MAJOR, MTL)},
-    {name: "toLtp", dist :pxDist(MTL, LTP)},
-    {name: "toRapid", dist :pxDist(LTP, RAPID)}]
+    [{name: "toMtl", dist :pxDist(MAJOR, MTL), angle: "-42deg"},
+    {name: "toLtp", dist :pxDist(MTL, LTP), angle: "-22deg"},
+    {name: "toRapid", dist :pxDist(LTP, RAPID), angle: "6deg"}]
 );
 var UN2 = new Route(
     FRI,
     [MELKA, LIMAN, LSE, MINDI, LANZA, MEN, GAI],
-    [{name: "toLse", dist :pxDist(FRI, LSE)},
-    {name: "toMen", dist :pxDist(LSE, MEN)},
-    {name: "toGai", dist :pxDist(MEN, GAI)}]
+    [{name: "toLse", dist :pxDist(FRI, LSE), angle: "6deg"},
+    {name: "toMen", dist :pxDist(LSE, MEN), angle: "1deg"},
+    {name: "toGai", dist :pxDist(MEN, GAI), anlge: "9deg"}]
 );
 var UN64EO = new Route(
     BIELA,
     [JUVEN, BOSUA, GRENA, MTL, SPIDY, ETORI, GAI],
-    [{name: "toMtl", dist :pxDist(BIELA, MTL)},
-    {name: "toGai", dist :pxDist(MTL, GAI)}]
+    [{name: "toMtl", dist :pxDist(BIELA, MTL), angle: "27deg"},
+    {name: "toGai", dist :pxDist(MTL, GAI), angle: "27deg"}]
 );
 var UN64OE = new Route(
     GAI,
     [ETORI, SPIDY, MTL, GRENA, BOSUA, JUVEN],
-    [{name: "toMtl", dist :pxDist(GAI, MTL)},
-    {name:"toBiela", dist :pxDist(MTL, BIELA)}]
+    [{name: "toMtl", dist :pxDist(GAI, MTL), angle: "27deg"},
+    {name:"toBiela", dist :pxDist(MTL, BIELA), angle: "27deg"}]
 );
 
 var ROUTES = [UM3, UM4, UN1, UN2, UN64EO, UN64OE]

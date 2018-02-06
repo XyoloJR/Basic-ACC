@@ -1,5 +1,5 @@
 var PLANE_SIZE = 15;
-var timeFactor = 4;
+var timeFactor = 1;
 console.log("timeFactor : x"+timeFactor)
 
 function Plane(name, route, fl, speed){
@@ -11,19 +11,9 @@ function Plane(name, route, fl, speed){
     this.startPoint = route.startPoint;
 }
 
-/*//
-function putPlane(planeElt, point){
-    planeElt.style.left = String(point.x - PLANE_SIZE) + "px";
-    planeElt.style.top = String(point.y - PLANE_SIZE) + "px";
-}*/
-
-
 var planeList= [];
-
 var screenElt = document.getElementById('mainScreen');
-
 var launchElt = document.getElementById('launch');
-
 launchElt.addEventListener('submit',goOnAir);
 
 function goOnAir(event){
@@ -37,7 +27,6 @@ function goOnAir(event){
     console.log(plane);
     planeList.push(plane);
     var planeElt = createPlaneElt(plane, plane.startPoint)
-    //animPlane = animPlane(planeElt, plane);
     screenElt.appendChild(planeElt);
 }
 
@@ -51,28 +40,28 @@ function createPlaneElt(plane, position){
     planeElt.style.left = position.x + "px";
     planeElt.style.top = position.y + "px";
     planeElt.appendChild(iconElt);
-    planeElt.style.animation = animPosition(plane);
+    planeElt.style.animation = animatePlane(plane, iconElt);
     return planeElt;
 }
 
-function animPosition(plane){
+function animatePlane(plane, iconElt){
     var route = plane.route;
     var animPosition = [];
     var delay = 0;
     route.anims.forEach(function(anim){
-        if (animPosition.length != 0) {
+        if (delay != 0) {
             animPosition += ", ";
         }
-        var animTime = time(plane.speed, anim.dist);
-        console.log("anim duration " + animTime);
+        var animTime = flightTime(plane.speed, anim.dist);
         animPosition += anim.name + " " + animTime + "s linear " + delay + "s forwards";
+        setTimeout(function(){iconElt.style.transform = "rotate("+anim.angle+")";}, delay*1000);
         delay += animTime;
     })
     console.log(animPosition)
     return animPosition;
-};
+}
 
-function time(kts, distPx){
+function flightTime(kts, distPx){
     VPxPerS = kts * NmToPx *timeFactor/ 3600;
     return Math.round(distPx / VPxPerS);
 }

@@ -44,14 +44,14 @@ form p{
 }
 
 input, select, option{
-    margin-right : 60px;
+    margin-right : 50px;
     padding : 4px;
     background-color: #EEE;
     font-size: 0.8em;
 }
 
 input[type=number]{
-    max-width: 120px;
+    width: 120px;
 }
 input[type=submit]{
     background-color: #DDD;
