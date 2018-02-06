@@ -6,4 +6,7 @@ function testRoutes(velocity){
     });
 }
 
-testRoutes(20);
+var boutonTest = document.getElementById('test');
+boutonTest.addEventListener('click', function(){
+    testRoutes(document.getElementById('routetest').value);
+});

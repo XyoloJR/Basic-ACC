@@ -51,7 +51,7 @@ function createPlaneElt(plane, position){
 
     var infoBox = document.createElement('div');
     infoBox.setAttribute("class", "infoBox");
-    infoBox.appendChild(flightDetails(plane));
+    infoBox.appendChild(flightDetailsList(plane));
 
     planeElt.appendChild(iconElt);
     planeElt.appendChild(infoBox);
@@ -59,7 +59,7 @@ function createPlaneElt(plane, position){
     return planeElt;
 }
 
-function flightDetails(plane){
+function flightDetailsList(plane){
     var infosElt = document.createElement('ul');
 
     var speedElt = document.createElement('li');
@@ -83,8 +83,12 @@ function flightDetails(plane){
     var exitElt = document.createElement('li');
     exitElt.appendChild(document.createTextNode(plane.exitPoint +" "));
     var sector = document.createElement('span');
-    sector.setAttribute("class", "exitSectorOff");
+    sector.className = "exitSectorOff";
     sector.textContent = plane.exitSector;
+    setTimeout(function(){
+        sector.className ="exitSectorOn";
+    }, flightTime(plane.speed, plane.route.halfWay));
+    console.log(flightTime(plane.speed, plane.route.halfWay));
     exitElt.appendChild(sector);
     infosElt.appendChild(exitElt);
 
@@ -104,6 +108,7 @@ function animatePlane(plane, iconElt){
         setTimeout(function(){iconElt.style.transform = "rotate("+anim.angle+")";}, delay);
         delay += animTime;
     })
+
     setTimeout(function(){
             screenElt.removeChild(document.getElementById(plane.name));
     },delay);

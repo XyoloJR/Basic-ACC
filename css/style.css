@@ -54,6 +54,9 @@ body{
 .exitSectorOff{
     color : black;
 }
+.exitSectorOn{
+    color : white;
+}
 
 
 form{

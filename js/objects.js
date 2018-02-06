@@ -44,18 +44,18 @@ function pxDist(point1, point2){
     return Math.sqrt((point1.x - point2.x)**2 + (point1.y - point2.y)**2);
 }
 
-function Route(start, exitInfos, midPoint, passPoints, anims){
+function Route(start, exitInfos, halfWay, passPoints, anims){
     this.startPoint = start;
     this.exit = exitInfos
     this.passPoints = passPoints;
     this.anims = anims;
-    this.midPoint = midPoint
+    this.halfWay = halfWay
 }
 
 var UM3 = new Route(
     SICIL,
     {point:"CFA",sector:"N3"},
-    UM3MID,
+    pxDist(SICIL, MTL) + pxDist(MTL, UM3MID),
     [MTL, MINDI, CFA, VULCA],
     [{name: "toMtl", dist: pxDist(SICIL, MTL), angle: "-16deg"},
     {name: "toCfa", dist: pxDist(MTL, CFA), angle: "0deg"},
@@ -64,7 +64,7 @@ var UM3 = new Route(
 var UM4 = new Route(
     ATN,
     {point:"SANTO", sector:"I"},
-    UM4MID,
+    pxDist(ATN, LSE) + pxDist(LSE, UM4MID),
     [LSE, LTP, GRENA, SANTO, JAMBI],
     [{name: "toLse", dist: pxDist(ATN, LSE), angle: "14deg"},
     {name: "toLtp", dist: pxDist(LSE, LTP), angle: "-2deg"},
@@ -73,7 +73,7 @@ var UM4 = new Route(
 var UN1 = new Route(
     MAJOR,
     {point:"SEVET", sector:"G2"},
-    UN1MID,
+    pxDist(MAJOR, MTL) + pxDist(MTL, UN1MID),
     [MTL, LTP, MOZAO, RAPID],
     [{name: "toMtl", dist :pxDist(MAJOR, MTL), angle: "-42deg"},
     {name: "toLtp", dist :pxDist(MTL, LTP), angle: "-22deg"},
@@ -82,7 +82,7 @@ var UN1 = new Route(
 var UN2 = new Route(
     FRI,
     {point:"MEN", sector:"OS"},
-    UN2MID,
+    pxDist(FRI, LSE) + pxDist(LSE, UN2MID),
     [LSE, MINDI, LANZA, MEN, GAI],
     [{name: "toLse", dist :pxDist(FRI, LSE), angle: "6deg"},
     {name: "toMen", dist :pxDist(LSE, MEN), angle: "1deg"},
@@ -91,7 +91,7 @@ var UN2 = new Route(
 var UN64EO = new Route(
     BIELA,
     {point:"ETORI", sector:"OS"},
-    UN64MID,
+    pxDist(BIELA, UN64MID),
     [GRENA, MTL, SPIDY, GAI],
     [{name: "toMtl", dist :pxDist(BIELA, MTL), angle: "27deg"},
     {name: "toGai", dist :pxDist(MTL, GAI), angle: "27deg"}]
@@ -99,7 +99,7 @@ var UN64EO = new Route(
 var UN64OE = new Route(
     GAI,
     {point:"JUVEN", sector:"M2"},
-    UN64MID,
+    pxDist(GAI, UN64MID),
     [MTL, GRENA, BOSUA, BIELA],
     [{name: "toMtl", dist :pxDist(GAI, MTL), angle: "27deg"},
     {name:"toBiela", dist :pxDist(MTL, BIELA), angle: "27deg"}]
