@@ -1,8 +1,8 @@
-var PLANE_SIZE = 15;
-var timeFactor = 1;
-var MAX_PLANES = 50;
+var PLANE_SIZE = 15;//half icon size
+var timeFactor = 1;//possibility to speed up or down
 console.log("timeFactor : x" + timeFactor);
 
+//Plane Object constructor
 function Plane(name, route, actualFL, aimedFL, speed, isState){
     this.name = name;
     this.isState = isState
@@ -32,7 +32,8 @@ var screenElt = document.getElementById('mainScreen');
 var DialogElt = document.getElementById('dialogBox');
 var launchElt = document.getElementById('launch');
 launchElt.addEventListener('submit',goOnAir);
-
+//create a Plane and put on screen the corresponding Element
+//from the launch form values
 function goOnAir(event){
     event.preventDefault();
     nameGiven = launchElt["name"].value
@@ -80,7 +81,7 @@ function createPlaneElt(plane, position){
     planeElt.style.animation = animatePlane(plane, iconElt);
     return planeElt;
 }
-
+//create the displayed infos of a plane as ListeElement
 function flightDetailsList(plane){
     var infosElt = document.createElement('ul');
 
@@ -131,6 +132,9 @@ function getFlIcon(climbValue){
     }
 }
 
+//return keyframes animation sequence
+//kill out plane after life
+//rotate plane icon
 function animatePlane(plane, iconElt){
     var route = plane.route;
     var animPosition = [];
@@ -161,5 +165,6 @@ function animatePlane(plane, iconElt){
 
 function flightTime(kts, distPx){
     VPxPerS = kts * NmToPx *timeFactor/ 3600;
-    return Math.round(1000 * distPx / VPxPerS);
+    var timeMs = Math.round(1000 * distPx / VPxPerS);
+    return timeMs;
 }

@@ -47,8 +47,8 @@ body{
     font-size: 2em;
     width : 220px;
     height : 180px;
-    left : 15px;
-    top : 50px;
+    left : 10px;
+    top : 20px;
 }
 .infoBox ul,li{
     list-style: none;
