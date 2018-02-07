@@ -59,15 +59,15 @@
                     </form>
                 </fieldset>
                 <p id='dialogBox'>Status ok</p>
-                <fieldset>
-                    <legend>FL change</legend>
-                    <form id='Fl'>
-                        New FL : <input type="text" name="newFl" value="">
-                        <br>
-                        Plane Name : <input type="text" name="planeName" value="">
+                <form id='fl'>
+                    <fieldset id='flchange'>
+                        <legend>FL change</legend>
+                        <p>New FL : <input id='newfl' type="number" name="fl" min="245" max="660" value="300" step="5" required></p>
+                        <p>Callsing : <input id='getplanes' type="text" name="planeName" value="" required></p>
+                        <ul id='flnames' class='nameslist'></ul>
                         <input type="submit" name="submit" value="Send">
-                    </form>
-                </fieldset>
+                    </fieldset>
+                </form>
                 <fieldset>
                     <legend>tester toutes les routes</legend>
                         vitesse * 1000kts <input id="routetest" type="number">

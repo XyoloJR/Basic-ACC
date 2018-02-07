@@ -4,7 +4,7 @@ console.log("timeFactor : x" + timeFactor);
 
 //Plane Object constructor
 function Plane(name, route, actualFL, aimedFL, speed, isState){
-    this.name = name;
+    this.name = name.toUpperCase();
     this.isState = isState
     this.route = route;
     this.actualFL = actualFL;
@@ -40,11 +40,7 @@ function goOnAir(event){
     if (!(planeNames.indexOf(nameGiven)<0)){
         DialogElt.textContent = "!!!---AVION DEJA EN VOL---!!!";
         DialogElt.style.color = "darkred";
-        setTimeout(function(){
-                        DialogElt.textContent = "Status ok";
-                        DialogElt.style.color = "black";
-                    }, 5000
-        );
+        dialogReset(2000);
     } else {
         var plane = new Plane(
             nameGiven,
@@ -56,12 +52,18 @@ function goOnAir(event){
         );
         var planeElt = createPlaneElt(plane, plane.startPoint);
         screenElt.appendChild(planeElt);
+        DialogElt.textContent = plane.name + " on air";
+        DialogElt.style.color = "darkgreen";
+        dialogReset(3000);
     }
 }
 
+//return a new animated planeElt
 function createPlaneElt(plane, position){
+    var planeId = -1;
+    updateNamesLists(plane, planeId);
     planesList.push(plane);
-    plane.id = planeNames.push(plane.name) - 1;
+    planeNames.push(plane.name);
     console.log(planeNames);
     var planeElt = document.createElement('div');
     planeElt.id = plane.name;
@@ -78,10 +80,44 @@ function createPlaneElt(plane, position){
 
     planeElt.appendChild(iconElt);
     planeElt.appendChild(infoBox);
-    planeElt.style.animation = animatePlane(plane, iconElt);
+    var lifeTime = animatePlane(plane, planeElt, iconElt);
+    planeCrash(plane, lifeTime);
     return planeElt;
 }
-//create the displayed infos of a plane as ListeElement
+
+function planeCrash(plane, lifeTime){
+    setTimeout(function(){
+                    var planeId = planeNames.indexOf(plane.name);
+                    updateNamesLists(plane, planeId);
+                    planeNames.splice(planeId, 1);
+                    planesList.splice(planeId, 1);
+                    screenElt.removeChild(document.getElementById(plane.name));
+                }, lifeTime
+    );
+}
+
+function updateNamesLists(plane, planeId){
+    var namesList = document.getElementById('flnames');
+    if (planeId<0){
+        planeSearchInput.removeAttribute("disabled");
+        var newEntry = document.createElement('li');
+        newEntry.textContent = plane.name;
+        newEntry.addEventListener('click',
+                                    function(){
+                                        planeSearchInput.value = plane.name;
+                                        newFLInput.value = plane.actualFL;
+                                    });
+        namesList.appendChild(newEntry);
+    } else {
+        if (planeId == 0){
+            planeSearchInput.setAttribute("disabled", "disabled");
+            planeSearchInput.value = "";
+        }
+        namesList.removeChild(namesList.children[planeId]);
+    }
+}
+
+//return displayed infos of a plane as ListeElement
 function flightDetailsList(plane){
     var infosElt = document.createElement('ul');
 
@@ -118,24 +154,10 @@ function flightDetailsList(plane){
     infosElt.appendChild(exitElt);
     return infosElt;
 }
-
-function getFlIcon(climbValue){
-    switch (climbValue){
-        case 0:
-            return "../img/stableIcon.png"
-        case 1:
-            return "../img/upIcon.png"
-        case -1:
-            return "../img/downIcon.png";
-        default :
-            console.error("wrong climb value");
-    }
-}
-
 //return keyframes animation sequence
 //kill out plane after life
 //rotate plane icon
-function animatePlane(plane, iconElt){
+function animatePlane(plane, planeElt, iconElt){
     var route = plane.route;
     var animPosition = [];
     var delay = 0;
@@ -151,20 +173,48 @@ function animatePlane(plane, iconElt){
         );
         delay += animTime;
     })
-    setTimeout(function(){
-                    var planeId = planeNames.indexOf(plane.name);
-                    planeNames.splice(planeId, 1);
-                    planesList.splice(planeId, 1);
-                    console.log(planesList);
-                    screenElt.removeChild(document.getElementById(plane.name));
-                }, delay
-    );
-    return animPosition;
+    planeElt.style.animation = animPosition
+    return delay;
 }
-
 
 function flightTime(kts, distPx){
     VPxPerS = kts * NmToPx *timeFactor/ 3600;
     var timeMs = Math.round(1000 * distPx / VPxPerS);
     return timeMs;
 }
+
+function getFlIcon(climbValue){
+    switch (climbValue){
+        case 0:
+            return "../img/stableIcon.png"
+        case 1:
+            return "../img/upIcon.png"
+        case -1:
+            return "../img/downIcon.png";
+        default :
+            console.error("wrong climb value");
+    }
+}
+
+function dialogReset(msTime){
+    setTimeout(function(){
+                    DialogElt.textContent = "Status ok";
+                    DialogElt.style.color = "black";
+                }, msTime
+    );
+}
+
+var namesList = document.getElementById('flnames');
+var planeSearchInput = document.getElementById('getplanes');
+var newFLInput = document.getElementById('newfl')
+
+planeSearchInput.addEventListener('click',
+                                function(event){
+                                    event.stopPropagation();
+                                    namesList.style.display = "block";
+});
+planeSearchInput.addEventListener('focus',
+                                function(event){
+                                    namesList.style.display = "block";
+});
+document.addEventListener('click', function(){namesList.style.display = "none";});

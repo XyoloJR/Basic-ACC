@@ -86,7 +86,7 @@ var UN2 = new Route(
     [LSE, MINDI, LANZA, MEN, GAI],
     [{name: "toLse", dist :pxDist(FRI, LSE), angle: "6deg"},
     {name: "toMen", dist :pxDist(LSE, MEN), angle: "1deg"},
-    {name: "toGai", dist :pxDist(MEN, GAI), anlge: "9deg"}]
+    {name: "toGai", dist :pxDist(MEN, GAI), angle: "9deg"}]
 );
 var UN64EO = new Route(
     BIELA,
