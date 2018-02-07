@@ -1,20 +1,26 @@
 var PLANE_SIZE = 15;
 var timeFactor = 1;
 var MAX_PLANES = 50;
-console.log("timeFactor : x" + timeFactor)
+console.log("timeFactor : x" + timeFactor);
 
-function Plane(name, route, fl, speed, isState){
+function Plane(name, route, actualFL, aimedFL, speed, isState){
     this.name = name;
     this.isState = isState
     this.route = route;
-    this.fl = fl;
-    this.climb = 0;
+    this.actualFL = actualFL;
+    this.aimedFL = aimedFL;
+    var flDiff = aimedFL - actualFL;
+    if (flDiff == 0){
+        this.climb = 0
+    } else {
+        this.climb = aimedFL - actualFL > 0 ? 1 : -1;
+    }
     this.speed = speed;
     this.nextPoint = route.passPoints[0];
     this.startPoint = route.startPoint;
     this.exitPoint = route.exit.point
     if (route == UM4){
-        this.exitSector = "I" + (fl > 365 ? 3 : 2);
+        this.exitSector = "I" + (actualFL > 365 ? 3 : 2);
     } else {
         this.exitSector = route.exit.sector
     }
@@ -42,6 +48,7 @@ function goOnAir(event){
         var plane = new Plane(
             nameGiven,
             ROUTES[launchElt["route"].selectedIndex],
+            launchElt["fl"].valueAsNumber,
             launchElt["fl"].valueAsNumber,
             launchElt["speed"].valueAsNumber,
             launchElt["state"].checked
@@ -92,7 +99,7 @@ function flightDetailsList(plane){
     infosElt.appendChild(nameElt);
 
     var flElt = document.createElement('li');
-    flElt.appendChild(document.createTextNode(plane.fl));
+    flElt.appendChild(document.createTextNode(plane.actualFL));
     var flIcon = document.createElement('img');
     flIcon.src = getFlIcon(plane.climb);
     flElt.appendChild(flIcon);
