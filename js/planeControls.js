@@ -8,7 +8,7 @@ function Plane(name, route, fl, speed, isState){
     this.isState = isState
     this.route = route;
     this.fl = fl;
-    this.climb = " -"
+    this.climb = 0;
     this.speed = speed;
     this.nextPoint = route.passPoints[0];
     this.startPoint = route.startPoint;
@@ -92,7 +92,10 @@ function flightDetailsList(plane){
     infosElt.appendChild(nameElt);
 
     var flElt = document.createElement('li');
-    flElt.appendChild(document.createTextNode(plane.fl + plane.climb));
+    flElt.appendChild(document.createTextNode(plane.fl));
+    var flIcon = document.createElement('img');
+    flIcon.src = getFlIcon(plane.climb);
+    flElt.appendChild(flIcon);
     infosElt.appendChild(flElt);
 
     var exitElt = document.createElement('li');
@@ -101,11 +104,24 @@ function flightDetailsList(plane){
     sector.className = "exitSectorOff";
     sector.textContent = plane.exitSector;
     setTimeout(function(){
-        sector.className ="exitSectorOn";
-    }, flightTime(plane.speed, plane.route.halfWay));
+                    sector.className ="exitSectorOn";
+                }, flightTime(plane.speed, plane.route.halfWay));
     exitElt.appendChild(sector);
     infosElt.appendChild(exitElt);
     return infosElt;
+}
+
+function getFlIcon(climbValue){
+    switch (climbValue){
+        case 0:
+            return "../img/stableIcon.png"
+        case 1:
+            return "../img/upIcon.png"
+        case -1:
+            return "../img/downIcon.png";
+        default :
+            console.error("wrong climb value");
+    }
 }
 
 function animatePlane(plane, iconElt){
