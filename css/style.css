@@ -81,7 +81,7 @@ input, select, option{
     font-size: 0.8em;
 }
 input[type=text], .namelist{
-    width: 400px;
+    width: 300px;
 }
 input[type=checkbox]{
     margin-right: 10px;
@@ -92,19 +92,22 @@ input[type=number]{
 }
 input[type=submit]{
     background-color: #DDD;
-
     border: 1px black solid inset;
+}
+input:disabled{
+    background-color: #888;
 }
 #fl{
     position : relative;
 }
 
 #flnames{
-    left: 200px;
-    top: 178px;
+    left: 220px;
+    top: 278px;
 }
 
 .nameslist{
+    width :
     display : none;
     position: absolute;
     background-color: #EEE;

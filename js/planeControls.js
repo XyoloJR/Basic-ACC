@@ -9,12 +9,8 @@ function Plane(name, route, actualFL, aimedFL, speed, isState){
     this.route = route;
     this.actualFL = actualFL;
     this.aimedFL = aimedFL;
-    var flDiff = aimedFL - actualFL;
-    if (flDiff == 0){
-        this.climb = 0
-    } else {
-        this.climb = aimedFL - actualFL > 0 ? 1 : -1;
-    }
+    this.climbRate = getclimbRate
+    this.flIcon = getFlIcon(climbrate);
     this.speed = speed;
     this.nextPoint = route.passPoints[0];
     this.startPoint = route.startPoint;
@@ -25,22 +21,40 @@ function Plane(name, route, actualFL, aimedFL, speed, isState){
         this.exitSector = route.exit.sector
     }
 }
+function getclimbRate(plane){
+    if
+    (plane.aimedFL - plane.actualFL)/Math.abs(plane.aimedFL - plane.actualFL);
+}
+
+function getFlIcon(flDiff){
+    if (flDiff == 0){
+        return "../img/stableIcon.png"
+    } else if (flDiff > 0) {
+        return "../img/upIcon.png"
+    } else {
+        return "../img/downIcon.png";
+    }
+}
 
 var planesList= [];
 var planeNames=[];
 var screenElt = document.getElementById('mainScreen');
 var DialogElt = document.getElementById('dialogBox');
 var launchElt = document.getElementById('launch');
+var newFlForm = document.getElementById('fl');
+var flChangeField = newFlForm.firstElementChild;
+var newFLInput = document.getElementById('newfl');
+var planeSearchInput = document.getElementById('getplanes');
+var namesList = document.getElementById('flnames');
+
 launchElt.addEventListener('submit',goOnAir);
 //create a Plane and put on screen the corresponding Element
 //from the launch form values
 function goOnAir(event){
     event.preventDefault();
-    nameGiven = launchElt["name"].value
+    nameGiven = launchElt["name"].value.toUpperCase();
     if (!(planeNames.indexOf(nameGiven)<0)){
-        DialogElt.textContent = "!!!---AVION DEJA EN VOL---!!!";
-        DialogElt.style.color = "darkred";
-        dialogReset(2000);
+        dial("!!!---AVION DEJA EN VOL---!!!", "darkred",2000)
     } else {
         var plane = new Plane(
             nameGiven,
@@ -52,19 +66,15 @@ function goOnAir(event){
         );
         var planeElt = createPlaneElt(plane, plane.startPoint);
         screenElt.appendChild(planeElt);
-        DialogElt.textContent = plane.name + " on air";
-        DialogElt.style.color = "darkgreen";
-        dialogReset(3000);
+        dial(plane.name + " on air", "darkgreen", 3000)
     }
 }
 
 //return a new animated planeElt
 function createPlaneElt(plane, position){
     var planeId = -1;
-    updateNamesLists(plane, planeId);
-    planesList.push(plane);
-    planeNames.push(plane.name);
-    console.log(planeNames);
+    updateLists(plane, planeId);
+
     var planeElt = document.createElement('div');
     planeElt.id = plane.name;
     planeElt.setAttribute("class", "plane");
@@ -88,18 +98,19 @@ function createPlaneElt(plane, position){
 function planeCrash(plane, lifeTime){
     setTimeout(function(){
                     var planeId = planeNames.indexOf(plane.name);
-                    updateNamesLists(plane, planeId);
-                    planeNames.splice(planeId, 1);
-                    planesList.splice(planeId, 1);
+                    updateLists(plane, planeId);
                     screenElt.removeChild(document.getElementById(plane.name));
                 }, lifeTime
     );
 }
 
-function updateNamesLists(plane, planeId){
+function updateLists(plane, planeId){
     var namesList = document.getElementById('flnames');
     if (planeId<0){
-        planeSearchInput.removeAttribute("disabled");
+        planesList.push(plane);
+        planeNames.push(plane.name);
+        console.log(planeNames);
+        flChangeField.removeAttribute("disabled");
         var newEntry = document.createElement('li');
         newEntry.textContent = plane.name;
         newEntry.addEventListener('click',
@@ -109,18 +120,19 @@ function updateNamesLists(plane, planeId){
                                     });
         namesList.appendChild(newEntry);
     } else {
-        if (planeId == 0){
-            planeSearchInput.setAttribute("disabled", "disabled");
+        planeNames.splice(planeId, 1);
+        planesList.splice(planeId, 1);
+        namesList.removeChild(namesList.children[planeId]);
+        if (namesList.childElementCount == 0){
+            flChangeField.setAttribute("disabled", "disabled");
             planeSearchInput.value = "";
         }
-        namesList.removeChild(namesList.children[planeId]);
     }
 }
 
 //return displayed infos of a plane as ListeElement
 function flightDetailsList(plane){
     var infosElt = document.createElement('ul');
-
     var speedElt = document.createElement('li');
     speedElt.appendChild(document.createTextNode(plane.speed/10));
     if (plane.isState){
@@ -136,9 +148,10 @@ function flightDetailsList(plane){
     infosElt.appendChild(nameElt);
 
     var flElt = document.createElement('li');
+    flElt.id = plane.name + "fl";
     flElt.appendChild(document.createTextNode(plane.actualFL));
     var flIcon = document.createElement('img');
-    flIcon.src = getFlIcon(plane.climb);
+    flIcon.src = plane.flIcon;
     flElt.appendChild(flIcon);
     infosElt.appendChild(flElt);
 
@@ -183,20 +196,11 @@ function flightTime(kts, distPx){
     return timeMs;
 }
 
-function getFlIcon(climbValue){
-    switch (climbValue){
-        case 0:
-            return "../img/stableIcon.png"
-        case 1:
-            return "../img/upIcon.png"
-        case -1:
-            return "../img/downIcon.png";
-        default :
-            console.error("wrong climb value");
-    }
-}
 
-function dialogReset(msTime){
+
+function dial(message, color, msTime){
+    DialogElt.textContent = message;
+    DialogElt.style.color = color;
     setTimeout(function(){
                     DialogElt.textContent = "Status ok";
                     DialogElt.style.color = "black";
@@ -204,17 +208,47 @@ function dialogReset(msTime){
     );
 }
 
-var namesList = document.getElementById('flnames');
-var planeSearchInput = document.getElementById('getplanes');
-var newFLInput = document.getElementById('newfl')
+function getPlane(planeName){
+    return planesList[planeNames.indexOf(planeName)]
+}
 
-planeSearchInput.addEventListener('click',
-                                function(event){
-                                    event.stopPropagation();
-                                    namesList.style.display = "block";
+newFlForm.addEventListener(
+    'submit',
+    function(event){
+        event.preventDefault();
+        plane = getPlane(planeSearchInput.value);
+        var flElt = document.getElementById(plane.name +"fl");
+        plane.aimedFL = newFLInput.valueAsNumber;
+        flElt.lastElementChild.src = getFlIcon(flDiff);
+        climbId = setInterval(climb, 15000);
+    });
+
+function climb(){
+    if (flDiff > 0){
+        plane.actualFL += 5;
+    } else{
+        plane.actualFL-= 5;
+    }
+    if (flDiff = 0){
+        clearInterval(climbId);
+        flElt.lastElementChild.src = getFlIcon(0);
+    }
+    flElt.firstChild.textContent = plane.actualFL;
+}
+
+planeSearchInput.addEventListener(
+    'click',
+    function(event){
+        event.stopPropagation();
+        namesList.style.display = "block";
 });
-planeSearchInput.addEventListener('focus',
-                                function(event){
-                                    namesList.style.display = "block";
+planeSearchInput.addEventListener(
+    'focus',
+    function(event){
+        namesList.style.display = "block";
 });
-document.addEventListener('click', function(){namesList.style.display = "none";});
+document.addEventListener(
+    'click',
+    function(){
+        namesList.style.display = "none";
+});
