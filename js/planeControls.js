@@ -100,7 +100,6 @@ function updateLists(plane, planeId){
     if (planeId<0){
         planesList.push(plane);
         planeNames.push(plane.name);
-        console.log(plane);
         flChangeField.removeAttribute("disabled");
         var newEntry = document.createElement('li');
         newEntry.textContent = plane.name;
@@ -178,6 +177,8 @@ function animatePlane(plane, planeElt, iconElt){
                     }, delay
         );
         delay += animTime;
+        setTimeout(function(){plane.step ++;console.log(plane);}, delay);
+
     })
     planeElt.style.animation = animPosition
     return delay;

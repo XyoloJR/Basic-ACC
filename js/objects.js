@@ -72,8 +72,7 @@ var UM4 = new Route(
     [ATN, LSE, LTP, GRENA, SANTO, JAMBI]
 );
 var UN1 = new Route(
-    [{name: "toMajor", dist :pxDist(MINOR, MAJOR), angle: "-42deg"},
-    {name: "toMtl", dist :pxDist(MAJOR, MTL), angle: "-42deg"},
+    [{name: "toMtl", dist :pxDist(MINOR, MTL), angle: "-42deg"},
     {name: "toLtp", dist :pxDist(MTL, LTP), angle: "-22deg"},
     {name: "toMozao", dist :pxDist(LTP, MOZAO), angle: "6deg"},
     {name: "toRapid", dist :pxDist(MOZAO, RAPID), angle: "6deg"}],
