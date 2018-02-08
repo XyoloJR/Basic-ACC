@@ -42,6 +42,7 @@ var ctrlNamesList = document.getElementById('ctrlnames');
 var newHeadInput = document.getElementById('newhead');
 var newDirectInput = document.getElementById('newdirect');
 var fieldElts = [flChangeField, ctrlChangeField];
+var nextAnim = [];
 
 launchElt.addEventListener('submit', goOnAir);
 //create a Plane and put on screen the corresponding Element
@@ -99,7 +100,7 @@ function animatePlane(plane, planeElt, iconElt){
     animText = anim.name + " " + animTime + "ms linear forwards";
     planeElt.style.animation = animText;
     iconElt.style.transform = "rotate("+ anim.angle +")";
-    var stepIncrement = setTimeout(
+    plane.nextAnim = setTimeout(
         function(){
             plane.step ++;
             if (plane.step == plane.route.anims.length){
@@ -109,9 +110,25 @@ function animatePlane(plane, planeElt, iconElt){
             }
         }, animTime
     );
-    console.log(plane.name, "animation ok");
 }
 
+planeOrderForm.addEventListener(
+    'submit',
+    function(event){
+        event.preventDefault();
+        planeName = ctrlPlaneInput.value;
+        plane = getPlane(planeName);
+        planeElt = document.getElementById(planeName);
+        actualPosition=window.getComputedStyle(planeElt);
+        var left = actualPosition.getPropertyValue('left');
+        var top = actualPosition.getPropertyValue('top');
+        clearTimeout(plane.nextAnim);
+        planeElt.style.animation = "";
+        planeElt.style.left = left;
+        planeElt.style.top = top;
+    }
+
+);
 function updateLists(plane, planeId){
     var flNamesList = document.getElementById('flnames');
     var ctrlNamesList = document.getElementById('ctrlnames');
@@ -266,6 +283,7 @@ newFlForm.addEventListener(
                 flElt.firstChild.textContent = plane.actualFL;
             }, 15000);
 });
+
 
 flPlaneInput.addEventListener(
     'click',
