@@ -44,76 +44,70 @@ function pxDist(point1, point2){
     return Math.sqrt((point1.x - point2.x)**2 + (point1.y - point2.y)**2);
 }
 
-function Route(start, exitInfos, halfWay, passPoints, anims){
-    this.startPoint = start;
-    this.exit = exitInfos
-    this.passPoints = passPoints;
+function Route(anims, exitInfos, halfWay, passPoints){
     this.anims = anims;
-    this.halfWay = halfWay
+    this.exit = exitInfos;
+    this.halfWay = halfWay;
+    this.pointsList = passPoints;
+    this.steps = anims.length - 1;
 }
 
 var UM3 = new Route(
-    SICIL,
-    {point:"CFA",sector:"N3"},
-    pxDist(SICIL, MTL) + pxDist(MTL, UM3MID),
-    [MTL, MINDI, CFA, VULCA],
     [{name: "toMtl", dist: pxDist(SICIL, MTL), angle: "-16deg"},
     {name: "toMindi", dist: pxDist(MTL, MINDI), angle: "0deg"},
     {name: "toCfa", dist: pxDist(MINDI, CFA), angle: "0deg"},
-    {name: "toVulca", dist: pxDist(CFA, VULCA), angle:"35deg"}]
+    {name: "toVulca", dist: pxDist(CFA, VULCA), angle:"35deg"}],
+    {point:"CFA",sector:"N3"},
+    pxDist(SICIL, MTL) + pxDist(MTL, UM3MID),
+    [SICIL, MTL, MINDI, CFA, VULCA]
 );
 var UM4 = new Route(
-    ATN,
-    {point:"SANTO", sector:"I"},
-    pxDist(JAMBI, UM4MID),
-    [LSE, LTP, GRENA, SANTO, JAMBI],
     [{name: "toLse", dist: pxDist(ATN, LSE), angle: "14deg"},
     {name: "toLtp", dist: pxDist(LSE, LTP), angle: "-2deg"},
     {name: "toGrena", dist: pxDist(LTP, GRENA), angle: "13deg"},
     {name: "toSanto", dist: pxDist(GRENA, SANTO), angle: "13deg"},
-    {name: "toJambi", dist: pxDist(SANTO, JAMBI), angle: "13deg"}]
+    {name: "toJambi", dist: pxDist(SANTO, JAMBI), angle: "13deg"}],
+    {point:"SANTO", sector:"I"},
+    pxDist(JAMBI, UM4MID),
+    [ATN, LSE, LTP, GRENA, SANTO, JAMBI]
 );
 var UN1 = new Route(
-    MINOR,
-    {point:"SEVET", sector:"G2"},
-    pxDist(MINOR, MTL) + pxDist(MTL, UN1MID),
-    [MAJOR, MTL, LTP, MOZAO, RAPID],
     [{name: "toMajor", dist :pxDist(MINOR, MAJOR), angle: "-42deg"},
     {name: "toMtl", dist :pxDist(MAJOR, MTL), angle: "-42deg"},
     {name: "toLtp", dist :pxDist(MTL, LTP), angle: "-22deg"},
     {name: "toMozao", dist :pxDist(LTP, MOZAO), angle: "6deg"},
-    {name: "toRapid", dist :pxDist(MOZAO, RAPID), angle: "6deg"}]
+    {name: "toRapid", dist :pxDist(MOZAO, RAPID), angle: "6deg"}],
+    {point:"SEVET", sector:"G2"},
+    pxDist(MINOR, MTL) + pxDist(MTL, UN1MID),
+    [MINOR, MAJOR, MTL, LTP, MOZAO, RAPID]
 );
 var UN2 = new Route(
-    FRI,
-    {point:"MEN", sector:"OS"},
-    pxDist(FRI, LSE) + pxDist(LSE, UN2MID),
-    [LSE, MINDI, LANZA, MEN, GAI],
     [{name: "toLse", dist :pxDist(FRI, LSE), angle: "6deg"},
     {name: "toMindi", dist :pxDist(LSE, MINDI), angle: "1deg"},
     {name: "toLanza", dist :pxDist(MINDI, LANZA), angle: "1deg"},
     {name: "toMen", dist :pxDist(LANZA, MEN), angle: "1deg"},
-    {name: "toGai", dist :pxDist(MEN, GAI), angle: "9deg"}]
+    {name: "toGai", dist :pxDist(MEN, GAI), angle: "9deg"}],
+    {point:"MEN", sector:"OS"},
+    pxDist(FRI, LSE) + pxDist(LSE, UN2MID),
+    [FRI, LSE, MINDI, LANZA, MEN, GAI],
 );
 var UN64EO = new Route(
-    BIELA,
-    {point:"ETORI", sector:"OS"},
-    pxDist(BIELA, UN64MID),
-    [GRENA, MTL, SPIDY, GAI],
     [{name: "toGrena", dist :pxDist(BIELA, GRENA), angle: "27deg"},
     {name: "toMtl", dist :pxDist(GRENA, MTL), angle: "27deg"},
     {name: "toSpidy", dist :pxDist(MTL, SPIDY), angle: "27deg"},
-    {name: "toGai", dist :pxDist(SPIDY, GAI), angle: "27deg"}]
+    {name: "toGai", dist :pxDist(SPIDY, GAI), angle: "27deg"}],
+    {point:"ETORI", sector:"OS"},
+    pxDist(BIELA, UN64MID),
+    [BIELA, GRENA, MTL, SPIDY, GAI]
 );
 var UN64OE = new Route(
-    GAI,
-    {point:"JUVEN", sector:"M2"},
-    pxDist(GAI, UN64MID),
-    [MTL, GRENA, BOSUA, BIELA],
     [{name: "toMtl", dist :pxDist(GAI, MTL), angle: "27deg"},
     {name:"toGrena", dist :pxDist(MTL, GRENA), angle: "27deg"},
     {name:"toBosua", dist :pxDist(GRENA, BOSUA), angle: "27deg"},
-    {name:"toBiela", dist :pxDist(BOSUA, BIELA), angle: "27deg"}]
+    {name:"toBiela", dist :pxDist(BOSUA, BIELA), angle: "27deg"}],
+    {point:"JUVEN", sector:"M2"},
+    pxDist(GAI, UN64MID),
+    [GAI, MTL, GRENA, BOSUA, BIELA]
 );
 
 var ROUTES = [UM3, UM4, UN1, UN2, UN64EO, UN64OE]

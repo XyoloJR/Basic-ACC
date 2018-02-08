@@ -5,32 +5,26 @@ console.log("timeFactor : x" + timeFactor);
 
 
 //Plane Object constructor
-function Plane(name, route, actualFL, aimedFL, speed, isState){
-
-    this.name = name.toUpperCase();
-    this.isState = isState
-    this.route = route;
+function Plane(actualFL, aimedFL, route, isState, name, speed){
     this.actualFL = actualFL;
     this.aimedFL = aimedFL;
+    this.exitPoint = route.exit.point;
+    if (route == UM4){
+        this.exitSector = "I" + (actualFL > 365 ? 3 : 2);
+    } else {
+        this.exitSector = route.exit.sector;
+    }
+    this.isState = isState;
+    this.name = name.toUpperCase();
+    this.route = route;
+    this.speed = speed;
+    this.step = 0;
     this.updateClimb = function(){
         var flDiff = this.aimedFL - this.actualFL;
         this.climb = flDiff == 0 ? 0 : (flDiff)/Math.abs(flDiff);
     }
     this.updateClimb();
-    this.speed = speed;
-    this.nextPoint = route.passPoints[0];
-    this.startPoint = route.startPoint;
-    this.exitPoint = route.exit.point
-    if (route == UM4){
-        this.exitSector = "I" + (actualFL > 365 ? 3 : 2);
-    } else {
-        this.exitSector = route.exit.sector
-    }
-
 }
-
-
-
 
 var planesList= [];
 var planeNames=[];
@@ -53,12 +47,12 @@ function goOnAir(event){
         dial("!!!---AVION DEJA EN VOL---!!!", "darkred",2000)
     } else {
         var plane = new Plane(
-            nameGiven,
+            launchElt["fl"].valueAsNumber,
+            launchElt["fl"].valueAsNumber,
             ROUTES[launchElt["route"].selectedIndex],
-            launchElt["fl"].valueAsNumber,
-            launchElt["fl"].valueAsNumber,
+            launchElt["state"].checked,
+            nameGiven,
             launchElt["speed"].valueAsNumber,
-            launchElt["state"].checked
         );
         var planeElt = createPlaneElt(plane, plane.startPoint);
         screenElt.appendChild(planeElt);
@@ -67,8 +61,9 @@ function goOnAir(event){
 }
 
 //return a new animated planeElt
-function createPlaneElt(plane, position){
+function createPlaneElt(plane){
     var planeId = -1;
+    var position = plane.route.pointsList[0]
     updateLists(plane, planeId);
 
     var planeElt = document.createElement('div');
