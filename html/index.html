@@ -11,20 +11,18 @@
 
         <div id='controls'>
             <div id='radarist'>
-                <fieldset>
-                    <legend>heading change(à venir)</legend>
-                    <form id='heading'>
+                <form id='heading'>
+                    <fieldset>
+                        <legend>Orders available</legend>
+                        <p>Callsing : <input id='Ctrlplane' type="text" name="planeName" value="" required></p>
+                        Change heading to :
                         <input type="number" name="heading" min="0" max="360" value="">
-                        <input type="submit" style="visibility : hidden" value="Order given">
-                    </form>
-                </fieldset>
-                <fieldset>
-                    <legend>direct route(à venir)</legend>
-                    <form id='direct'>
+                        <input type="submit" value="Order given">
+                        Heading direct to :
                         <input type="text" name="direct" value="">
-                        <input type="submit" style="visibility : hidden" value="Direct route given">
-                    </form>
-                </fieldset>
+                        <input type="submit" value="Direct route given">
+                    </fieldset>
+                </form>
             </div>
             <div id='organist'></div>
 
@@ -64,7 +62,7 @@
                     <fieldset id='flchange' disabled>
                         <legend>FL change</legend>
                         <p>New FL : <input id='newfl' type="number" name="fl" min="245" max="660" value="300" step="5" required></p>
-                        <p>Callsing : <input id='getplanes' type="text" name="planeName" value="" required></p>
+                        <p>Callsing : <input id='getplane' type="text" name="planeName" value="" required></p>
                         <ul id='flnames' class='nameslist'></ul>
                         <input type="submit" name="submit" value="Send">
                     </fieldset>

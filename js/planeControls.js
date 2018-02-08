@@ -40,7 +40,7 @@ var launchElt = document.getElementById('launch');
 var newFlForm = document.getElementById('fl');
 var flChangeField = newFlForm.firstElementChild;
 var newFLInput = document.getElementById('newfl');
-var planeSearchInput = document.getElementById('getplanes');
+var getPlaneInput = document.getElementById('getplane');
 var namesList = document.getElementById('flnames');
 
 launchElt.addEventListener('submit',goOnAir);
@@ -111,7 +111,7 @@ function updateLists(plane, planeId){
         newEntry.textContent = plane.name;
         newEntry.addEventListener('click',
                                     function(){
-                                        planeSearchInput.value = plane.name;
+                                        getPlaneInput.value = plane.name;
                                         if (newFLInput.value == 0){
                                             newFLInput.value = plane.actualFL;
                                         }
@@ -123,7 +123,7 @@ function updateLists(plane, planeId){
         namesList.removeChild(namesList.children[planeId]);
         if (namesList.childElementCount == 0){
             flChangeField.setAttribute("disabled", "disabled");
-            planeSearchInput.value = "";
+            getPlaneInput.value = "";
         }
     }
 }
@@ -224,7 +224,7 @@ newFlForm.addEventListener(
     'submit',
     function(event){
         event.preventDefault();
-        var plane = getPlane(planeSearchInput.value);
+        var plane = getPlane(getPlaneInput.value);
         var flElt = document.getElementById(plane.name +"fl");
         plane.aimedFL = newFLInput.valueAsNumber;
         plane.updateClimb();
@@ -246,7 +246,7 @@ newFlForm.addEventListener(
             }, 15000);
     });
 
-planeSearchInput.addEventListener(
+getPlaneInput.addEventListener(
     'click',
     function(event){
         event.preventDefault();
@@ -254,7 +254,7 @@ planeSearchInput.addEventListener(
         namesList.style.display = "block";
 });
 
-planeSearchInput.addEventListener(
+getPlaneInput.addEventListener(
     'keyup',
     function(event){
         event.preventDefault();
@@ -263,9 +263,10 @@ planeSearchInput.addEventListener(
     }
 )
 
-planeSearchInput.addEventListener(
+getPlaneInput.addEventListener(
     'focus',
     function(event){
+        event.preventDefault();
         namesList.style.display = "block";
 });
 document.addEventListener(
