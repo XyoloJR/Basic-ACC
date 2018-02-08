@@ -12,16 +12,22 @@
         <div id='controls'>
             <div id='radarist'>
                 <form id='heading'>
-                    <fieldset>
+                    <fieldset disabled="disabled">
                         <legend>Orders available</legend>
-                        <p>Callsing : <input id='Ctrlplane' type="text" name="planeName" value="" required></p>
-                        Change heading to :
-                        <input type="number" name="heading" min="0" max="360" value="">
-                        <input type="submit" value="Order given">
-                        <br>
-                        Heading direct to :
-                        <input type="text" name="direct" value="">
-                        <input type="submit" value="Direct route given">
+                        <p>Callsing : <input id='ctrlplane' type="text" name="planeName" value="" autocomplete="off" required></p>
+                        <ul id='ctrlnames' class='nameslist'></ul>
+                        <hr>
+                        <p>
+                            Change heading to :
+                            <input id='newhead' type="number" name="heading" min="0" max="360" value="">
+                            <input type="submit" value="Confirmed">
+                        </p>
+                        <hr>
+                        <p>
+                            Direct to :
+                            <input id='newdirect' type="text" name="direct" value="">
+                            <input type="submit" value="Confirmed">
+                        </p>
                     </fieldset>
                 </form>
             </div>
@@ -60,10 +66,10 @@
                 <p id='dialogBox'>No plane on air</p>
 
                 <form id='fl'>
-                    <fieldset id='flchange' disabled>
+                    <fieldset disabled="disabled">
                         <legend>FL change</legend>
                         <p>New FL : <input id='newfl' type="number" name="fl" min="245" max="660" value="300" step="5" required></p>
-                        <p>Callsing : <input id='getplane' type="text" name="planeName" value="" required></p>
+                        <p>Callsing : <input id='flplane' type="text" name="planeName" value="" autocomplete="off" required></p>
                         <ul id='flnames' class='nameslist'></ul>
                         <input type="submit" name="submit" value="Send">
                     </fieldset>

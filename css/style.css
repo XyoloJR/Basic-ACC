@@ -103,11 +103,14 @@ input:disabled{
 
 #flnames{
     left: 220px;
-    top: 278px;
+    top: 274px;
+}
+#ctrlnames{
+    left: 370px;
+    top: 324px;
 }
 
 .nameslist{
-    width :
     display : none;
     position: absolute;
     background-color: #EEE;

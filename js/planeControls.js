@@ -1,8 +1,7 @@
 var PLANE_SIZE = 15;//half icon size
 var timeFactor = 1;//possibility to speed up or down
 console.log("timeFactor : x" + timeFactor);
-
-
+var NmToPx = 10.84;//conversion factor
 
 //Plane Object constructor
 function Plane(actualFL, aimedFL, route, isState, name, speed){
@@ -34,10 +33,17 @@ var launchElt = document.getElementById('launch');
 var newFlForm = document.getElementById('fl');
 var flChangeField = newFlForm.firstElementChild;
 var newFLInput = document.getElementById('newfl');
-var getPlaneInput = document.getElementById('getplane');
-var namesList = document.getElementById('flnames');
+var flPlaneInput = document.getElementById('flplane');
+var flNamesList = document.getElementById('flnames');
+var planeOrderForm = document.getElementById('heading')
+var ctrlChangeField = planeOrderForm.firstElementChild;
+var ctrlPlaneInput = document.getElementById('ctrlplane');
+var ctrlNamesList = document.getElementById('ctrlnames');
+var newHeadInput = document.getElementById('newhead');
+var newDirectInput = document.getElementById('newdirect');
+var fieldElts = [flChangeField, ctrlChangeField];
 
-launchElt.addEventListener('submit',goOnAir);
+launchElt.addEventListener('submit', goOnAir);
 //create a Plane and put on screen the corresponding Element
 //from the launch form values
 function goOnAir(event){
@@ -78,6 +84,7 @@ function createPlaneElt(plane){
 
     planeElt.appendChild(iconElt);
     planeElt.appendChild(infoBox);
+    console.log(plane.name, "creation ok");
     animatePlane(plane, planeElt, iconElt);
     return planeElt;
 }
@@ -86,8 +93,8 @@ function animatePlane(plane, planeElt, iconElt){
     var position = plane.route.pointsList[plane.step];
     planeElt.style.left = position.x + "px";
     planeElt.style.top = position.y + "px";
-
     var anim = plane.route.anims[plane.step]
+    plane.heading = anim.heading
     var animTime = flightTime(plane.speed, anim.dist);
     animText = anim.name + " " + animTime + "ms linear forwards";
     planeElt.style.animation = animText;
@@ -102,33 +109,55 @@ function animatePlane(plane, planeElt, iconElt){
             }
         }, animTime
     );
+    console.log(plane.name, "animation ok");
 }
 
 function updateLists(plane, planeId){
-    var namesList = document.getElementById('flnames');
+    var flNamesList = document.getElementById('flnames');
+    var ctrlNamesList = document.getElementById('ctrlnames');
     if (planeId<0){
+        if (planesList.length == 0){
+            disenableElts(fieldElts);
+        }
         planesList.push(plane);
         planeNames.push(plane.name);
-        flChangeField.removeAttribute("disabled");
-        var newEntry = document.createElement('li');
-        newEntry.textContent = plane.name;
-        newEntry.addEventListener(
+        var newEntryFL = document.createElement('li');
+        newEntryFL.textContent = plane.name;
+        newEntryFL.addEventListener(
             'click',
             function(){
-                getPlaneInput.value = plane.name;
+                flPlaneInput.value = plane.name;
                 if (newFLInput.value == 0){
                 newFLInput.value = plane.actualFL;
             }
         });
-        namesList.appendChild(newEntry);
+        var newEntryCtrl = document.createElement('li');
+        newEntryCtrl.textContent = plane.name;
+        newEntryCtrl.addEventListener(
+            'click',
+            function(){
+                ctrlPlaneInput.value = plane.name;
+                newHeadInput.value = plane.heading;
+            }
+        )
+        flNamesList.appendChild(newEntryFL);
+        ctrlNamesList.appendChild(newEntryCtrl);
     } else {
         planeNames.splice(planeId, 1);
         planesList.splice(planeId, 1);
-        namesList.removeChild(namesList.children[planeId]);
-        if (namesList.childElementCount == 0){
-            flChangeField.setAttribute("disabled", "disabled");
-            getPlaneInput.value = "";
+        flNamesList.removeChild(flNamesList.children[planeId]);
+        ctrlNamesList.removeChild(ctrlNamesList.children[planeId]);
+        if (flNamesList.childElementCount == 0){
+            disenableElts(fieldElts);
         }
+    }
+}
+
+function disenableElts(Elts){
+    if (Elts[0].hasAttribute("disabled")){
+        Elts.forEach(function(Elt){Elt.removeAttribute("disabled");});
+    } else {
+        Elts.forEach(function(Elt){Elt.setAttribute("disabled", "disabled");});
     }
 }
 
@@ -216,7 +245,7 @@ newFlForm.addEventListener(
     'submit',
     function(event){
         event.preventDefault();
-        var plane = getPlane(getPlaneInput.value);
+        var plane = getPlane(flPlaneInput.value);
         var flElt = document.getElementById(plane.name +"fl");
         plane.aimedFL = newFLInput.valueAsNumber;
         plane.updateClimb();
@@ -236,17 +265,17 @@ newFlForm.addEventListener(
                 }
                 flElt.firstChild.textContent = plane.actualFL;
             }, 15000);
-    });
+});
 
-getPlaneInput.addEventListener(
+flPlaneInput.addEventListener(
     'click',
     function(event){
         event.preventDefault();
         event.stopPropagation();
-        namesList.style.display = "block";
+        flNamesList.style.display = "block";
 });
 
-getPlaneInput.addEventListener(
+flPlaneInput.addEventListener(
     'keyup',
     function(event){
         event.preventDefault();
@@ -255,14 +284,20 @@ getPlaneInput.addEventListener(
     }
 )
 
-getPlaneInput.addEventListener(
-    'focus',
+
+ctrlPlaneInput.addEventListener(
+    'click',
     function(event){
         event.preventDefault();
-        namesList.style.display = "block";
-});
+        event.stopPropagation();
+        ctrlNamesList.style.display = "block";
+    }
+)
+
+
 document.addEventListener(
     'click',
-    function(){
-        namesList.style.display = "none";
+    function(event){
+        ctrlNamesList.style.display = "none";
+        flNamesList.style.display = "none";
 });

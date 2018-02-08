@@ -38,8 +38,7 @@ var POINTS = [ATN, BIELA, BOSUA, BURGO, CFA, ETORI, FRI, GAI, GRENA, JAMBI, JUVE
                     LANZA, LIMAN, LSE, LTP, MAJOR, MELKA, MEN, MINDI, MOZAO, MTL,
                     RAPID, SANTO, SEVET, SICIL, SPIDY, VULCA];
 
-//conversion factor
-var NmToPx = 10.84;
+
 function pxDist(point1, point2){
     return Math.sqrt((point1.x - point2.x)**2 + (point1.y - point2.y)**2);
 }
