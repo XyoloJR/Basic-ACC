@@ -78,7 +78,7 @@ var UN1 = new Route(
     {name: "toRapid", dist :pxDist(MOZAO, RAPID), angle: "6deg"}],
     {point:"SEVET", sector:"G2"},
     pxDist(MINOR, MTL) + pxDist(MTL, UN1MID),
-    [MINOR, MAJOR, MTL, LTP, MOZAO, RAPID]
+    [MINOR, MTL, LTP, MOZAO, RAPID]
 );
 var UN2 = new Route(
     [{name: "toLse", dist :pxDist(FRI, LSE), angle: "6deg"},

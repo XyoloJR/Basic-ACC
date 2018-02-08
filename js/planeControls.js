@@ -63,14 +63,13 @@ function goOnAir(event){
 //return a new animated planeElt
 function createPlaneElt(plane){
     var planeId = -1;
-    var position = plane.route.pointsList[0]
+
     updateLists(plane, planeId);
 
     var planeElt = document.createElement('div');
     planeElt.id = plane.name;
     planeElt.setAttribute("class", "plane");
-    planeElt.style.left = position.x + "px";
-    planeElt.style.top = position.y + "px";
+
 
     var iconElt = document.createElement('div');
     iconElt.setAttribute("class", "planeIcon");
@@ -81,19 +80,32 @@ function createPlaneElt(plane){
 
     planeElt.appendChild(iconElt);
     planeElt.appendChild(infoBox);
-    var lifeTime = animatePlane(plane, planeElt, iconElt);
-    planeCrash(plane, lifeTime);
+    animatePlane(plane, planeElt, iconElt);
     return planeElt;
 }
 
-function planeCrash(plane, lifeTime){
-    setTimeout(function(){
-                    var planeId = planeNames.indexOf(plane.name);
-                    updateLists(plane, planeId);
-                    screenElt.removeChild(document.getElementById(plane.name));
-                }, lifeTime
+function animatePlane(plane, planeElt, iconElt){
+    var position = plane.route.pointsList[plane.step];
+    planeElt.style.left = position.x + "px";
+    planeElt.style.top = position.y + "px";
+    var anim = plane.route.anims[plane.step]
+    var animTime = flightTime(plane.speed, anim.dist);
+    animText = anim.name + " " + animTime + "ms linear forwards";
+    planeElt.style.animation = animText;
+    iconElt.style.transform = "rotate("+ anim.angle +")";
+    var stepIncrement = setTimeout(
+        function(){
+            plane.step ++;
+            if (plane.step == plane.route.anims.length){
+                planeCrash(plane);
+            } else {
+                animatePlane(plane, planeElt, iconElt);
+            }
+        }, animTime
     );
 }
+
+
 
 function updateLists(plane, planeId){
     var namesList = document.getElementById('flnames');
@@ -162,26 +174,12 @@ function flightDetailsList(plane){
 //return keyframes animation sequence
 //kill out plane after life
 //rotate plane icon
-function animatePlane(plane, planeElt, iconElt){
-    var route = plane.route;
-    var animPosition = [];
-    var delay = 0;
-    route.anims.forEach(function(anim){
-        if (delay != 0) {
-            animPosition += ", ";
-        }
-        var animTime = flightTime(plane.speed, anim.dist);
-        animPosition += anim.name + " " + animTime + "ms linear " + delay + "ms forwards";
-        setTimeout(function(){
-                        iconElt.style.transform = "rotate("+anim.angle+")";
-                    }, delay
-        );
-        delay += animTime;
-        setTimeout(function(){plane.step ++;console.log(plane);}, delay);
 
-    })
-    planeElt.style.animation = animPosition
-    return delay;
+
+function planeCrash(plane){
+    var planeId = planeNames.indexOf(plane.name);
+    updateLists(plane, planeId);
+    screenElt.removeChild(document.getElementById(plane.name));
 }
 
 function flightTime(kts, distPx){
