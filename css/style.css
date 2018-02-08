@@ -47,10 +47,10 @@ body{
     font-size: 2em;
     width : 220px;
     height : 180px;
-    left : 15px;
-    top : 50px;
+    left : 10px;
+    top : 20px;
 }
-.infoBox ul,li{
+ul,li{
     list-style: none;
 }
 .now{
@@ -69,15 +69,22 @@ form{
 }
 
 form p{
-    font-size: 1em;
-    margin : 10px 5px;
+    font-size: 0.9em;
+    margin : 20px 5px;
 }
 
 input, select, option{
-    margin-right : 100px;
-    padding : 4px;
+    margin-right: 80px;
+    padding: 4px;
+    height : 64px;
     background-color: #EEE;
     font-size: 0.8em;
+}
+input[type=text], .namelist{
+    width: 300px;
+}
+input[type=checkbox]{
+    margin-right: 10px;
 }
 
 input[type=number]{
@@ -85,7 +92,32 @@ input[type=number]{
 }
 input[type=submit]{
     background-color: #DDD;
-    border : 1px black solid inset;
+    border: 1px black solid inset;
+}
+input:disabled{
+    background-color: #888;
+}
+#fl{
+    position : relative;
+}
+
+#flnames{
+    left: 220px;
+    top: 278px;
+}
+
+.nameslist{
+    width :
+    display : none;
+    position: absolute;
+    background-color: #EEE;
+    margin: 0;
+    padding: 0;
+}
+
+.nameslist li:hover{
+    background-color: lightblue;
+    cursor: pointer;
 }
 /*Classic route or direct order*/
 @keyframes toBiela {
