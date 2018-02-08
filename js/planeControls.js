@@ -112,7 +112,9 @@ function updateLists(plane, planeId){
         newEntry.addEventListener('click',
                                     function(){
                                         planeSearchInput.value = plane.name;
-                                        newFLInput.value = plane.actualFL;
+                                        if (newFLInput.value == 0){
+                                            newFLInput.value = plane.actualFL;
+                                        }
                                     });
         namesList.appendChild(newEntry);
     } else {
@@ -247,9 +249,20 @@ newFlForm.addEventListener(
 planeSearchInput.addEventListener(
     'click',
     function(event){
+        event.preventDefault();
         event.stopPropagation();
         namesList.style.display = "block";
 });
+
+planeSearchInput.addEventListener(
+    'keyup',
+    function(event){
+        event.preventDefault();
+        event.stopPropagation();
+        console.log(event.key);
+    }
+)
+
 planeSearchInput.addEventListener(
     'focus',
     function(event){
