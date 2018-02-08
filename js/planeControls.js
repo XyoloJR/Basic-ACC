@@ -63,13 +63,11 @@ function goOnAir(event){
 //return a new animated planeElt
 function createPlaneElt(plane){
     var planeId = -1;
-
     updateLists(plane, planeId);
 
     var planeElt = document.createElement('div');
     planeElt.id = plane.name;
     planeElt.setAttribute("class", "plane");
-
 
     var iconElt = document.createElement('div');
     iconElt.setAttribute("class", "planeIcon");
@@ -88,6 +86,7 @@ function animatePlane(plane, planeElt, iconElt){
     var position = plane.route.pointsList[plane.step];
     planeElt.style.left = position.x + "px";
     planeElt.style.top = position.y + "px";
+
     var anim = plane.route.anims[plane.step]
     var animTime = flightTime(plane.speed, anim.dist);
     animText = anim.name + " " + animTime + "ms linear forwards";
@@ -105,8 +104,6 @@ function animatePlane(plane, planeElt, iconElt){
     );
 }
 
-
-
 function updateLists(plane, planeId){
     var namesList = document.getElementById('flnames');
     if (planeId<0){
@@ -115,13 +112,14 @@ function updateLists(plane, planeId){
         flChangeField.removeAttribute("disabled");
         var newEntry = document.createElement('li');
         newEntry.textContent = plane.name;
-        newEntry.addEventListener('click',
-                                    function(){
-                                        getPlaneInput.value = plane.name;
-                                        if (newFLInput.value == 0){
-                                            newFLInput.value = plane.actualFL;
-                                        }
-                                    });
+        newEntry.addEventListener(
+            'click',
+            function(){
+                getPlaneInput.value = plane.name;
+                if (newFLInput.value == 0){
+                newFLInput.value = plane.actualFL;
+            }
+        });
         namesList.appendChild(newEntry);
     } else {
         planeNames.splice(planeId, 1);
