@@ -44,28 +44,28 @@ var newDirectInput = document.getElementById('newdirect');
 var fieldElts = [flChangeField, ctrlChangeField];
 var nextAnim = [];
 
-launchElt.addEventListener('submit', goOnAir);
 //create a Plane and put on screen the corresponding Element
 //from the launch form values
-function goOnAir(event){
-    event.preventDefault();
-    nameGiven = launchElt["name"].value.toUpperCase();
-    if (!(planeNames.indexOf(nameGiven)<0)){
-        dial("!!!---AVION DEJA EN VOL---!!!", "darkred",2000)
-    } else {
-        var plane = new Plane(
-            launchElt["fl"].valueAsNumber,
-            launchElt["fl"].valueAsNumber,
-            ROUTES[launchElt["route"].selectedIndex],
-            launchElt["state"].checked,
-            nameGiven,
-            launchElt["speed"].valueAsNumber,
-        );
-        var planeElt = createPlaneElt(plane, plane.startPoint);
-        screenElt.appendChild(planeElt);
-        dial(plane.name + " on air", "darkgreen", 3000)
-    }
-}
+launchElt.addEventListener(
+    'submit',
+    function (event){
+        event.preventDefault();
+        nameGiven = launchElt["name"].value.toUpperCase();
+        if (!(planeNames.indexOf(nameGiven)<0)){
+            dial("!!!---AVION DEJA EN VOL---!!!", "darkred",2000)
+        } else {
+            var plane = new Plane(
+                launchElt["fl"].valueAsNumber,
+                launchElt["fl"].valueAsNumber,
+                ROUTES[launchElt["route"].selectedIndex],
+                launchElt["state"].checked,
+                nameGiven,
+                launchElt["speed"].valueAsNumber,
+            );
+            screenElt.appendChild(createPlaneElt(plane, plane.startPoint);
+            dial(plane.name + " on air", "darkgreen", 3000)
+        }
+});
 
 //return a new animated planeElt
 function createPlaneElt(plane){
@@ -90,6 +90,7 @@ function createPlaneElt(plane){
     return planeElt;
 }
 
+//animed or killed
 function animatePlane(plane, planeElt, iconElt){
     var position = plane.route.pointsList[plane.step];
     planeElt.style.left = position.x + "px";
@@ -100,7 +101,7 @@ function animatePlane(plane, planeElt, iconElt){
     animText = anim.name + " " + animTime + "ms linear forwards";
     planeElt.style.animation = animText;
     iconElt.style.transform = "rotate("+ anim.angle +")";
-    plane.nextAnim = setTimeout(
+    plane.anim = setTimeout(
         function(){
             plane.step ++;
             if (plane.step == plane.route.anims.length){
@@ -122,13 +123,13 @@ planeOrderForm.addEventListener(
         actualPosition=window.getComputedStyle(planeElt);
         var left = actualPosition.getPropertyValue('left');
         var top = actualPosition.getPropertyValue('top');
-        clearTimeout(plane.nextAnim);
+        clearTimeout(plane.anim);
         planeElt.style.animation = "";
         planeElt.style.left = left;
         planeElt.style.top = top;
     }
-
 );
+
 function updateLists(plane, planeId){
     var flNamesList = document.getElementById('flnames');
     var ctrlNamesList = document.getElementById('ctrlnames');
@@ -215,10 +216,6 @@ function flightDetailsList(plane){
     infosElt.appendChild(exitElt);
     return infosElt;
 }
-//return keyframes animation sequence
-//kill out plane after life
-//rotate plane icon
-
 
 function planeCrash(plane){
     var planeId = planeNames.indexOf(plane.name);
@@ -231,8 +228,6 @@ function flightTime(kts, distPx){
     var timeMs = Math.round(1000 * distPx / VPxPerS);
     return timeMs;
 }
-
-
 
 function dial(message, color, msTime){
     DialogElt.textContent = message;
@@ -271,19 +266,18 @@ newFlForm.addEventListener(
             dial(plane.name + upOrDown + "ing to FL"+ plane.aimedFL, "darkgreen", 4000);
         }
         flElt.lastElementChild.src = getFlIcon(plane.climb);
-        climbId = setInterval(
+        plane.climbId = setInterval(
             function(){
                 plane.actualFL += 5 * plane.climb;
                 flDiff = plane.aimedFL - plane.actualFL;
                 if (flDiff == 0){
-                    clearInterval(climbId);
+                    clearInterval(plane.climbId);
                     plane.climb = 0;
                     flElt.lastElementChild.src = getFlIcon(0);
                 }
                 flElt.firstChild.textContent = plane.actualFL;
             }, 15000);
 });
-
 
 flPlaneInput.addEventListener(
     'click',
@@ -302,7 +296,6 @@ flPlaneInput.addEventListener(
     }
 )
 
-
 ctrlPlaneInput.addEventListener(
     'click',
     function(event){
@@ -311,7 +304,6 @@ ctrlPlaneInput.addEventListener(
         ctrlNamesList.style.display = "block";
     }
 )
-
 
 document.addEventListener(
     'click',
