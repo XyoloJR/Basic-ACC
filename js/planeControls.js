@@ -4,7 +4,7 @@ console.log("timeFactor : x" + timeFactor);
 var NmToPx = 10.84;//conversion factor
 
 //Plane Object constructor
-function Plane(actualFL, aimedFL, route, isState, name, speed){
+function Plane(actualFL, aimedFL, route, isState, name, kts){
     this.actualFL = actualFL;
     this.aimedFL = aimedFL;
     this.exitPoint = route.exit.point;
@@ -16,13 +16,19 @@ function Plane(actualFL, aimedFL, route, isState, name, speed){
     this.isState = isState;
     this.name = name.toUpperCase();
     this.route = route;
-    this.speed = speed;
+    this.kts = kts;
+    this.pxSpeed = kts * NmToPx / 3600;
     this.step = 0;
     this.updateClimb = function(){
         var flDiff = this.aimedFL - this.actualFL;
         this.climb = flDiff == 0 ? 0 : (flDiff)/Math.abs(flDiff);
     }
     this.updateClimb();
+    this.updatePosition = function(){
+        this.x = this.route.pointsList[this.step].x;
+        this.y = this.route.pointsList[this.step].y;
+    }
+    this.updatePosition();
 }
 
 var planesList= [];
@@ -60,9 +66,9 @@ launchElt.addEventListener(
                 ROUTES[launchElt["route"].selectedIndex],
                 launchElt["state"].checked,
                 nameGiven,
-                launchElt["speed"].valueAsNumber,
+                launchElt["kts"].valueAsNumber,
             );
-            screenElt.appendChild(createPlaneElt(plane, plane.startPoint);
+            screenElt.appendChild(createPlaneElt(plane, plane.startPoint));
             dial(plane.name + " on air", "darkgreen", 3000)
         }
 });
@@ -92,12 +98,11 @@ function createPlaneElt(plane){
 
 //animed or killed
 function animatePlane(plane, planeElt, iconElt){
-    var position = plane.route.pointsList[plane.step];
-    planeElt.style.left = position.x + "px";
-    planeElt.style.top = position.y + "px";
+    planeElt.style.left = plane.x + "px";
+    planeElt.style.top = plane.y + "px";
     var anim = plane.route.anims[plane.step]
     plane.heading = anim.heading
-    var animTime = flightTime(plane.speed, anim.dist);
+    var animTime = msFlightTime(plane.pxSpeed, anim.dist);
     animText = anim.name + " " + animTime + "ms linear forwards";
     planeElt.style.animation = animText;
     iconElt.style.transform = "rotate("+ anim.angle +")";
@@ -107,12 +112,16 @@ function animatePlane(plane, planeElt, iconElt){
             if (plane.step == plane.route.anims.length){
                 planeCrash(plane);
             } else {
+                plane.updatePosition();
                 animatePlane(plane, planeElt, iconElt);
             }
         }, animTime
     );
 }
 
+function updatePosition(plane){
+
+}
 planeOrderForm.addEventListener(
     'submit',
     function(event){
@@ -127,6 +136,9 @@ planeOrderForm.addEventListener(
         planeElt.style.animation = "";
         planeElt.style.left = left;
         planeElt.style.top = top;
+        //turn(newHeadInput.valueAsNumber, plane, planeElt);
+        //keyframeName = generateKeyframe(plane.heading,plane.pxSpeed);
+        //plane.anim =
     }
 );
 
@@ -183,7 +195,7 @@ function disenableElts(Elts){
 function flightDetailsList(plane){
     var infosElt = document.createElement('ul');
     var speedElt = document.createElement('li');
-    speedElt.appendChild(document.createTextNode(plane.speed/10));
+    speedElt.appendChild(document.createTextNode(plane.kts/10));
     if (plane.isState){
         var noWNotif = document.createElement('span');
         noWNotif.setAttribute("class", "now");
@@ -211,7 +223,7 @@ function flightDetailsList(plane){
     sector.textContent = plane.exitSector;
     setTimeout(function(){
                     sector.className ="exitSectorOn";
-                }, flightTime(plane.speed, plane.route.halfWay));
+                }, msFlightTime(plane.pxSpeed, plane.route.halfWay));
     exitElt.appendChild(sector);
     infosElt.appendChild(exitElt);
     return infosElt;
@@ -223,10 +235,8 @@ function planeCrash(plane){
     screenElt.removeChild(document.getElementById(plane.name));
 }
 
-function flightTime(kts, distPx){
-    VPxPerS = kts * NmToPx *timeFactor/ 3600;
-    var timeMs = Math.round(1000 * distPx / VPxPerS);
-    return timeMs;
+function msFlightTime(pxPerSec, distPx){
+    return Math.round(1000 * distPx / (pxPerSec * timeFactor));
 }
 
 function dial(message, color, msTime){
