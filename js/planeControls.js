@@ -39,6 +39,7 @@ function Plane(actualFL, aimedFL, route, isState, name, kts){
         this.turn = this.headingAsked - this.heading;
     }
     this.updateClimb();
+    this.warning = false;
 }
 
 var planesList= [];
@@ -96,6 +97,21 @@ function createPlaneElt(plane){
 
     var iconElt = document.createElement('div');
     iconElt.setAttribute("class", "planeIcon");
+    iconElt.addEventListener(
+        'mousedown',
+        function(event){
+            console.log(event.button);
+            event.preventDefault();
+            if (event.button == 1){
+                plane.warning = !plane.warning;
+                if (plane.warning) {
+                    iconElt.style.backgroundImage = "url('../img/warningIcon.png')";
+                } else {
+                    iconElt.style.backgroundImage = "url('../img/planeIcon.png')";
+                }
+            }
+        }
+    );
 
     var infoBox = document.createElement('div');
     infoBox.setAttribute("class", "infoBox");
@@ -116,7 +132,7 @@ function animPlane(plane){
     var animTime = msFlightTime(plane.pxSpeed, anim.dist);
     animText = anim.name + " " + animTime + "ms linear forwards";
     plane.elt.style.animation = animText;
-    plane.icon.style.transform = "rotate("+ anim.angle +")";
+    plane.icon.style.transform = "rotate("+ plane.heading +"deg)";
     plane.anim = setTimeout(
         function(){
             plane.step ++;
@@ -151,7 +167,6 @@ function turn(plane){
     plane.updateTurn();
     console.log(plane);
     if (plane.turn == 0){
-        //goStraight(plane);
         console.log(plane.pos);
         var nextX = Math.round(plane.pos.x + AUTONOMY * Math.cos(plane.radH));
         var nextY = Math.round(plane.pos.y - AUTONOMY * Math.sin(plane.radH));
@@ -222,7 +237,7 @@ function updateLists(plane, planeId){
         newEntryFL.textContent = plane.name;
         newEntryFL.addEventListener(
             'click',
-            function(){
+            function(event){
                 flPlaneInput.value = plane.name;
                 if (newFLInput.value == 0){
                 newFLInput.value = plane.actualFL;
@@ -232,9 +247,10 @@ function updateLists(plane, planeId){
         newEntryCtrl.textContent = plane.name;
         newEntryCtrl.addEventListener(
             'click',
-            function(){
+            function(event){
                 ctrlPlaneInput.value = plane.name;
                 newHeadInput.value = plane.heading;
+                newDirectInput.value = plane.route.pointsList[plane.step+1].name
             }
         )
         flNamesList.appendChild(newEntryFL);
@@ -359,7 +375,6 @@ newFlForm.addEventListener(
 flPlaneInput.addEventListener(
     'click',
     function(event){
-        event.preventDefault();
         event.stopPropagation();
         flNamesList.style.display = "block";
 });
@@ -367,7 +382,6 @@ flPlaneInput.addEventListener(
 flPlaneInput.addEventListener(
     'keyup',
     function(event){
-        event.preventDefault();
         event.stopPropagation();
         console.log(event.key);
     }
@@ -376,15 +390,23 @@ flPlaneInput.addEventListener(
 ctrlPlaneInput.addEventListener(
     'click',
     function(event){
-        event.preventDefault();
         event.stopPropagation();
         ctrlNamesList.style.display = "block";
     }
 )
 
 document.addEventListener(
+    'mousedown',
+    function(event){
+        if (event.button == 1){
+            event.preventDefault();
+        }
+});
+
+document.addEventListener(
     'click',
     function(event){
         ctrlNamesList.style.display = "none";
         flNamesList.style.display = "none";
-});
+    }
+)
