@@ -24,12 +24,18 @@ function Plane(actualFL, aimedFL, route, isState, name, kts){
         this.climb = flDiff == 0 ? 0 : (flDiff)/Math.abs(flDiff);
     }
     this.updatePosition = function(){
-        this.elt.style.left = this.route.pointsList[this.step].x + "px";
-        this.elt.style.top = this.route.pointsList[this.step].y + "px";
+        this.pos = {x:this.route.pointsList[this.step].x,
+                    y:this.route.pointsList[this.step].y};
+        this.elt.style.left = this.pos.x + "px";
+        this.elt.style.top = this.pos.y + "px";
     }
-    this.setPosition = function(x,y){
-        this.elt.style.left = x + "px";
-        this.elt.style.top = y + "px";
+    this.setScreenPos = function(xPx,yPx){
+        this.elt.style.left = xPx ;
+        this.elt.style.top = yPx ;
+    }
+    this.updateTurn = function(){
+        var headDiff = this.headingAsked - this.heading;
+        this.turn = headDiff == 0 ? 0 : (headDiff)/Math.abs(headDiff);
     }
     this.updateClimb();
 }
@@ -98,14 +104,13 @@ function createPlaneElt(plane){
     planeElt.appendChild(infoBox);
     plane.elt = planeElt;
     plane.icon = iconElt;
-    console.log(plane);
 }
 
 //animed or killed
 function animPlane(plane){
     plane.updatePosition();
     var anim = plane.route.anims[plane.step]
-    plane.heading = anim.heading
+    plane.heading = anim.heading;
     var animTime = msFlightTime(plane.pxSpeed, anim.dist);
     animText = anim.name + " " + animTime + "ms linear forwards";
     plane.elt.style.animation = animText;
@@ -116,6 +121,7 @@ function animPlane(plane){
             if (plane.step == plane.route.anims.length){
                 planeCrash(plane);
             } else {
+
                 animPlane(plane);
             }
         }, animTime
@@ -131,17 +137,45 @@ planeOrderForm.addEventListener(
         actualPosition=window.getComputedStyle(plane.elt);
         var left = actualPosition.getPropertyValue('left');
         var top = actualPosition.getPropertyValue('top');
+        plane.setScreenPos(left, top);
         clearTimeout(plane.anim);
         plane.elt.style.animation = "";
-        plane.setPosition(left, top);
-        planeElt.style.left = left;
-        planeElt.style.top = top;
-
-        //turn(newHeadInput.valueAsNumber, plane, planeElt);
+        plane.headingAsked = newHeadInput.valueAsNumber;
+        turn(plane);
         //keyframeName = generateKeyframe(plane.heading,plane.pxSpeed);
         //plane.anim =
     }
 );
+
+function turn(plane){
+    plane.updateTurn();
+    console.log(plane);
+    if (plane.turn == 0){
+        var endPoint={x: plane.pos.x + 500 * Math.sin(plane.heading),
+                    y: plane.pos.y - 500 * Math.cos(plane.heading)};
+        addKeyFrames(plane.name, endPoint);
+        var animTime = msFlightTime(plane.pxSpeed, pxDist(plane.pos, endPoint));
+        console.log(animTime);
+        var animText ="direct"+plane.name + " " + animTime + "ms linear forwards";
+        plane.elt.style.animation = animText
+        console.log(plane.elt.style.animation);
+    }
+    var actualH = plane.heading;
+    //var nextX =
+}
+var styleEl = document.createElement('style'),
+  styleSheet;
+// Append style element to head
+document.head.appendChild(styleEl);
+// Grab style sheet
+styleSheet = styleEl.sheet;
+
+addKeyFrames = function(planeName, point){
+    var keyFramesText = "@keyframes direct"+ planeName +
+                "{100%{left:"+point.x+"px; top:"+point.y+"px;}}";
+    console.log(keyFramesText);
+    styleSheet.insertRule(keyFramesText, styleSheet.cssRules.length);
+}
 
 function updateLists(plane, planeId){
     var flNamesList = document.getElementById('flnames');
