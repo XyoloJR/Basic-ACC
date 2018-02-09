@@ -30,8 +30,10 @@ function Plane(actualFL, aimedFL, route, isState, name, kts){
         this.elt.style.top = this.pos.y + "px";
     }
     this.setScreenPos = function(xPx,yPx){
-        this.elt.style.left = xPx ;
-        this.elt.style.top = yPx ;
+        this.elt.style.left = xPx;
+        this.elt.style.top = yPx;
+        this.x = parseFloat(xPx);
+        this.y = parseFloat(yPx);
     }
     this.updateTurn = function(){
         var headDiff = this.headingAsked - this.heading;
@@ -111,6 +113,7 @@ function animPlane(plane){
     plane.updatePosition();
     var anim = plane.route.anims[plane.step]
     plane.heading = anim.heading;
+    plane.radH = Math.PI * anim.heading / 180;
     var animTime = msFlightTime(plane.pxSpeed, anim.dist);
     animText = anim.name + " " + animTime + "ms linear forwards";
     plane.elt.style.animation = animText;
@@ -151,17 +154,20 @@ function turn(plane){
     plane.updateTurn();
     console.log(plane);
     if (plane.turn == 0){
-        var endPoint={x: plane.pos.x + 500 * Math.sin(plane.heading),
-                    y: plane.pos.y - 500 * Math.cos(plane.heading)};
-        addKeyFrames(plane.name, endPoint);
+        console.log(plane.pos);
+        var nextX = Math.round((plane.pos.x + 500 * Math.sin(plane.radH))*100)/100;
+        var nextY = Math.round((plane.pos.y - 500 * Math.cos(plane.radH))*100)/100;
+        var endPoint={x: nextX, y: nextY};
+        console.log(endPoint);
+        var animName = "direct" + plane.name + " ";
         var animTime = msFlightTime(plane.pxSpeed, pxDist(plane.pos, endPoint));
-        console.log(animTime);
-        var animText ="direct"+plane.name + " " + animTime + "ms linear forwards";
+        addKeyFrames(animName, endPoint);
+        var animText = animName + animTime + "ms linear forwards";
         plane.elt.style.animation = animText
-        console.log(plane.elt.style.animation);
+        console.log(animText);
+    } else{
+
     }
-    var actualH = plane.heading;
-    //var nextX =
 }
 var styleEl = document.createElement('style'),
   styleSheet;
@@ -170,8 +176,8 @@ document.head.appendChild(styleEl);
 // Grab style sheet
 styleSheet = styleEl.sheet;
 
-addKeyFrames = function(planeName, point){
-    var keyFramesText = "@keyframes direct"+ planeName +
+addKeyFrames = function(animName, point){
+    var keyFramesText = "@keyframes "+animName +
                 "{100%{left:"+point.x+"px; top:"+point.y+"px;}}";
     console.log(keyFramesText);
     styleSheet.insertRule(keyFramesText, styleSheet.cssRules.length);
