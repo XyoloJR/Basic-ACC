@@ -3,8 +3,10 @@
 function testRoutes(velocity){
     var flChange = -100;
     ROUTES.forEach(function(route){
-        var plane = new Plane(route.exit.point,route,300,300+flChange,velocity*1000, false);
-        screenElt.appendChild(createPlaneElt(plane, route.startPoint));
+        var plane = new Plane(300, 300+flChange, route, false, route.exit.point, velocity*1000);
+        createPlaneElt(plane);
+        animPlane(plane);
+        screenElt.appendChild(plane.elt);
         flChange +=50;
     });
 }

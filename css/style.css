@@ -103,11 +103,14 @@ input:disabled{
 
 #flnames{
     left: 220px;
-    top: 278px;
+    top: 274px;
+}
+#ctrlnames{
+    left: 370px;
+    top: 324px;
 }
 
 .nameslist{
-    width :
     display : none;
     position: absolute;
     background-color: #EEE;
@@ -123,8 +126,8 @@ input:disabled{
 @keyframes toBiela {
     to{left: 3322px; top: 1045px;}
 }
-@keyframes toBusua {
-    to{left: 2486px; top: 1321px}
+@keyframes toBosua {
+    to{left: 2486px; top: 1321px;}
 }
 @keyframes toCfa{
     to{left: 751px; top: 866px;}
@@ -150,6 +153,9 @@ input:disabled{
 @keyframes toLtp{
     to{left: 1779px; top: 1015px;}
 }
+@keyframes toMajor{
+    to{left:1554px; top: 2093px;}
+}
 @keyframes toMen{
     to{left: 774px; top: 1646px;}
 }
@@ -164,6 +170,9 @@ input:disabled{
 }
 @keyframes toRapid{
     to{left: 2723px; top: 250px;}
+}
+@keyframes toSanto{
+    to{left:2265px; top: 1803px;}
 }
 @keyframes toSpidy {
     to{left: 996px; top: 1814px;}
