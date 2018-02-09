@@ -4,7 +4,9 @@ function testRoutes(velocity){
     var flChange = -100;
     ROUTES.forEach(function(route){
         var plane = new Plane(300, 300+flChange, route, false, route.exit.point, velocity*1000);
-        screenElt.appendChild(createPlaneElt(plane));
+        createPlaneElt(plane);
+        animPlane(plane);
+        screenElt.appendChild(plane.elt);
         flChange +=50;
     });
 }

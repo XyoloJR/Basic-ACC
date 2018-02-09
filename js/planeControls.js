@@ -23,12 +23,15 @@ function Plane(actualFL, aimedFL, route, isState, name, kts){
         var flDiff = this.aimedFL - this.actualFL;
         this.climb = flDiff == 0 ? 0 : (flDiff)/Math.abs(flDiff);
     }
-    this.updateClimb();
     this.updatePosition = function(){
-        this.x = this.route.pointsList[this.step].x;
-        this.y = this.route.pointsList[this.step].y;
+        this.elt.style.left = this.route.pointsList[this.step].x + "px";
+        this.elt.style.top = this.route.pointsList[this.step].y + "px";
     }
-    this.updatePosition();
+    this.setPosition = function(x,y){
+        this.elt.style.left = x + "px";
+        this.elt.style.top = y + "px";
+    }
+    this.updateClimb();
 }
 
 var planesList= [];
@@ -68,7 +71,9 @@ launchElt.addEventListener(
                 nameGiven,
                 launchElt["kts"].valueAsNumber,
             );
-            screenElt.appendChild(createPlaneElt(plane, plane.startPoint));
+            createPlaneElt(plane);
+            animPlane(plane);
+            screenElt.appendChild(plane.elt);
             dial(plane.name + " on air", "darkgreen", 3000)
         }
 });
@@ -91,51 +96,47 @@ function createPlaneElt(plane){
 
     planeElt.appendChild(iconElt);
     planeElt.appendChild(infoBox);
-    console.log(plane.name, "creation ok");
-    animatePlane(plane, planeElt, iconElt);
-    return planeElt;
+    plane.elt = planeElt;
+    plane.icon = iconElt;
+    console.log(plane);
 }
 
 //animed or killed
-function animatePlane(plane, planeElt, iconElt){
-    planeElt.style.left = plane.x + "px";
-    planeElt.style.top = plane.y + "px";
+function animPlane(plane){
+    plane.updatePosition();
     var anim = plane.route.anims[plane.step]
     plane.heading = anim.heading
     var animTime = msFlightTime(plane.pxSpeed, anim.dist);
     animText = anim.name + " " + animTime + "ms linear forwards";
-    planeElt.style.animation = animText;
-    iconElt.style.transform = "rotate("+ anim.angle +")";
+    plane.elt.style.animation = animText;
+    plane.icon.style.transform = "rotate("+ anim.angle +")";
     plane.anim = setTimeout(
         function(){
             plane.step ++;
             if (plane.step == plane.route.anims.length){
                 planeCrash(plane);
             } else {
-                plane.updatePosition();
-                animatePlane(plane, planeElt, iconElt);
+                animPlane(plane);
             }
         }, animTime
     );
 }
 
-function updatePosition(plane){
-
-}
 planeOrderForm.addEventListener(
     'submit',
     function(event){
         event.preventDefault();
         planeName = ctrlPlaneInput.value;
         plane = getPlane(planeName);
-        planeElt = document.getElementById(planeName);
-        actualPosition=window.getComputedStyle(planeElt);
+        actualPosition=window.getComputedStyle(plane.elt);
         var left = actualPosition.getPropertyValue('left');
         var top = actualPosition.getPropertyValue('top');
         clearTimeout(plane.anim);
-        planeElt.style.animation = "";
+        plane.elt.style.animation = "";
+        plane.setPosition(left, top);
         planeElt.style.left = left;
         planeElt.style.top = top;
+
         //turn(newHeadInput.valueAsNumber, plane, planeElt);
         //keyframeName = generateKeyframe(plane.heading,plane.pxSpeed);
         //plane.anim =
