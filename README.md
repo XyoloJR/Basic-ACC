@@ -25,7 +25,10 @@ to give extra practices possibility.
   Developed and tested on firefox 58.x
 
 ## Upcoming features :
-- switch a plane to manual   
-  - change to a direct route  
+- give a direct route  
 - add mesure tool  
 - add velocity vector  
+- Milan departure/arrival
+- possibility to remove a plane
+- minimize info quiting sector
+- display time
