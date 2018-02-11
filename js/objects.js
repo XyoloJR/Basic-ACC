@@ -103,7 +103,7 @@ var UN2 = new Route(
 );
 var UN64EO = new Route(
     "UN64EO",
-    "bottom",
+    "top",
     [{name: "toGrena", dist :pxDist(BIELA, GRENA), heading: 252, angle: "27deg"},
     {name: "toMtl", dist :pxDist(GRENA, MTL), heading: 252, angle: "27deg"},
     {name: "toSpidy", dist :pxDist(MTL, SPIDY), heading: 252, angle: "27deg"},
