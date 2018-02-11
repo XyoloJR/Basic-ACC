@@ -386,9 +386,9 @@ climbTo = function(plane, newFl){
     flElt.lastElementChild.src = getFlIcon(plane.climb);
     plane.climbId = setInterval(
         function(){
-
             plane.actualFL += (plane.climb * 5);
-            flDiff = plane.aimedFL - plane.actualFl;
+            console.log(plane);
+            flDiff = plane.aimedFL - plane.actualFL;
             console.log(flDiff);
             if (flDiff == 0){
                 clearInterval(plane.climbId);
