@@ -47,9 +47,26 @@ body{
     font-size: 2em;
     width : 220px;
     height : 180px;
+
+}
+
+.bottom{
     left : 10px;
     top : 20px;
 }
+.top{
+    left : -100px;
+    top : -300px;
+}
+.left{
+    left : -200px;
+    top :-20px;
+}
+.right{
+    left : 100px;
+    top : -60px;
+}
+
 ul,li{
     list-style: none;
 }

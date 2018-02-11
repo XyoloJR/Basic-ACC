@@ -15,13 +15,34 @@ function Plane(actualFL, aimedFL, route, isState, name, kts){
     } else {
         this.exitSector = route.exit.sector;
     }
+    this.elt;
     this.isState = isState;
     this.name = name.toUpperCase();
+    this.particular = false;
     this.route = route;
     this.kts = kts;
     this.pxSpeed = kts * NmToPx / 3600;
     this.step = 0;
     this.warning = false;
+    this.changeDisplay = function(){
+        var infoBoxClass = this.elt.children[1].classList;
+        console.log(infoBoxClass);
+        var newClass = 'left';
+        switch (infoBoxClass[1]){
+            case 'left':
+                newClass = 'top';
+                break;
+            case 'top':
+                newClass = 'right';
+                break;
+            case 'right':
+                newClass = 'bottom';
+                break;
+            default :;
+
+        }
+        infoBoxClass.replace(infoBoxClass[1], newClass)
+    }
     this.freeze = function(){//returns current coordinates
         var currentStyle=window.getComputedStyle(this.elt);
         var left = currentStyle.getPropertyValue('left');
@@ -122,26 +143,40 @@ function createPlaneElt(plane){
     planeElt.id = plane.name;
     planeElt.setAttribute("class", "plane");
 
+    var infoBox = document.createElement('div');
+    infoBox.classList.add("infoBox", plane.route.defaultDisplay);
+    infoBox.appendChild(flightDetailsList(plane));
+
     var iconElt = document.createElement('div');
-    iconElt.setAttribute("class", "planeIcon");
+    iconElt.classList.add("planeIcon");
     iconElt.addEventListener(
         'mousedown',
         function(event){
             event.preventDefault();
-            if (event.button == 1){
-                plane.warning = !plane.warning;
-                if (plane.warning) {
-                    iconElt.style.backgroundImage = "url('../img/warningIcon.png')";
-                } else {
-                    iconElt.style.backgroundImage = "url('../img/planeIcon.png')";
-                }
+            switch (event.button){
+                case 0 :
+                    plane.changeDisplay();
+                    break;
+                case 1 :
+                    plane.warning = !plane.warning;
+                    if (plane.warning) {
+                        iconElt.style.backgroundImage = "url('../img/warningIcon.png')";
+                    } else { iconElt.style.backgroundImage = "url('../img/planeIcon.png')"};
+                    break;
+                case 2:
+                    plane.particular = !plane.particular;
+                    if (plane.particular) {
+                        iconElt.style.backgroundImage = "url('../img/particularIcon.png')";
+                        infoBox.firstChild.children[1].style.backgroundColor= "#E73";
+                    } else {
+                        iconElt.style.backgroundImage = "url('../img/planeIcon.png')";
+                        infoBox.firstChild.children[1].style.backgroundColor= "transparent";
+                    }
+                    break;
             }
+
         }
     );
-
-    var infoBox = document.createElement('div');
-    infoBox.setAttribute("class", "infoBox");
-    infoBox.appendChild(flightDetailsList(plane));
 
     planeElt.appendChild(iconElt);
     planeElt.appendChild(infoBox);
@@ -404,10 +439,11 @@ ctrlPlaneInput.addEventListener(
 document.addEventListener(
     'mousedown',
     function(event){
-        if (event.button == 1){
+        if (event.button==1){
             event.preventDefault();
         }
 });
+screenElt.addEventListener('contextmenu', event => event.preventDefault());
 
 document.addEventListener(
     'click',
