@@ -212,6 +212,7 @@ planeOrderForm.addEventListener(
                 plane.icon.style.transform = "rotate("+ plane.heading % 90 +"deg)";
             }, turnTime
         );
+        dial(plane.name + " heading to " + plane.headingAsked + "°", "darkgreen", 3000);
     }
 );
 
