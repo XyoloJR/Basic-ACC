@@ -87,7 +87,7 @@ var newHeadInput = document.getElementById('newhead');
 var newDirectInput = document.getElementById('newdirect');
 var fieldElts = [flChangeField, ctrlChangeField];
 var nextAnim = [];
-
+planeOrderForm.reset();
 //create a Plane and put on screen the corresponding Element
 //from the launch form values
 launchElt.addEventListener(
@@ -213,6 +213,7 @@ planeOrderForm.addEventListener(
             }, turnTime
         );
         dial(plane.name + " heading to " + plane.headingAsked + "°", "darkgreen", 3000);
+        planeOrderForm.reset();
     }
 );
 
