@@ -8,7 +8,17 @@ to give extra practices possibility.
 1 Download and unzip folder  
 2 Catch the index.html file to launch the simulation  
 
-##Known issues
+## Impletmented commands
+- With the right panel :
+  - Launch a plane on predefined route
+  - Change a fl level
+  - Change a plane heading
+- Mouse click on plane icon : 
+  - left : change flight details position
+  - right : particularize
+  - middle : put electronical warning
+
+## Known issues
   You may need to zoom out due to hudge size of the radar screen.
   If it's still an issue, try to enlarge your screen resolution.
   
