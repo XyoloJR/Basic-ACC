@@ -8,6 +8,7 @@ var NmToPx = 10.84;//conversion factor
 function Plane(actualFL, aimedFL, route, isState, name, kts){
     this.actualFL = actualFL;
     this.aimedFL = aimedFL;
+    this.animId = 0;
     this.exitPoint = route.exit.point;
     if (route == UM4){
         this.exitSector = "I" + (actualFL > 365 ? 3 : 2);
@@ -20,26 +21,52 @@ function Plane(actualFL, aimedFL, route, isState, name, kts){
     this.kts = kts;
     this.pxSpeed = kts * NmToPx / 3600;
     this.step = 0;
+    this.warning = false;
+    this.freeze = function(){//returns current coordinates
+        var currentStyle=window.getComputedStyle(this.elt);
+        var left = currentStyle.getPropertyValue('left');
+        var top = currentStyle.getPropertyValue('top');
+        clearTimeout(this.anim);
+        this.elt.style.animation = "";
+        this.elt.style.left = left;
+        this.elt.style.top = top;
+        this.pos = {x: parseFloat(left), y: parseFloat(top)};
+    }
     this.updateClimb = function(){
         var flDiff = this.aimedFL - this.actualFL;
         this.climb = flDiff == 0 ? 0 : (flDiff)/Math.abs(flDiff);
     }
+    this.updateClimb();
     this.updatePosition = function(){
         this.pos = {x:this.route.pointsList[this.step].x,
                     y:this.route.pointsList[this.step].y};
         this.elt.style.left = this.pos.x + "px";
         this.elt.style.top = this.pos.y + "px";
     }
+    this.addHeading = function(angle){
+        var newHeading = (this.heading + angle - 1)% 360 + 1
+        this.heading = newHeading > 0 ? newHeading : 360 + newHeading;
+        this.headingRad -= Math.PI * angle / 180;
+    }
+    this.setHeading = function(heading){
+        this.heading = heading;
+        this.headingRad = Math.PI * (90 - heading)/ 180;
+    }
     this.setScreenPos = function(xPx,yPx){
         this.elt.style.left = xPx;
         this.elt.style.top = yPx;
         this.pos = {x: parseFloat(xPx), y: parseFloat(yPx)};
     }
+
     this.updateTurn = function(){
         this.turn = this.headingAsked - this.heading;
     }
-    this.updateClimb();
-    this.warning = false;
+}
+
+getNextPoint = function(position, distance, headingRad){
+    var nextX = Math.round(position.x + distance * Math.cos(headingRad));
+    var nextY = Math.round(position.y - distance * Math.sin(headingRad));
+    return {x: nextX, y: nextY};
 }
 
 var planesList= [];
@@ -100,7 +127,6 @@ function createPlaneElt(plane){
     iconElt.addEventListener(
         'mousedown',
         function(event){
-            console.log(event.button);
             event.preventDefault();
             if (event.button == 1){
                 plane.warning = !plane.warning;
@@ -123,16 +149,17 @@ function createPlaneElt(plane){
     plane.icon = iconElt;
 }
 
+
+
 //animed or killed
 function animPlane(plane){
     plane.updatePosition();
     var anim = plane.route.anims[plane.step]
-    plane.heading = anim.heading;
-    plane.radH = Math.PI * (90 - anim.heading)/ 180;
+    plane.setHeading(anim.heading);
     var animTime = msFlightTime(plane.pxSpeed, anim.dist);
     animText = anim.name + " " + animTime + "ms linear forwards";
     plane.elt.style.animation = animText;
-    plane.icon.style.transform = "rotate("+ plane.heading +"deg)";
+    plane.icon.style.transform = "rotate("+ anim.heading +"deg)";
     plane.anim = setTimeout(
         function(){
             plane.step ++;
@@ -149,67 +176,46 @@ planeOrderForm.addEventListener(
     'submit',
     function(event){
         event.preventDefault();
-        plane = getPlane(ctrlPlaneInput.value);
-        actualPosition=window.getComputedStyle(plane.elt);
-        var left = actualPosition.getPropertyValue('left');
-        var top = actualPosition.getPropertyValue('top');
-        console.log(left, top);
-        plane.setScreenPos(left, top);
-        clearTimeout(plane.anim);
-        plane.elt.style.animation = "";
+        var plane = getPlane(ctrlPlaneInput.value);
+        plane.freeze();
         plane.headingAsked = newHeadInput.valueAsNumber;
-        console.log(plane.pos);
-        turn(plane);
+        var headingDiff = (plane.headingAsked - plane.heading);
+        var turnTime = 0;
+        var animTurnText="";
+        var endTurnPoint = plane.pos;
+        if (headingDiff != 0){
+            var turnAngle = Math.abs(headingDiff);
+            if (turnAngle > 180){
+                headingDiff = Math.sign(headingDiff) * (turnAngle - 360);
+                turnAngle = Math.abs(headingDiff);
+            }
+            var turnTime = Math.round(1000 * turnAngle / 3);
+            var halfRadDiff = headingDiff * Math.PI/360;
+            var chord = 2 * (plane.pxSpeed * 60 / Math.PI) * Math.abs(Math.sin(halfRadDiff));
+            plane.addHeading(headingDiff/2);
+            endTurnPoint = getNextPoint(plane.pos, chord, plane.headingRad);
+            var animTurnName = "turn" + plane.animId + plane.name + " ";
+            addKeyFrames(animTurnName, endTurnPoint);
+            animTurnText = animTurnName + turnTime + "ms linear forwards, ";
+            plane.icon.style.transform = "rotate("+ plane.heading % 90 +"deg)";
+        }
+        plane.addHeading(headingDiff/2);
+        var finalPoint = getNextPoint(endTurnPoint, AUTONOMY, plane.headingRad);
+        var animName = "direct" + plane.animId + plane.name + " ";
+        var animTime = msFlightTime(plane.pxSpeed, pxDist(endTurnPoint, finalPoint));
+        addKeyFrames(animName, finalPoint);
+        animTurnText += animName + animTime + "ms linear "+ turnTime +"ms forwards";
+        plane.elt.style.animation = animTurnText;
+        plane.animId +=1;
+        plane.anim = setTimeout(
+            function(){
+                plane.icon.style.transform = "rotate("+ plane.heading % 90 +"deg)";
+            }, turnTime
+        );
     }
 );
 
-function turn(plane){
-    plane.updateTurn();
-    console.log(plane);
-    if (plane.turn == 0){
-        console.log(plane.pos);
-        var nextX = Math.round(plane.pos.x + AUTONOMY * Math.cos(plane.radH));
-        var nextY = Math.round(plane.pos.y - AUTONOMY * Math.sin(plane.radH));
-        var endPoint={x: nextX, y: nextY};
-        console.log(endPoint);
-        var animName = "direct" + plane.name + " ";
-        var animTime = msFlightTime(plane.pxSpeed, pxDist(plane.pos, endPoint));
-        addKeyFrames(animName, endPoint);
-        var animText = animName + animTime + "ms linear forwards";
-        plane.elt.style.animation = animText
-        console.log(animText);
-    } else {
-        console.log(plane.pos);
-        console.log("cap actuel", plane.radH);
-        var curveAngle = plane.headingAsked - plane.heading;
-        console.log("variation de cap", curveAngle);
-        var halfRadDiff = curveAngle * Math.PI/360;
-        console.log("demi angle radian", halfRadDiff);
-        var curveRay = plane.pxSpeed * 60 / Math.PI;
-        console.log("rayon de courbue", curveRay);
-        var chord = 2 * curveRay * Math.abs(Math.sin(halfRadDiff));
-        console.log("taille de la corde", chord);
-        plane.radH -= halfRadDiff;
-        console.log("cap artificiel de virage", plane.radH);
-        var nextX = Math.round(plane.pos.x + chord * Math.cos(plane.radH));
-        var nextY = Math.round(plane.pos.y - chord * Math.sin(plane.radH));
-        var endTurnPoint={x: nextX, y: nextY};
-        var animTurnName = "turn" + plane.name + " ";
-        addKeyFrames(animTurnName, endTurnPoint);
-        console.log(endTurnPoint);
-        var arcSize = 2 * curveRay * Math.abs(halfRadDiff)
-        var animTime = msFlightTime(plane.pxSpeed, arcSize);
-        var animText = animTurnName + animTime + "ms linear forwards";
-        plane.elt.style.animation = animText
-        setTimeout(function(){
-            plane.heading = plane.headingAsked;
-            plane.radH -= halfRadDiff;
-            plane.setScreenPos(endTurnPoint.x + "px", endTurnPoint.y + "px");
-            turn(plane);
-        },animTime);
-        console.log(animText);
-    }
-}
+
 var styleEl = document.createElement('style'),
   styleSheet;
 // Append style element to head
@@ -220,7 +226,6 @@ styleSheet = styleEl.sheet;
 addKeyFrames = function(animName, point){
     var keyFramesText = "@keyframes "+animName +
                 "{100%{left:"+point.x+"px; top:"+point.y+"px;}}";
-    console.log(keyFramesText);
     styleSheet.insertRule(keyFramesText, styleSheet.cssRules.length);
 }
 
@@ -383,7 +388,6 @@ flPlaneInput.addEventListener(
     'keyup',
     function(event){
         event.stopPropagation();
-        console.log(event.key);
     }
 )
 
