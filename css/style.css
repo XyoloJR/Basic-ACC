@@ -30,6 +30,7 @@ body{
     overflow : visible;
     position : absolute;
 }
+
 .planeIcon{
     background-image : url('../img/planeIcon.png');
     position : relative;
@@ -47,7 +48,6 @@ body{
     font-size: 2em;
     width : 220px;
     height : 180px;
-
 }
 
 .bottom{
@@ -120,7 +120,7 @@ input:disabled{
 
 #flnames{
     left: 220px;
-    top: 274px;
+    top: 180px;
 }
 #ctrlnames{
     left: 370px;

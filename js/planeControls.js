@@ -24,6 +24,7 @@ function Plane(actualFL, aimedFL, route, isState, name, kts){
     this.pxSpeed = kts * NmToPx / 3600;
     this.step = 0;
     this.warning = false;
+
     this.changeDisplay = function(){
         var infoBoxClass = this.elt.children[1].classList;
         var newClass = 'left';
@@ -40,6 +41,7 @@ function Plane(actualFL, aimedFL, route, isState, name, kts){
         }
         infoBoxClass.replace(infoBoxClass[1], newClass)
     }
+
     this.freeze = function(){//returns current coordinates
         var currentStyle=window.getComputedStyle(this.elt);
         var left = currentStyle.getPropertyValue('left');
@@ -50,11 +52,13 @@ function Plane(actualFL, aimedFL, route, isState, name, kts){
         this.elt.style.top = top;
         this.pos = {x: parseFloat(left), y: parseFloat(top)};
     }
+
     this.updateClimb = function(){
         var flDiff = this.aimedFL - this.actualFL;
         this.climb = flDiff == 0 ? 0 : (flDiff)/Math.abs(flDiff);
     }
     this.updateClimb();
+
     this.updatePosition = function(){
         this.pos = {x:this.route.pointsList[this.step].x,
                     y:this.route.pointsList[this.step].y};
@@ -93,13 +97,19 @@ var screenElt = document.getElementById('mainScreen');
 var DialogElt = document.getElementById('dialogBox');
 
 
+var newFlForm = document.forms.fl;
+var flChangeField = newFlForm.firstElementChild;
+var newFLInput = newFlForm.newfl;
+var flPlaneInput = newFlForm.planeName;
+
+
 var planeOrderForm = document.forms.heading;
 var ctrlChangeField = planeOrderForm.firstElementChild;
 var ctrlPlaneInput = document.getElementById('ctrlplane');
 var ctrlNamesList = document.getElementById('ctrlnames');
 var newHeadInput = document.getElementById('newhead');
-
 var newDirectInput = document.getElementById('newdirect');
+var fieldElts = [flChangeField, ctrlChangeField];
 
 var nextAnim = [];
 planeOrderForm.reset();
@@ -116,8 +126,8 @@ launchElt.addEventListener(
             dial("!!!---AVION DEJA EN VOL---!!!", "darkred",2000)
         } else {
             var plane = new Plane(
-                launchElt["fl"].valueAsNumber,
-                launchElt["fl"].valueAsNumber,
+                launchElt.fl.valueAsNumber,
+                launchElt.fl.valueAsNumber,
                 ROUTES[launchElt["route"].selectedIndex],
                 launchElt["state"].checked,
                 nameGiven,
@@ -139,9 +149,7 @@ function createPlaneElt(plane){
     planeElt.id = plane.name;
     planeElt.setAttribute("class", "plane");
 
-    var infoBox = document.createElement('div');
-    infoBox.classList.add("infoBox", plane.route.defaultDisplay);
-    infoBox.appendChild(flightDetailsList(plane));
+
 
     var iconElt = document.createElement('div');
     iconElt.classList.add("planeIcon");
@@ -159,20 +167,12 @@ function createPlaneElt(plane){
                         iconElt.style.backgroundImage = "url('../img/warningIcon.png')";
                     } else { iconElt.style.backgroundImage = "url('../img/planeIcon.png')"};
                     break;
-                case 2:
-                    plane.particular = !plane.particular;
-                    if (plane.particular) {
-                        iconElt.style.backgroundImage = "url('../img/particularIcon.png')";
-                        infoBox.firstChild.children[1].style.backgroundColor= "#E53";
-                    } else {
-                        iconElt.style.backgroundImage = "url('../img/planeIcon.png')";
-                        infoBox.firstChild.children[1].style.backgroundColor= "transparent";
-                    }
-                    break;
             }
-
         }
     );
+    var infoBox = document.createElement('div');
+    infoBox.classList.add("infoBox", plane.route.defaultDisplay);
+    infoBox.appendChild(flightDetailsList(plane));
 
     planeElt.appendChild(iconElt);
     planeElt.appendChild(infoBox);
@@ -180,7 +180,61 @@ function createPlaneElt(plane){
     plane.icon = iconElt;
 }
 
+//return displayed infos of a plane as ListeElement
+function flightDetailsList(plane){
+    var infosElt = document.createElement('ul');
+    var speedElt = document.createElement('li');
+    speedElt.appendChild(document.createTextNode(plane.kts/10));
+    if (plane.isState){
+        var noWNotif = document.createElement('span');
+        noWNotif.setAttribute("class", "now");
+        noWNotif.textContent = " noW";
+        speedElt.appendChild(noWNotif);
+    }
+    infosElt.appendChild(speedElt);
 
+    var nameElt = document.createElement('li');
+    nameElt.appendChild(document.createTextNode(plane.name));
+    nameElt.addEventListener(
+        'mousedown',
+        function(event){
+            event.preventDefault();
+            if (event.button == 1){
+                iconStyle = plane.elt.firstChild.style;
+                callsignStyle = plane.elt.lastChild.firstChild.children[1].style;
+                plane.particular = !plane.particular;
+                if (plane.particular) {
+                    iconStyle.backgroundImage = "url('../img/particularIcon.png')";
+                    callsignStyle.backgroundColor= "#E53";
+                } else {
+                    iconStyle.backgroundImage = "url('../img/planeIcon.png')";
+                    callsignStyle.backgroundColor= "transparent";
+                }
+            }
+    });
+    infosElt.appendChild(nameElt);
+
+    var flElt = document.createElement('li');
+    flElt.id = plane.name + "fl";
+    flElt.appendChild(document.createTextNode(plane.actualFL));
+    var flIcon = document.createElement('img');
+    flIcon.src = getFlIcon(plane.climb);
+    flElt.appendChild(flIcon);
+    infosElt.appendChild(flElt);
+
+    var exitElt = document.createElement('li');
+    exitElt.appendChild(document.createTextNode(plane.exitPoint +" "));
+    var sector = document.createElement('span');
+    sector.className = "exitSectorOff";
+    sector.textContent = plane.exitSector;
+    setTimeout(function(){
+                    sector.className ="exitSectorOn";
+                }, msFlightTime(plane.pxSpeed, plane.route.halfWay));
+    exitElt.appendChild(sector);
+    infosElt.appendChild(exitElt);
+
+    return infosElt;
+}
 
 //animed or killed
 function animPlane(plane){
@@ -191,6 +245,7 @@ function animPlane(plane){
     animText = anim.name + " " + animTime + "ms linear forwards";
     plane.elt.style.animation = animText;
     plane.icon.style.transform = "rotate("+ anim.heading +"deg)";
+
     plane.anim = setTimeout(
         function(){
             plane.step ++;
@@ -237,7 +292,7 @@ planeOrderForm.headingConfirm.addEventListener(
         addKeyFrames(animName, finalPoint);
         animTurnText += animName + animTime + "ms linear "+ turnTime +"ms forwards";
         plane.elt.style.animation = animTurnText;
-        plane.animId +=1;
+        plane.animId ++;
         plane.anim = setTimeout(
             function(){
                 plane.icon.style.transform = "rotate("+ plane.heading % 90 +"deg)";
@@ -245,9 +300,20 @@ planeOrderForm.headingConfirm.addEventListener(
         );
         dial(plane.name + " heading to " + plane.headingAsked + "°", "darkgreen", 3000);
         planeOrderForm.reset();
+        planeOrderForm.headingConfirm.setAttribute("disabled", "disabled");
+        planeOrderForm.directConfirm.setAttribute("disabled", "disabled");
     }
 );
 
+planeOrderForm.directConfirm.addEventListener(
+    'click',
+    function(event){
+        event.preventDefault();
+        var plane = getPlane(ctrlPlaneInput.value);
+        plane.freeze();
+
+    }
+);
 
 var styleEl = document.createElement('style'),
   styleSheet;
@@ -264,43 +330,7 @@ addKeyFrames = function(animName, point){
 
 
 
-//return displayed infos of a plane as ListeElement
-function flightDetailsList(plane){
-    var infosElt = document.createElement('ul');
-    var speedElt = document.createElement('li');
-    speedElt.appendChild(document.createTextNode(plane.kts/10));
-    if (plane.isState){
-        var noWNotif = document.createElement('span');
-        noWNotif.setAttribute("class", "now");
-        noWNotif.textContent = " noW";
-        speedElt.appendChild(noWNotif);
-    }
-    infosElt.appendChild(speedElt);
 
-    var nameElt = document.createElement('li');
-    nameElt.appendChild(document.createTextNode(plane.name));
-    infosElt.appendChild(nameElt);
-
-    var flElt = document.createElement('li');
-    flElt.id = plane.name + "fl";
-    flElt.appendChild(document.createTextNode(plane.actualFL));
-    var flIcon = document.createElement('img');
-    flIcon.src = getFlIcon(plane.climb);
-    flElt.appendChild(flIcon);
-    infosElt.appendChild(flElt);
-
-    var exitElt = document.createElement('li');
-    exitElt.appendChild(document.createTextNode(plane.exitPoint +" "));
-    var sector = document.createElement('span');
-    sector.className = "exitSectorOff";
-    sector.textContent = plane.exitSector;
-    setTimeout(function(){
-                    sector.className ="exitSectorOn";
-                }, msFlightTime(plane.pxSpeed, plane.route.halfWay));
-    exitElt.appendChild(sector);
-    infosElt.appendChild(exitElt);
-    return infosElt;
-}
 
 function planeCrash(plane){
     var planeId = planeNames.indexOf(plane.name);
@@ -336,41 +366,44 @@ function getFlIcon(climb){
     }
 }
 
-var newFlForm = document.forms.fl;
-var flChangeField = newFlForm.firstElementChild;
-var newFLInput = newFlForm.fl;
-var flPlaneInput = newFlForm.planeName;
-var fieldElts = [flChangeField, ctrlChangeField];
 newFlForm.addEventListener(
     'submit',
     function(event){
         event.preventDefault();
-        var plane = getPlane(flPlaneInput.value);
-        var flElt = document.getElementById(plane.name +"fl");
-        plane.aimedFL = newFLInput.valueAsNumber;
-        plane.updateClimb();
-        if (plane.climb !=0) {
-            var upOrDown = plane.climb > 0 ? " climb" : " descend";
-            dial(plane.name + upOrDown + "ing to FL"+ plane.aimedFL, "darkgreen", 4000);
-        }
-        flElt.lastElementChild.src = getFlIcon(plane.climb);
-        plane.climbId = setInterval(
-            function(){
-                plane.actualFL += 5 * plane.climb;
-                if (plane.climb < 0 && plane.actualFL < 285){
-                    plane.elt.style.display = "none";
-                } else {
-                    flDiff = plane.aimedFL - plane.actualFL;
-                    if (flDiff == 0){
-                        clearInterval(plane.climbId);
-                        plane.climb = 0;
-                        flElt.lastElementChild.src = getFlIcon(0);
-                    }
-                    flElt.firstChild.textContent = plane.actualFL;
-                }
-            }, 15000);
-    newFlForm.reset();
+        climbTo(getPlane(flPlaneInput.value), newFLInput.valueAsNumber);
+        newFlForm.reset();
 });
+
+climbTo = function(plane, newFl){
+    plane.aimedFL = newFl;
+    var flElt = document.getElementById(plane.name + "fl");
+    var flDiff = plane.aimedFL - plane.actualFL;
+    plane.climb = flDiff == 0 ? 0 : flDiff/Math.abs(flDiff);
+    if (plane.climb !=0) {
+        var upOrDown = plane.climb > 0 ? " climb" : " descend";
+        dial(plane.name + upOrDown + "ing to FL"+ plane.aimedFL, "darkgreen", 4000);
+    }
+    flElt.lastElementChild.src = getFlIcon(plane.climb);
+    plane.climbId = setInterval(
+        function(){
+
+            plane.actualFL += (plane.climb * 5);
+            flDiff = plane.aimedFL - plane.actualFl;
+            console.log(flDiff);
+            if (flDiff == 0){
+                clearInterval(plane.climbId);
+                flElt.lastElementChild.src = getFlIcon(0);
+            }
+            flElt.firstChild.textContent = plane.actualFL;
+            if (plane.climb < 0 && plane.actualFL < 285){
+                plane.elt.style.display = "none";
+            } else if (plane.actualfl == 285 && climb > 0){
+                    plane.elt.style.display = "block";
+            }
+
+
+        }, 15000);
+}
 
 var flNamesList = flChangeField.children['flnames'];
 flPlaneInput.addEventListener(
@@ -437,6 +470,8 @@ function updateLists(plane, planeId){
                 ctrlPlaneInput.value = plane.name;
                 newHeadInput.value = plane.heading;
                 newDirectInput.value = plane.route.pointsList[plane.step+1].name
+                planeOrderForm.headingConfirm.removeAttribute("disabled");
+                planeOrderForm.directConfirm.removeAttribute("disabled");
             }
         )
         flNamesList.appendChild(newEntryFL);
