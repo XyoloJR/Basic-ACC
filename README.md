@@ -13,10 +13,11 @@ to give extra practices possibility.
   - Launch a plane on predefined route
   - Change a fl level
   - Change a plane heading
+  - Give a direct route to a predefined point
 - Mouse click on plane icon : 
   - left : change flight details position
-  - right : particularize
   - middle : put electronical warning
+- Middle mouse button click on a callsign to particularize
 
 ## Known issues
   You may need to zoom out due to hudge size of the radar screen.
@@ -25,7 +26,6 @@ to give extra practices possibility.
   Developed and tested on firefox 58.x
 
 ## Upcoming features :
-- give a direct route  
 - add mesure tool  
 - add velocity vector  
 - Milan departure/arrival
