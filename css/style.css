@@ -117,7 +117,6 @@ input:disabled{
 #fl{
     position : relative;
 }
-
 #flnames{
     left: 220px;
     top: 180px;
@@ -126,7 +125,9 @@ input:disabled{
     left: 370px;
     top: 324px;
 }
-
+#newdirect:disabled{
+    background-color: #BBB;
+}
 .nameslist{
     display : none;
     position: absolute;

@@ -1,29 +1,13 @@
-var PLANE_SIZE = 15;//half icon size
-var timeFactor = 1;//possibility to speed up or down
-var AUTONOMY = 2000
-console.log("timeFactor : x" + timeFactor);
-var NmToPx = 10.84;//conversion factor
-
-//Plane Object constructor
-
-
-getNextPoint = function(position, distance, headingRad){
-    var nextX = Math.round(position.x + distance * Math.cos(headingRad));
-    var nextY = Math.round(position.y - distance * Math.sin(headingRad));
-    return {x: nextX, y: nextY};
-}
 
 var planesList= [];
 var planeNames= [];
 var screenElt = document.getElementById('mainScreen');
 var DialogElt = document.getElementById('dialogBox');
 
-
 var newFlForm = document.forms.fl;
 var flChangeField = newFlForm.firstElementChild;
 var newFLInput = newFlForm.newfl;
 var flPlaneInput = newFlForm.planeName;
-
 
 var planeOrderForm = document.forms.heading;
 var ctrlChangeField = planeOrderForm.firstElementChild;
@@ -33,13 +17,15 @@ var newHeadInput = document.getElementById('newhead');
 var newDirectInput = document.getElementById('newdirect');
 var fieldElts = [flChangeField, ctrlChangeField];
 
-var nextAnim = [];
+var launchForm = document.forms.launch;
+
 planeOrderForm.reset();
+newFlForm.reset();
+launchForm.reset();
 
 //create a Plane and put on screen the corresponding Element
 //from the launch form values
-var launchElt = document.forms.launch;
-launchElt.addEventListener(
+launchForm.addEventListener(
     'submit',
     function (event){
         event.preventDefault();
@@ -63,47 +49,15 @@ launchElt.addEventListener(
         }
 });
 
+
 planeOrderForm.headingConfirm.addEventListener(
     'click',
     function(event){
         event.preventDefault();
         var plane = getPlane(ctrlPlaneInput.value);
         plane.freeze();
-        plane.headingAsked = newHeadInput.valueAsNumber;
-        var headingDiff = (plane.headingAsked - plane.heading);
-        var turnTime = 0;
-        var animTurnText="";
-        var endTurnPoint = plane.pos;
-        if (headingDiff != 0){
-            var turnAngle = Math.abs(headingDiff);
-            if (turnAngle > 180){
-                headingDiff = Math.sign(headingDiff) * (turnAngle - 360);
-                turnAngle = Math.abs(headingDiff);
-            }
-            var turnTime = Math.round(1000 * turnAngle / 3);
-            var halfRadDiff = headingDiff * Math.PI/360;
-            var chord = 2 * (plane.pxSpeed * 60 / Math.PI) * Math.abs(Math.sin(halfRadDiff));
-            plane.addHeading(headingDiff/2);
-            endTurnPoint = getNextPoint(plane.pos, chord, plane.headingRad);
-            var animTurnName = "turn" + plane.animId + plane.name + " ";
-            addKeyFrames(animTurnName, endTurnPoint);
-            animTurnText = animTurnName + turnTime + "ms linear forwards, ";
-            plane.icon.style.transform = "rotate("+ plane.heading % 90 +"deg)";
-        }
-        plane.addHeading(headingDiff/2);
-        var finalPoint = getNextPoint(endTurnPoint, AUTONOMY, plane.headingRad);
-        var animName = "direct" + plane.animId + plane.name + " ";
-        var animTime = msFlightTime(plane.pxSpeed, pxDist(endTurnPoint, finalPoint));
-        addKeyFrames(animName, finalPoint);
-        animTurnText += animName + animTime + "ms linear "+ turnTime +"ms forwards";
-        plane.elt.style.animation = animTurnText;
-        plane.animId ++;
-        plane.anim = setTimeout(
-            function(){
-                plane.icon.style.transform = "rotate("+ plane.heading % 90 +"deg)";
-            }, turnTime
-        );
-        dial(plane.name + " heading to " + plane.headingAsked + "°", "darkgreen", 3000);
+        turnTo(plane, newHeadInput.valueAsNumber);
+        dial(plane.name + " heading to " + newHeadInput.valueAsNumber + "°", "darkgreen", 3000);
         planeOrderForm.reset();
         planeOrderForm.headingConfirm.setAttribute("disabled", "disabled");
         planeOrderForm.directConfirm.setAttribute("disabled", "disabled");
@@ -115,31 +69,13 @@ planeOrderForm.directConfirm.addEventListener(
     function(event){
         event.preventDefault();
         var plane = getPlane(ctrlPlaneInput.value);
-        plane.freeze();
-
+        if (!plane.autopilot){
+            plane.freeze();
+            animPlane(plane);
+        }
+        dial(plane.name + " resume its route to "+ ctrlPlaneInput.value, "darkgreen", 3000);
     }
 );
-
-var styleEl = document.createElement('style'),
-  styleSheet;
-// Append style element to head
-document.head.appendChild(styleEl);
-// Grab style sheet
-styleSheet = styleEl.sheet;
-
-addKeyFrames = function(animName, point){
-    var keyFramesText = "@keyframes "+animName +
-                "{100%{left:"+point.x+"px; top:"+point.y+"px;}}";
-    styleSheet.insertRule(keyFramesText, styleSheet.cssRules.length);
-}
-
-
-
-
-
-
-
-
 
 function dial(message, color, msTime){
     DialogElt.textContent = message;
