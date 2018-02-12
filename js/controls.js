@@ -2,6 +2,8 @@
 var planesList= [];
 var planeNames= [];
 var screenElt = document.getElementById('mainScreen');
+var vectorButton = screenElt.firstElementChild;
+
 var DialogElt = document.getElementById('dialogBox');
 
 var newFlForm = document.forms.fl;
@@ -55,6 +57,44 @@ launchForm.addEventListener(
             dial(plane.name + " on air", "darkgreen", 3000)
         }
 });
+var vectorsDisplayed = false;
+vectorButton.addEventListener("click", function(){
+    if (vectorsDisplayed) {
+        planesList.forEach(removeVector);
+    } else {
+        planesList.forEach(displayVector);
+    }
+    vectorsDisplayed = !vectorsDisplayed;
+});
+
+removeVector = function(plane){
+    var vectElt = document.getElementById(plane.name + "vect");
+    plane.elt.removeChild(vectElt);
+}
+
+displayVector = function(plane){
+    console.log(plane);
+    var endLine = getNextPoint({x:0,y:0}, plane.pxSpeed * 180, plane.headingRad);
+    var width = Math.abs(endLine.x);
+    var height = Math.abs(endLine.y);
+    var vectorDiv = document.createElement("div");
+
+    vectorDiv.id = plane.name + 'vect';
+    vectorDiv.className= 'vector';
+    console.log(endLine);
+    var vector = document.createElement("canvas");
+    var context = vector.getContext("2d");
+    vector.setAttribute("width", width + "px");
+    vector.setAttribute("height", height + "px");
+    context.strokeStyle = "#FFFFFF";
+    context.lineWidth = 5;
+    context.moveTo(0,0);
+    context.lineTo(width, height);
+    context.stroke();
+    console.log(vector);
+    vectorDiv.appendChild(vector);
+    plane.elt.insertBefore(vectorDiv, plane.elt.children[1]);
+}
 
 
 planeOrderForm.headingConfirm.addEventListener(
@@ -64,8 +104,8 @@ planeOrderForm.headingConfirm.addEventListener(
         var plane = getPlane(ctrlPlaneInput.value);
         if (plane.heading != newHeadInput.valueAsNumber){
             plane.freeze();
-            turnTo(plane, newHeadInput.valueAsNumber);
-            dial(plane.name + " heading to " + newHeadInput.valueAsNumber + "°", "darkgreen", 3000);
+            message = turnTo(plane, newHeadInput.valueAsNumber);
+            dial(message, "darkgreen", 3000);
             nextPointsList.innerHTML = "";
             planeOrderForm.reset();
             headingField = event.target.parentElement;

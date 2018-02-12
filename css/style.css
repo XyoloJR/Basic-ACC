@@ -10,6 +10,11 @@ body{
     width : 3332px;
     height : 2562px;
 }
+.leftbutton{
+    width : 100px;
+    height : 50px;
+    font-size : 1em;
+}
 #controls{
     display : inline-block;
     position : absolute;
@@ -25,12 +30,20 @@ body{
     text-align: center;
     font-size: 1.5em;
 }
-
+svg{
+    overflow : hidden;
+}
 .plane{
     overflow : visible;
     position : absolute;
+    margin: 0;
 }
-
+.vector{
+    position : relative;
+    left : 0px;
+    top : -31px;
+    z-index: 0.3;
+}
 .planeIcon{
     background-image : url('../img/planeIcon.png');
     position : relative;
@@ -39,12 +52,14 @@ body{
     left : -15px;
     top : -15px;
 }
+
+
 .infoBox{
     font-family: sans-serif;
     margin : 0;
     padding: 0;
     color : white;
-    position : relative;
+    position : absolute;
     font-size: 2em;
     width : 220px;
     height : 180px;
@@ -133,6 +148,9 @@ input:disabled{
     left : 70px;
     top : 548px;
     z-index: 2;
+}
+line{
+    color: white;
 }
 
 .nameslist{

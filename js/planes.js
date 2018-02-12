@@ -42,6 +42,12 @@ function Plane(actualFL, aimedFL, route, isState, name, kts){
         }
         infoBoxClass.replace(infoBoxClass[1], newClass)
     }
+    this.getPosition = function(){
+        var currentStyle=window.getComputedStyle(this.elt);
+        var left = currentStyle.getPropertyValue('left');
+        var top = currentStyle.getPropertyValue('top');
+        return {x: parseFloat(left), y: parseFloat(top)};
+    }
 
     this.freeze = function(){//returns current coordinates
         var currentStyle=window.getComputedStyle(this.elt);
@@ -80,7 +86,6 @@ function Plane(actualFL, aimedFL, route, isState, name, kts){
         this.elt.style.top = yPx;
         this.pos = {x: parseFloat(xPx), y: parseFloat(yPx)};
     }
-
     this.updateTurn = function(){
         this.turn = this.headingAsked - this.heading;
     }
@@ -196,6 +201,7 @@ turnTo = function(plane, newHeading) {
             plane.icon.style.transform = "rotate("+ plane.heading % 90 +"deg)";
         }, turnTime
     );
+    return plane.name + " heading to " + newHeading + "°";
 }
 
 getNextPoint = function(position, distance, headingRad){
