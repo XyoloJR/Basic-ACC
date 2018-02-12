@@ -14,20 +14,22 @@
                 <form id='heading'>
                     <fieldset disabled="disabled">
                         <legend>Orders available</legend>
-                        <p>Callsing : <input id='ctrlplane' type="text" name="planeName" value="" autocomplete="off" required></p>
-                        <ul id='ctrlnames' class='nameslist'></ul>
-                        <hr>
                         <p>
-                            Change heading to :
+                            Callsing :
+                            <input id='ctrlplane' type="text" name="planeName" value="" autocomplete="off" required>
+                            <ul id='ctrlnames' class='nameslist'></ul>
+                        </p>
+                        <fieldset class ='planeorder' disabled>
+                            <legend>Change heading to :</legend>
                             <input id='newhead' type="number" name="heading" min="0" max="360" value="">
-                            <input type="submit" name="headingConfirm" value="Confirmed" disabled>
-                        </p>
-                        <hr>
-                        <p>
-                            Direct to :
-                            <input id='newdirect' type="text" name="direct" value="" disabled>
-                            <input type="submit" name="directConfirm" value="Confirmed" disabled>
-                        </p>
+                            <input type="submit" name="headingConfirm" value="Confirmed">
+                        </fieldset>
+                        <fieldset class='planeorder' disabled>
+                            <legend>Direct to : </legend>
+                            <input id='newdirect' type="text" name="direct" value="" autocomplete="off">
+                            <ul id='directpoints' class='nameslist'></ul>
+                            <input type="submit" name="directConfirm" value="Confirmed">
+                        </fieldset>
                     </fieldset>
                 </form>
             </div>
@@ -70,8 +72,8 @@
                     <fieldset disabled="disabled">
                         <legend>FL change</legend>
                         <p>Callsing : <input type="text" name="planeName" value="" autocomplete="off" required></p>
-                        <p>New FL : <input type="number" name="newfl" min="240" max="660" step="10" required></p>
                         <ul id='flnames' class='nameslist'></ul>
+                        <p>New FL : <input type="number" name="newfl" min="240" max="660" step="10" required></p>
                         <input type="submit" value="Send">
                     </fieldset>
                 </form>

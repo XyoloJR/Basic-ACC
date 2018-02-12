@@ -12,12 +12,19 @@ var flPlaneInput = newFlForm.planeName;
 var planeOrderForm = document.forms.heading;
 var ctrlChangeField = planeOrderForm.firstElementChild;
 var ctrlPlaneInput = document.getElementById('ctrlplane');
-var ctrlNamesList = document.getElementById('ctrlnames');
 var newHeadInput = document.getElementById('newhead');
 var newDirectInput = document.getElementById('newdirect');
+
+var headindField = ctrlChangeField.children[1];
+var directField = ctrlChangeField.lastElementChild
+
 var fieldElts = [flChangeField, ctrlChangeField];
 
 var launchForm = document.forms.launch;
+
+var ctrlNamesList = document.getElementById('ctrlnames');
+var flNamesList = flChangeField.children['flnames'];
+var nextPointsList = document.getElementById('directpoints');
 
 planeOrderForm.reset();
 newFlForm.reset();
@@ -29,17 +36,17 @@ launchForm.addEventListener(
     'submit',
     function (event){
         event.preventDefault();
-        nameGiven = launchElt["name"].value.toUpperCase();
+        nameGiven = launchForm["name"].value.toUpperCase();
         if (!(planeNames.indexOf(nameGiven)<0)){
             dial("!!!---AVION DEJA EN VOL---!!!", "darkred",2000)
         } else {
             var plane = new Plane(
-                launchElt.fl.valueAsNumber,
-                launchElt.fl.valueAsNumber,
-                ROUTES[launchElt["route"].selectedIndex],
-                launchElt["state"].checked,
+                launchForm.fl.valueAsNumber,
+                launchForm.fl.valueAsNumber,
+                ROUTES[launchForm["route"].selectedIndex],
+                launchForm["state"].checked,
                 nameGiven,
-                launchElt["kts"].valueAsNumber,
+                launchForm["kts"].valueAsNumber,
             );
             updateLists(plane, -1);//-1 means new plane see updateLists
             createPlaneElt(plane);
@@ -55,12 +62,16 @@ planeOrderForm.headingConfirm.addEventListener(
     function(event){
         event.preventDefault();
         var plane = getPlane(ctrlPlaneInput.value);
-        plane.freeze();
-        turnTo(plane, newHeadInput.valueAsNumber);
-        dial(plane.name + " heading to " + newHeadInput.valueAsNumber + "°", "darkgreen", 3000);
-        planeOrderForm.reset();
-        planeOrderForm.headingConfirm.setAttribute("disabled", "disabled");
-        planeOrderForm.directConfirm.setAttribute("disabled", "disabled");
+        if (plane.heading != newHeadInput.valueAsNumber){
+            plane.freeze();
+            turnTo(plane, newHeadInput.valueAsNumber);
+            dial(plane.name + " heading to " + newHeadInput.valueAsNumber + "°", "darkgreen", 3000);
+            nextPointsList.innerHTML = "";
+            planeOrderForm.reset();
+            headingField = event.target.parentElement;
+            headingField.setAttribute("disabled", "disabled");
+            headingField.nextElementSibling.setAttribute("disabled", "disabled");
+        }
     }
 );
 
@@ -70,10 +81,18 @@ planeOrderForm.directConfirm.addEventListener(
         event.preventDefault();
         var plane = getPlane(ctrlPlaneInput.value);
         if (!plane.autopilot){
+            plane.step += nextDirect.indexOf(newDirectInput.value);
             plane.freeze();
             animPlane(plane);
+            dial(plane.name + " resume its route to "+ newDirectInput.value, "darkgreen", 3000);
+        } else {
+            dial(plane.name + " already on route to " + plane.route.pointsList[plane.step + 1].name, "darkred", 2000);
         }
-        dial(plane.name + " resume its route to "+ ctrlPlaneInput.value, "darkgreen", 3000);
+        nextPointsList.innerHTML = "";
+        planeOrderForm.reset();
+        directField = event.target.parentElement;
+        directField.setAttribute("disabled", "disabled");
+        directField.previousElementSibling.setAttribute("disabled", "disabled");
     }
 );
 
@@ -87,10 +106,6 @@ function dial(message, color, msTime){
     );
 }
 
-function getPlane(planeName){
-    return planesList[planeNames.indexOf(planeName)]
-}
-
 
 
 newFlForm.addEventListener(
@@ -102,8 +117,14 @@ newFlForm.addEventListener(
         newFlForm.reset();
 });
 
-
-var flNamesList = flChangeField.children['flnames'];
+newDirectInput.addEventListener(
+    'click',
+    function(event){
+        event.stopPropagation();
+        nextPointsList.style.display = "block";
+        ctrlNamesList.style.display = "none";
+    }
+)
 flPlaneInput.addEventListener(
     'click',
     function(event){
@@ -123,8 +144,9 @@ ctrlPlaneInput.addEventListener(
     function(event){
         event.stopPropagation();
         ctrlNamesList.style.display = "block";
+        nextPointsList.style.display = "none";
     }
-)
+);
 //middle click default
 document.addEventListener('mousedown', function(event){
     if (event.button==1){event.preventDefault();}
@@ -135,6 +157,7 @@ screenElt.addEventListener('contextmenu', event => event.preventDefault());
 document.addEventListener(
     'click',
     function(event){
+        nextPointsList.style.display = "none"
         ctrlNamesList.style.display = "none";
         flNamesList.style.display = "none";
     }
@@ -149,6 +172,7 @@ function planeCrash(plane){
 function updateLists(plane, planeId){
     var flNamesList = document.getElementById('flnames');
     var ctrlNamesList = document.getElementById('ctrlnames');
+    var nextPointsList = document.getElementById('directpoints');
     if (planeId<0){
         if (planesList.length == 0){
             disenableElts(fieldElts);
@@ -170,9 +194,15 @@ function updateLists(plane, planeId){
             function(event){
                 ctrlPlaneInput.value = plane.name;
                 newHeadInput.value = plane.heading;
-                newDirectInput.value = plane.route.pointsList[plane.step+1].name
-                planeOrderForm.headingConfirm.removeAttribute("disabled");
-                planeOrderForm.directConfirm.removeAttribute("disabled");
+                createPointList(plane);
+                changeHeadingField = newHeadInput.parentElement;
+                changeHeadingField.removeAttribute("disabled");
+                directField = changeHeadingField.nextElementSibling
+                if (plane.autopilot){
+                    directField.setAttribute("disabled", "disabled");
+                } else {
+                    directField.removeAttribute("disabled");
+                }
             }
         )
         flNamesList.appendChild(newEntryFL);
@@ -187,6 +217,25 @@ function updateLists(plane, planeId){
         }
     }
 }
+var nextDirect = [];
+createPointList = function(plane){
+    nextDirect = [];
+    nextPointsList.innerHTML = "";
+    var nextPoints = plane.route.pointsList
+    newDirectInput.value = nextPoints[plane.step+1].name
+    for (i=plane.step + 1; i < nextPoints.length; i++){
+        var newPoint = document.createElement('li');
+        newPoint.textContent = nextPoints[i].name;
+        nextDirect.push(nextPoints[i].name);
+        newPoint.addEventListener(
+            'click',
+            function(event){
+                newDirectInput.value = event.target.textContent;
+            }
+        );
+        nextPointsList.appendChild(newPoint);
+    }
+}
 
 function disenableElts(Elts){
     if (Elts[0].hasAttribute("disabled")){
@@ -194,4 +243,8 @@ function disenableElts(Elts){
     } else {
         Elts.forEach(function(Elt){Elt.setAttribute("disabled", "disabled");});
     }
+}
+
+function getPlane(planeName){
+    return planesList[planeNames.indexOf(planeName)]
 }

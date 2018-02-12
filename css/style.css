@@ -82,6 +82,7 @@ ul,li{
 
 
 form{
+    position : relative;
     width : 1000px;
 }
 
@@ -114,27 +115,33 @@ input[type=submit]{
 input:disabled{
     background-color: #888;
 }
-#fl{
-    position : relative;
+
+.planeorder{
+    border : none;
+    border-top : 1px white solid;
 }
+
 #flnames{
     left: 220px;
     top: 180px;
 }
 #ctrlnames{
-    left: 370px;
-    top: 324px;
+    left: 220px;
+    top: 180px;
 }
-#newdirect:disabled{
-    background-color: #BBB;
-    color: black;
+#directpoints{
+    left : 70px;
+    top : 548px;
+    z-index: 2;
 }
+
 .nameslist{
     display : none;
     position: absolute;
     background-color: #EEE;
     margin: 0;
     padding: 0;
+    z-index: 1;
 }
 
 .nameslist li:hover{
@@ -200,5 +207,5 @@ input:disabled{
     to{left: 707px; top: 616px;}
 }
 #dev{
-    margin-top: 500px;
+    margin-top: 400px;
 }

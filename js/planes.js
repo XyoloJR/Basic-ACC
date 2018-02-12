@@ -124,8 +124,8 @@ function animPlane(plane){
 getHeadingTo = function(plane, aimedPoint){
     var rad = Math.atan2(plane.pos.y - aimedPoint.y,
                          aimedPoint.x- plane.pos.x);
-    console.log(rad);
-    return 90 - rad * 180 / Math.PI;
+    var deg = Math.round(90 - rad * 180 / Math.PI);
+    return deg > 0 ? deg : 360 + deg;
 }
 
 climbTo = function(plane, newFl){
