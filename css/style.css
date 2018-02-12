@@ -198,3 +198,6 @@ input:disabled{
 @keyframes toVulca{
     to{left: 707px; top: 616px;}
 }
+#dev{
+    margin-top: 500px;
+}
