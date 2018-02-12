@@ -127,6 +127,7 @@ input:disabled{
 }
 #newdirect:disabled{
     background-color: #BBB;
+    color: black;
 }
 .nameslist{
     display : none;
