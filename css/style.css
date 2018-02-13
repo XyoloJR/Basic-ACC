@@ -2,6 +2,7 @@ body{
     margin : 0;
 }
 
+
 #mainScreen{
     display : inline-block;
     overflow : hidden;
@@ -10,11 +11,22 @@ body{
     width : 3332px;
     height : 2562px;
 }
+
+
+
 .leftbutton{
+    display : block;
     width : 100px;
-    height : 50px;
-    font-size : 1em;
+    height :100px;
+    margin: 4px 24px;
+    font-size : 2em;
+    background-color: #DDD;
+    border: 1px black solid inset;
 }
+.leftbutton:first-child{
+    margin-top: 800px;
+}
+
 #controls{
     display : inline-block;
     position : absolute;
@@ -39,10 +51,10 @@ svg{
     margin: 0;
 }
 .vector{
-    position : relative;
+    position : absolute;
     left : 0px;
-    top : -31px;
-    z-index: 0.3;
+    top : 0px;
+    z-index: 0;
 }
 .planeIcon{
     background-image : url('../img/planeIcon.png');
@@ -51,6 +63,7 @@ svg{
     height : 31px;
     left : -15px;
     top : -15px;
+    z-index: 1;
 }
 
 
@@ -67,7 +80,7 @@ svg{
 
 .bottom{
     left : -40px;
-    top : 5px;
+    top : 25px;
 }
 .top{
     left : -100px;

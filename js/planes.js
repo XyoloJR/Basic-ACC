@@ -89,6 +89,45 @@ function Plane(actualFL, aimedFL, route, isState, name, kts){
     this.updateTurn = function(){
         this.turn = this.headingAsked - this.heading;
     }
+    this.displayVector = function(minutes){
+        console.log(this);
+        var endLine = getNextPoint({x:0,y:0}, this.pxSpeed * 60 * minutes, this.headingRad);
+        var width = Math.abs(endLine.x);
+        var height = Math.abs(endLine.y);
+        /*var vectorDiv = document.createElement("div");
+        vectorDiv.id = this.name + 'vect';
+        vectorDiv.className= 'vector';*/
+        console.log(endLine);
+        var vector = document.createElement("canvas");
+        vector.id = this.name + 'vect';
+        vector.className= 'vector';
+        var context = vector.getContext("2d");
+        vector.setAttribute("width", Math.max(width, 5) + "px");
+        vector.setAttribute("height", Math.max(height, 5) + "px");
+        if (this.warning) {
+            context.strokeStyle = "darkorange"
+        } else{
+            context.strokeStyle = "#FFFFFF";
+        }
+        context.lineWidth = 5;
+        var drawArguments = [0, 0, width, height];
+        if (endLine.x < 0) {
+            vector.style.left = endLine.x + "px";
+            drawArguments[0] = width;
+            drawArguments[2] = 0;
+        }
+        if (endLine.y < 0){
+            vector.style.top = endLine.y + "px";
+            drawArguments[1] = height;
+            drawArguments[3] = 0;
+        }
+        context.moveTo(drawArguments[0],drawArguments[1]);
+        context.lineTo(drawArguments[2], drawArguments[3]);
+        context.stroke();
+        console.log(vector);
+        //vectorDiv.appendChild(vector);
+        this.elt.appendChild(vector);//, this.elt.children[1]);
+    }
 }
 
 function msFlightTime(pxPerSec, distPx){

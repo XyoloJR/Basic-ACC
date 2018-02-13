@@ -2,7 +2,9 @@
 var planesList= [];
 var planeNames= [];
 var screenElt = document.getElementById('mainScreen');
-var vectorButton = screenElt.firstElementChild;
+var vector3Button = screenElt.firstElementChild;
+var vector6Button = screenElt.children[1];
+var vector9Button = screenElt.children[2];
 
 var DialogElt = document.getElementById('dialogBox');
 
@@ -58,44 +60,46 @@ launchForm.addEventListener(
         }
 });
 var vectorsDisplayed = false;
-vectorButton.addEventListener("click", function(){
+vector3Button.addEventListener("click", function(){
     if (vectorsDisplayed) {
-        planesList.forEach(removeVector);
+        removeVectors()
     } else {
-        planesList.forEach(displayVector);
+        displayV(0);
     }
     vectorsDisplayed = !vectorsDisplayed;
 });
-
-removeVector = function(plane){
-    var vectElt = document.getElementById(plane.name + "vect");
-    plane.elt.removeChild(vectElt);
+vector6Button.addEventListener("click", function(){
+    if (vectorsDisplayed) {
+        removeVectors();
+    } else {
+        displayV(1);
+    }
+    vectorsDisplayed = !vectorsDisplayed;
+});
+vector9Button.addEventListener("click", function(){
+    if (vectorsDisplayed) {
+        removeVectors();
+    } else {
+        displayV(2);
+    }
+    vectorsDisplayed = !vectorsDisplayed;
+});
+removeVectors = function(){
+    planesList.forEach(function(plane){
+        var vectElt = document.getElementById(plane.name + "vect");
+        plane.elt.removeChild(vectElt);
+    });
+    for(i=0; i<3; i++){
+        screenElt.children[i].style.backgroundColor = "#DDDDDD";
+        screenElt.children[i].style.color = "#000000";
+    }
 }
-
-displayVector = function(plane){
-    console.log(plane);
-    var endLine = getNextPoint({x:0,y:0}, plane.pxSpeed * 180, plane.headingRad);
-    var width = Math.abs(endLine.x);
-    var height = Math.abs(endLine.y);
-    var vectorDiv = document.createElement("div");
-
-    vectorDiv.id = plane.name + 'vect';
-    vectorDiv.className= 'vector';
-    console.log(endLine);
-    var vector = document.createElement("canvas");
-    var context = vector.getContext("2d");
-    vector.setAttribute("width", width + "px");
-    vector.setAttribute("height", height + "px");
-    context.strokeStyle = "#FFFFFF";
-    context.lineWidth = 5;
-    context.moveTo(0,0);
-    context.lineTo(width, height);
-    context.stroke();
-    console.log(vector);
-    vectorDiv.appendChild(vector);
-    plane.elt.insertBefore(vectorDiv, plane.elt.children[1]);
+displayV = function(buttonId){
+    var minutes = 3 *(buttonId + 1);
+    planesList.forEach(plane => plane.displayVector(minutes));
+    screenElt.children[buttonId].style.backgroundColor = "#777777";
+    screenElt.children[buttonId].style.color = "#FFFFFF";
 }
-
 
 planeOrderForm.headingConfirm.addEventListener(
     'click',
