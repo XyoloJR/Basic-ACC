@@ -1,8 +1,9 @@
-var PLANE_SIZE = 15;//half icon size
+var PLANE_SIZE = 7;//half icon size
 var timeFactor = 1;//possibility to speed up or down
-var AUTONOMY = 2000
+var AUTONOMY = 500;
+var VECTORWIDTH = 3;
 console.log("timeFactor : x" + timeFactor);
-var NmToPx = 10.84;//conversion factor
+var NmToPx = 5.08;//conversion factor
 
 //Plane Object constructor
 function Plane(actualFL, aimedFL, route, isState, name, kts){
@@ -102,14 +103,14 @@ function Plane(actualFL, aimedFL, route, isState, name, kts){
         vector.id = this.name + 'vect';
         vector.className= 'vector';
         var context = vector.getContext("2d");
-        vector.setAttribute("width", Math.max(width, 5) + "px");
-        vector.setAttribute("height", Math.max(height, 5) + "px");
+        vector.setAttribute("width", Math.max(width, VECTORWIDTH) + "px");
+        vector.setAttribute("height", Math.max(height, VECTORWIDTH) + "px");
         if (this.warning) {
             context.strokeStyle = "darkorange"
         } else{
             context.strokeStyle = "#FFFFFF";
         }
-        context.lineWidth = 5;
+        context.lineWidth = VECTORWIDTH;
         var drawArguments = [0, 0, width, height];
         if (endLine.x < 0) {
             vector.style.left = endLine.x + "px";

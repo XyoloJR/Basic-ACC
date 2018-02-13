@@ -1,46 +1,54 @@
 body{
     margin : 0;
+    background-color: #777;
 }
 
 
 #mainScreen{
     display : inline-block;
     overflow : hidden;
-    position : relative;
-    background-image : url('../img/fullBackgd.png');
-    width : 3332px;
-    height : 2562px;
+    position : absolute;
+    background-image : url('../img/backgd.png');
+    width : 1490px;
+    height : 1200px;
+    left : 80px;
+
 }
 
-
+#buttonPanel{
+    display : inline-block;
+    width : 80px;
+    height : 1200px;
+    margin : 0 1px;
+}
 
 .leftbutton{
     display : block;
-    width : 100px;
-    height :100px;
-    margin: 4px 24px;
-    font-size : 2em;
+    width : 60px;
+    height :60px;
+    margin: 4px 9px;
     background-color: #DDD;
     border: 1px black solid inset;
+    font-size : 1.5em;
 }
 .leftbutton:first-child{
-    margin-top: 800px;
+    margin-top: 600px;
 }
 
 #controls{
     display : inline-block;
     position : absolute;
-    left : 3333px;
+    left : 1570px;
     top : 0px;
     background-color: #777;
-    font-size: 3em;
-    width : 1120px;
-    height : 2262px;
-    padding: 150px;
+    font-size: 1em;
+    width : 480px;
+    height : 1100px;
+    padding: 20px;
 }
 #dialogBox{
     text-align: center;
-    font-size: 1.5em;
+    font-size: 1em;
 }
 svg{
     overflow : hidden;
@@ -54,16 +62,14 @@ svg{
     position : absolute;
     left : 0px;
     top : 0px;
-    z-index: 0;
 }
 .planeIcon{
     background-image : url('../img/planeIcon.png');
     position : relative;
-    width : 31px;
-    height : 31px;
-    left : -15px;
-    top : -15px;
-    z-index: 1;
+    width : 15px;
+    height : 15px;
+    left : -7px;
+    top : -7px;
 }
 
 
@@ -73,26 +79,26 @@ svg{
     padding: 0;
     color : white;
     position : absolute;
-    font-size: 2em;
-    width : 220px;
-    height : 180px;
+    font-size: 1em;
+    width : 120px;
+    height : 90px;
 }
 
 .bottom{
-    left : -40px;
-    top : 25px;
+    left : -20px;
+    top : 12px;
 }
 .top{
-    left : -100px;
-    top : -300px;
+    left : -50px;
+    top : -150px;
 }
 .left{
-    left : -220px;
-    top :-60px;
+    left : -110px;
+    top :-30px;
 }
 .right{
-    left : 40px;
-    top : -80px;
+    left : 20px;
+    top : -40px;
 }
 
 ul,li{
@@ -111,30 +117,29 @@ ul,li{
 
 form{
     position : relative;
-    width : 1000px;
+    width : 400px;
 }
 
 form p{
     font-size: 0.9em;
-    margin : 20px 5px;
+    margin : 10px 2px;
 }
 
 input, select, option{
-    margin-right: 80px;
+    margin-right: 40px;
     padding: 4px;
-    height : 64px;
     background-color: #EEE;
     font-size: 0.8em;
 }
 input[type=text], .namelist{
-    width: 300px;
+    width: 100px;
 }
 input[type=checkbox]{
     margin-right: 10px;
 }
 
 input[type=number]{
-    width: 120px;
+    width: 50px;
 }
 input[type=submit]{
     background-color: #DDD;
@@ -149,17 +154,9 @@ input:disabled{
     border-top : 1px white solid;
 }
 
-#flnames{
-    left: 220px;
-    top: 180px;
-}
-#ctrlnames{
-    left: 220px;
-    top: 180px;
-}
 #directpoints{
-    left : 70px;
-    top : 548px;
+    left: 28px;
+    top : 191px;
     z-index: 2;
 }
 line{
@@ -173,6 +170,8 @@ line{
     margin: 0;
     padding: 0;
     z-index: 1;
+    left: 76px;
+    top: 63px;
 }
 
 .nameslist li:hover{
@@ -181,62 +180,62 @@ line{
 }
 /*Classic route or direct order*/
 @keyframes toBiela {
-    to{left: 3322px; top: 1045px;}
+    to{left: 1485.71px; top: 489.46px;}
 }
 @keyframes toBosua {
-    to{left: 2486px; top: 1321px;}
+    to{left: 1094.15px; top: 618.74px;}
 }
 @keyframes toCfa{
-    to{left: 751px; top: 866px;}
+    to{left: 281.5px; top: 405.62px;}
 }
 @keyframes toEtori {
-    to{left: 755px; top: 1893px;}
+    to{left: 283.5px; top: 886.65px;}
 }
 @keyframes toGai {
-    to{left: 165px; top: 2088px;}
+    to{left: 7.03px; top: 977.99px;}
 }
 @keyframes toGrena {
-    to{left: 2056px; top: 1463px;}
+    to{left: 892.74px; top: 685.25px;}
 }
 @keyframes toJambi {
-    to{left: 2500px; top: 2186px;}
+    to{left: 1100.7px; top: 1023.89px;}
 }
 @keyframes toLanza{
-    to{left: 973px; top: 1457px;}
+    to{left: 385.48px; top: 682.44px;}
 }
 @keyframes toLse{
-    to{left: 1615px; top: 848px;}
+    to{left: 686.18px; top: 397.19px;}
 }
 @keyframes toLtp{
-    to{left: 1779px; top: 1015px;}
+    to{left: 763px; top: 474.94px;}
 }
 @keyframes toMajor{
-    to{left:1554px; top: 2093px;}
+    to{left:657.61px; top: 980.33px;}
 }
 @keyframes toMen{
-    to{left: 774px; top: 1646px;}
+    to{left: 292.27px; top: 770.96px;}
 }
 @keyframes toMindi {
-    to{left: 1163px; top: 1277px;}
+    to{left: 474.47px; top: 598.12px;}
 }
 @keyframes toMozao {
-    to{left: 2086px; top: 765px;}
+    to{left: 906.79px; top: 358.31px;}
 }
 @keyframes toMtl{
-    to{left: 1524px; top: 1639px;}
+    to{left: 643.56px; top: 767.68px;}
 }
 @keyframes toRapid{
-    to{left: 2723px; top: 250px;}
+    to{left: 1205.15px; top: 117.1px;}
 }
 @keyframes toSanto{
-    to{left:2265px; top: 1803px;}
+    to{left:990.63px; top: 844.5px;}
 }
 @keyframes toSpidy {
-    to{left: 996px; top: 1814px;}
+    to{left: 396.25px; top: 849.65px;}
 }
 @keyframes toVulca{
-    to{left: 707px; top: 616px;}
+    to{left: 260.89px; top: 288.52px;}
 }
 #dev{
-    margin-top: 400px;
+    margin-top: 200px;
 }

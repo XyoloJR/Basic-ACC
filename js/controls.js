@@ -2,9 +2,10 @@
 var planesList= [];
 var planeNames= [];
 var screenElt = document.getElementById('mainScreen');
-var vector3Button = screenElt.firstElementChild;
-var vector6Button = screenElt.children[1];
-var vector9Button = screenElt.children[2];
+var panelElt = document.body.firstElementChild;
+var vector3Button = panelElt.firstElementChild;
+var vector6Button = panelElt.children[1];
+var vector9Button = panelElt.children[2];
 
 var DialogElt = document.getElementById('dialogBox');
 
@@ -90,15 +91,15 @@ removeVectors = function(){
         plane.elt.removeChild(vectElt);
     });
     for(i=0; i<3; i++){
-        screenElt.children[i].style.backgroundColor = "#DDDDDD";
-        screenElt.children[i].style.color = "#000000";
+        panelElt.children[i].style.backgroundColor = "#DDDDDD";
+        panelElt.children[i].style.color = "#000000";
     }
 }
 displayV = function(buttonId){
     var minutes = 3 *(buttonId + 1);
     planesList.forEach(plane => plane.displayVector(minutes));
-    screenElt.children[buttonId].style.backgroundColor = "#777777";
-    screenElt.children[buttonId].style.color = "#FFFFFF";
+    panelElt.children[buttonId].style.backgroundColor = "#777777";
+    panelElt.children[buttonId].style.color = "#FFFFFF";
 }
 
 planeOrderForm.headingConfirm.addEventListener(
