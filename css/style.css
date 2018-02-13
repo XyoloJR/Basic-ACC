@@ -22,7 +22,11 @@ body{
     margin : 0 1px;
 }
 
+#mesure{
+}
+
 .leftbutton{
+    padding: 0px;
     display : block;
     width : 60px;
     height :60px;
@@ -49,6 +53,7 @@ body{
 #order{
     margin-top: 160px;
 }
+
 #dialogBox{
     width: 440px;
     height: 200px;
