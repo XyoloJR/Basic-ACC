@@ -42,11 +42,13 @@ body{
     top : 0px;
     background-color: #777;
     font-size: 1em;
-    width : 480px;
+    width : 440px;
     height : 1100px;
     padding: 20px;
 }
 #dialogBox{
+    width: 440px;
+    height: 200px;
     text-align: center;
     font-size: 1em;
 }
@@ -85,15 +87,15 @@ svg{
 }
 
 .bottom{
-    left : -20px;
-    top : 12px;
+    left : -40px;
+    top : 22px;
 }
 .top{
     left : -50px;
     top : -150px;
 }
 .left{
-    left : -110px;
+    left : -130px;
     top :-30px;
 }
 .right{
@@ -118,18 +120,17 @@ ul,li{
 form{
     position : relative;
     width : 400px;
+    font-size: 1.2em;
 }
 
 form p{
-    font-size: 0.9em;
     margin : 10px 2px;
 }
 
 input, select, option{
-    margin-right: 40px;
+    margin-right: 20px;
     padding: 4px;
     background-color: #EEE;
-    font-size: 0.8em;
 }
 input[type=text], .namelist{
     width: 100px;
@@ -155,8 +156,8 @@ input:disabled{
 }
 
 #directpoints{
-    left: 28px;
-    top : 191px;
+    left: 31px;
+    top : 281px;
     z-index: 2;
 }
 line{
@@ -170,8 +171,8 @@ line{
     margin: 0;
     padding: 0;
     z-index: 1;
-    left: 76px;
-    top: 63px;
+    left: 100px;
+    top: 69px;
 }
 
 .nameslist li:hover{
@@ -237,5 +238,6 @@ line{
     to{left: 260.89px; top: 288.52px;}
 }
 #dev{
+    width: 380px;
     margin-top: 200px;
 }

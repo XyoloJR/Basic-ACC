@@ -5,7 +5,7 @@ function testRoutes(velocity){
     var flDiff = -20
     ROUTES.forEach(function(route){
         var plane = new Plane(300+flDiff, 300+flChange, route, false, route.name, velocity*1000);
-        updateLists(plane, -1);
+        updateList(plane);
         createPlaneElt(plane);
         animPlane(plane);
         screenElt.appendChild(plane.elt);
