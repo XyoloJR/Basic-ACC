@@ -46,6 +46,9 @@ body{
     height : 1100px;
     padding: 20px;
 }
+#order{
+    margin-top: 160px;
+}
 #dialogBox{
     width: 440px;
     height: 200px;
