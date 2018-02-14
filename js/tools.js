@@ -1,4 +1,4 @@
-var PANELWIDTH = 80;
+var LABELWIDTH = 80;
 var panelElt = document.body.firstElementChild;
 var vector3Button = panelElt.firstElementChild;
 var vector6Button = panelElt.children[1];
@@ -65,6 +65,7 @@ mesureButton.addEventListener('click', function(event){
         mesureButton.style.color = "#FFFFFF";
         color = 'White';
         radarScreen.addEventListener('click', mesure);
+        radarScreen.style.cursor = "crosshair";
     } else {
         mesureButton.style.backgroundColor = "#DDDDDD";
         mesureButton.style.color = "#000000";
@@ -72,15 +73,23 @@ mesureButton.addEventListener('click', function(event){
     }
     mesureButton.firstElementChild.src = "../img/compass"+color+".png";
 });
+removeMesures = function(){
+    mesuresTable.forEach(elt => document.body.children[1].removeChild(elt));
+    mesuresTable = [];
+    radarScreen = document.body.children[1]
+    radarScreen.removeEventListener('click', mesure);
+    radarScreen.style.cursor = "auto";
+}
 var mesuresTable = [];
 var mesurePoint1 = {x:0,y:0};
 var mesurePoint2 = {x:0,y:0};
+var leftPanelWidth = document.body.firstElementChild.offsetWidth;
 mesure = function(event){
     if (mesurePoint1.x == 0){
-        mesurePoint1.x = event.pageX - 80;
+        mesurePoint1.x = event.pageX - leftPanelWidth;
         mesurePoint1.y = event.pageY;
     } else {
-        mesurePoint2.x = event.pageX - 80;
+        mesurePoint2.x = event.pageX - leftPanelWidth;
         mesurePoint2.y = event.pageY;
         var segment = createVector(mesurePoint1, mesurePoint2, "white", 2);
         var dist = Math.round(pxDist(mesurePoint1, mesurePoint2)/NmToPx);
@@ -94,7 +103,7 @@ mesure = function(event){
         label.appendChild(distElt);
         label.appendChild(headingElt);
         label.style.top = Math.max(mesurePoint1.y, mesurePoint2.y) + 5 + "px";
-        label.style.left = (mesurePoint1.x + mesurePoint2.x - 80)/2 + "px";
+        label.style.left = (mesurePoint1.x + mesurePoint2.x - LABELWIDTH)/2 + "px";
         mesuresTable.push(segment,label);
         var radarScreen = document.body.children[1];
         radarScreen.appendChild(segment);
@@ -102,10 +111,4 @@ mesure = function(event){
         mesurePoint1 = {x:0,y:0};
         mesurePoint2 = {x:0,y:0};
     }
-}
-
-removeMesures = function(){
-    mesuresTable.forEach(elt => document.body.children[1].removeChild(elt));
-    mesuresTable = [];
-    document.body.children[1].removeEventListener('click', mesure);
 }
