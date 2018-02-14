@@ -79,6 +79,7 @@ removeMesures = function(){
     radarScreen = document.body.children[1]
     radarScreen.removeEventListener('click', mesure);
     radarScreen.style.cursor = "auto";
+    mesurePoint1 = {x:0,y:0};
 }
 var mesuresTable = [];
 var mesurePoint1 = {x:0,y:0};
@@ -93,7 +94,7 @@ mesure = function(event){
         mesurePoint2.y = event.pageY;
         var segment = createVector(mesurePoint1, mesurePoint2, "white", 2);
         var dist = Math.round(pxDist(mesurePoint1, mesurePoint2)/NmToPx);
-        var heading = getHeadingTo(mesurePoint1, mesurePoint2);
+        var heading = getHeading(mesurePoint1, mesurePoint2);
         var label = document.createElement('div');
         label.className = "mesureLabel";
         distElt = document.createElement('p');

@@ -6,6 +6,7 @@ function testRoutes(velocity){
     ROUTES.forEach(function(route){
         var plane = new Plane(300+flDiff, 300+flChange, route, false, route.name, velocity*1000);
         updateList(plane);
+        addFlowTable(plane);
         createPlaneElt(plane);
         animPlane(plane);
         screenElt.appendChild(plane.elt);

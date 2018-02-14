@@ -21,6 +21,7 @@ function Plane(actualFL, aimedFL, route, isState, name, kts){
     this.isState = isState;
     this.name = name.toUpperCase();
     this.particular = false;
+    this.pFL = "PFL"
     this.route = route;
     this.kts = kts;
     this.pxSpeed = kts * NmToPx / 3600;
@@ -145,7 +146,21 @@ function Plane(actualFL, aimedFL, route, isState, name, kts){
     }
 
 }
-
+addFlowTable = function(plane){
+    if (plane.exitPoint == "ETORI"){
+        var table = document.getElementById('flow').firstElementChild;
+        var newEntry = document.createElement('tr');
+        var Entries = [plane.name, "TYPE", "DEST", "ETORI", "TIME", plane.pfl, plane.exitSector];
+        var cells = [];
+        for (i = 0; i < 7 ; i++){
+            cells[i] = document.createElement('td');
+            cells[i].textContent = Entries[i];
+            newEntry.appendChild(cells[i]);
+        }
+        plane.flow = newEntry
+        table.appendChild(newEntry);
+    }
+}
 function msFlightTime(pxPerSec, distPx){
     return Math.round(1000 * distPx / (pxPerSec * timeFactor));
 }
@@ -157,10 +172,14 @@ function animPlane(plane){
         plane.updatePosition();
         plane.setHeading(anim.heading);
         var distance = anim.dist
+        if (plane.exitPoint == "ETORI" && plane.step == 3){
+            var table = document.getElementById('flow').firstElementChild;
+            table.removeChild(plane.flow);
+        }
     } else {
         var endPoint = plane.route.pointsList[plane.step + 1]
         distance = pxDist(plane.pos, endPoint);
-        plane.setHeading(getHeadingTo(plane.pos, endPoint));
+        plane.setHeading(getHeading(plane.pos, endPoint));
         console.log(plane.heading);
         plane.autopilot = true;
     }
@@ -181,7 +200,7 @@ function animPlane(plane){
     );
 }
 
-getHeadingTo = function(currentPoint, aimedPoint){
+getHeading = function(currentPoint, aimedPoint){
     var rad = Math.atan2(currentPoint.y - aimedPoint.y,
                          aimedPoint.x- currentPoint.x);
     var deg = Math.round(90 - rad * 180 / Math.PI);

@@ -50,6 +50,7 @@ launchForm.addEventListener(
                 launchForm["kts"].valueAsNumber,
             );
             updateList(plane);
+            addFlowTable(plane);
             createPlaneElt(plane);
             animPlane(plane);
             screenElt.appendChild(plane.elt);
