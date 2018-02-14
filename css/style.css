@@ -175,8 +175,8 @@ input:disabled{
 }
 
 #directpoints{
-    left: 94px;
-    top : 298px;
+    left: 96px;
+    top : 282px;
     z-index: 2;
 }
 line{
@@ -191,7 +191,7 @@ line{
     padding: 0;
     z-index: 1;
     left: 180px;
-    top: 73px;
+    top: 70px;
 }
 
 .nameslist li:hover{

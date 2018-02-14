@@ -148,7 +148,7 @@ function animPlane(plane){
     } else {
         var endPoint = plane.route.pointsList[plane.step + 1]
         distance = pxDist(plane.pos, endPoint);
-        plane.heading = getHeadingTo(plane.pos, endPoint);
+        plane.setHeading(getHeadingTo(plane.pos, endPoint));
         console.log(plane.heading);
         plane.autopilot = true;
     }

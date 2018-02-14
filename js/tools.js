@@ -83,7 +83,6 @@ mesure = function(event){
         mesurePoint2.x = event.pageX - 80;
         mesurePoint2.y = event.pageY;
         var segment = createVector(mesurePoint1, mesurePoint2, "white", 2);
-        console.log(segment.width, segment.height);
         var dist = Math.round(pxDist(mesurePoint1, mesurePoint2)/NmToPx);
         var heading = getHeadingTo(mesurePoint1, mesurePoint2);
         var label = document.createElement('div');
@@ -96,15 +95,12 @@ mesure = function(event){
         label.appendChild(headingElt);
         label.style.top = Math.max(mesurePoint1.y, mesurePoint2.y) + 5 + "px";
         label.style.left = (mesurePoint1.x + mesurePoint2.x - 80)/2 + "px";
-        console.log(label);
         mesuresTable.push(segment,label);
         var radarScreen = document.body.children[1];
         radarScreen.appendChild(segment);
         radarScreen.appendChild(label)
-        console.log(mesurePoint1, mesurePoint2, heading);
         mesurePoint1 = {x:0,y:0};
         mesurePoint2 = {x:0,y:0};
-
     }
 }
 
