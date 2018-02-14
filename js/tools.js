@@ -68,26 +68,48 @@ mesureButton.addEventListener('click', function(event){
     } else {
         mesureButton.style.backgroundColor = "#DDDDDD";
         mesureButton.style.color = "#000000";
-
         removeMesures();
     }
     mesureButton.firstElementChild.src = "../img/compass"+color+".png";
 });
+var mesuresTable = [];
 var mesurePoint1 = {x:0,y:0};
 var mesurePoint2 = {x:0,y:0};
 mesure = function(event){
     if (mesurePoint1.x == 0){
-        mesurePoint1.x = event.clientX - 80;
-        mesurePoint1.y = event.clientY;
+        mesurePoint1.x = event.pageX - 80;
+        mesurePoint1.y = event.pageY;
     } else {
-        mesurePoint2.x = event.clientX - 80;
-        mesurePoint2.y = event.clientY;
-        console.log(mesurePoint1, mesurePoint2);
+        mesurePoint2.x = event.pageX - 80;
+        mesurePoint2.y = event.pageY;
+        var segment = createVector(mesurePoint1, mesurePoint2, "white", 2);
+        console.log(segment.width, segment.height);
+        var dist = Math.round(pxDist(mesurePoint1, mesurePoint2)/NmToPx);
+        var heading = getHeadingTo(mesurePoint1, mesurePoint2);
+        var label = document.createElement('div');
+        label.className = "mesureLabel";
+        distElt = document.createElement('p');
+        distElt.textContent = dist + ' Nm';
+        headingElt = document.createElement('p');
+        headingElt.textContent = heading + '°';
+        label.appendChild(distElt);
+        label.appendChild(headingElt);
+        label.style.top = Math.max(mesurePoint1.y, mesurePoint2.y) + 5 + "px";
+        label.style.left = (mesurePoint1.x + mesurePoint2.x - 80)/2 + "px";
+        console.log(label);
+        mesuresTable.push(segment,label);
+        var radarScreen = document.body.children[1];
+        radarScreen.appendChild(segment);
+        radarScreen.appendChild(label)
+        console.log(mesurePoint1, mesurePoint2, heading);
         mesurePoint1 = {x:0,y:0};
         mesurePoint2 = {x:0,y:0};
+
     }
 }
 
 removeMesures = function(){
-
+    mesuresTable.forEach(elt => document.body.children[1].removeChild(elt));
+    mesuresTable = [];
+    document.body.children[1].removeEventListener('click', mesure);
 }

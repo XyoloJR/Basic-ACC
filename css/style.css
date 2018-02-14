@@ -9,7 +9,20 @@ body{
     margin : 0;
 }
 
-#mesure{
+.mesureLabel{
+    position : absolute;
+    border: 1px solid white;
+    color: white;
+    width : 80px;
+    height : 40px;
+    padding: 0 5px;
+
+}
+.mesureLabel p{
+    margin : 0 5px;
+}
+.mesureLabel p:last-child{
+    margin-left: 40px;
 }
 
 .leftbutton{

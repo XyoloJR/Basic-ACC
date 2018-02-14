@@ -54,30 +54,7 @@ function Plane(actualFL, aimedFL, route, isState, name, kts){
             var color = "darkorange";
         }
         var endLine = getNextPoint({x:0,y:0}, this.pxSpeed * 60 * minutes, this.headingRad);
-        var vector = createVector({x:0,y:0},endLine, color,SPEEDVECTORWIDTH);
-        /*var vector = document.createElement("canvas");
-        vector.className= 'vector';
-        var context = vector.getContext("2d");
-        var width = Math.abs(endLine.x);
-        var height = Math.abs(endLine.y);
-        vector.setAttribute("width", Math.max(width, SPEEDVECTORWIDTH) + "px");
-        vector.setAttribute("height", Math.max(height, SPEEDVECTORWIDTH) + "px");
-        context.strokeStyle = color;
-        context.lineWidth = SPEEDVECTORWIDTH;
-        var drawArguments = [0, 0, width, height];
-        if (endLine.x < 0) {
-            vector.style.left = endLine.x + "px";
-            drawArguments[0] = width;
-            drawArguments[2] = 0;
-        }
-        if (endLine.y < 0){
-            vector.style.top = endLine.y + "px";
-            drawArguments[1] = height;
-            drawArguments[3] = 0;
-        }
-        context.moveTo(drawArguments[0],drawArguments[1]);
-        context.lineTo(drawArguments[2], drawArguments[3]);
-        context.stroke();*/
+        var vector = createVector({x:0,y:0}, endLine, color, SPEEDVECTORWIDTH);
         vector.id = this.name + 'vect';
         this.vector = vector;
         this.elt.appendChild(this.vector);
@@ -123,9 +100,7 @@ function Plane(actualFL, aimedFL, route, isState, name, kts){
                 this.removeVector();
             }
         }
-
         this.icon.style.backgroundImage = "url('../img/"+ iconName+"Icon.png')";
-
     }
     this.updateClimb = function(){
         var flDiff = this.aimedFL - this.actualFL;
@@ -173,7 +148,7 @@ function animPlane(plane){
     } else {
         var endPoint = plane.route.pointsList[plane.step + 1]
         distance = pxDist(plane.pos, endPoint);
-        plane.heading = getHeadingTo(plane, endPoint);
+        plane.heading = getHeadingTo(plane.pos, endPoint);
         console.log(plane.heading);
         plane.autopilot = true;
     }
@@ -194,9 +169,9 @@ function animPlane(plane){
     );
 }
 
-getHeadingTo = function(plane, aimedPoint){
-    var rad = Math.atan2(plane.pos.y - aimedPoint.y,
-                         aimedPoint.x- plane.pos.x);
+getHeadingTo = function(currentPoint, aimedPoint){
+    var rad = Math.atan2(currentPoint.y - aimedPoint.y,
+                         aimedPoint.x- currentPoint.x);
     var deg = Math.round(90 - rad * 180 / Math.PI);
     return deg > 0 ? deg : 360 + deg;
 }
@@ -384,6 +359,7 @@ function flightDetailsList(plane){
     plane.label = nameElt;
     return infosElt;
 }
+
 createVector = function(startPoint, endPoint, color, weight){
     var diffX = endPoint.x - startPoint.x;
     var diffY = endPoint.y - startPoint.y;
