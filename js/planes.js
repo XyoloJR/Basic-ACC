@@ -234,11 +234,13 @@ climbTo = function(plane, newFl){
                 flElt.lastElementChild.src = getFlIcon(0);
             }
             flElt.firstChild.textContent = plane.actualFL;
-            if (plane.climb < 0 && plane.actualFL < 285){
-                plane.elt.style.display = "none";
+            if (plane.climb < 0 && plane.actualFL < 285 ){
+                if (!plane.particular){plane.elt.style.display = "none";}
             } else if (plane.actualFL == 285){
                 plane.elt.style.display = "block";
             }
+
+
         }, 15000
     );
     if (plane.climb !=0) {
