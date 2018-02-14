@@ -4,10 +4,7 @@ var planeNames= [];
 var nextDirect = [];
 
 var screenElt = document.getElementById('mainScreen');
-var panelElt = document.body.firstElementChild;
-var vector3Button = panelElt.firstElementChild;
-var vector6Button = panelElt.children[1];
-var vector9Button = panelElt.children[2];
+
 
 var dialogElt = document.getElementById('dialogBox');
 
