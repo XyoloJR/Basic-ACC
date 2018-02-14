@@ -59,7 +59,7 @@ body{
     top : 0px;
     background-color: #777;
     font-size: 1em;
-    width : 440px;
+    width : 400px;
     height : 1100px;
     padding: 20px;
     text-align: center;
@@ -69,8 +69,8 @@ body{
 }
 
 #dialogBox{
-    width: 440px;
-    height: 200px;
+    width: 400px;
+    height: 160px;
     text-align: center;
     font-size: 1em;
 }
@@ -198,6 +198,24 @@ line{
     background-color: lightblue;
     cursor: pointer;
 }
+#flow{
+    margin : 20px 0px;
+    width : 400px;
+    height : 200px;
+    text-align: center;
+    background-color: #CCC;
+}
+table{
+    font-family: sans-serif;
+    width : 400px;
+}
+th{
+    border-bottom : 1px solid white;
+    color: white;
+    background-color: #666;
+    font-weight: normal;
+}
+
 /*Classic route or direct order*/
 @keyframes toBiela {
     to{left: 1485.71px; top: 489.46px;}
@@ -255,8 +273,4 @@ line{
 }
 @keyframes toVulca{
     to{left: 260.89px; top: 288.52px;}
-}
-#dev{
-    width: 380px;
-    margin-top: 200px;
 }

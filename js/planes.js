@@ -83,6 +83,18 @@ function Plane(actualFL, aimedFL, route, isState, name, kts){
         this.elt.style.top = top;
         this.pos = {x: parseFloat(left), y: parseFloat(top)};
     }
+    this.setParticular = function(){
+            iconStyle = this.icon.style;
+            callsignStyle = document.getElementById(this.name+"name").style;
+            this.particular = !this.particular;
+            if (this.particular) {
+                iconStyle.backgroundImage = "url('../img/particularIcon.png')";
+                callsignStyle.backgroundColor= "#E53";
+            } else {
+                iconStyle.backgroundImage = "url('../img/planeIcon.png')";
+                callsignStyle.backgroundColor= "transparent";
+            }
+    }
     this.setWarning = function(){
         var iconName = this.warning ? "plane" : "warning";
         this.warning = !this.warning;
@@ -324,18 +336,10 @@ function flightDetailsList(plane){
         function(event){
             event.preventDefault();
             if (event.button == 1){
-                iconStyle = plane.elt.firstChild.style;
-                callsignStyle = plane.elt.lastChild.firstChild.children[1].style;
-                plane.particular = !plane.particular;
-                if (plane.particular) {
-                    iconStyle.backgroundImage = "url('../img/particularIcon.png')";
-                    callsignStyle.backgroundColor= "#E53";
-                } else {
-                    iconStyle.backgroundImage = "url('../img/planeIcon.png')";
-                    callsignStyle.backgroundColor= "transparent";
-                }
+                plane.setParticular();
             }
     });
+
     infosElt.appendChild(nameElt);
 
     var flElt = document.createElement('li');
