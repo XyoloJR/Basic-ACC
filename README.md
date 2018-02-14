@@ -10,14 +10,15 @@ to give extra practices possibility.
 
 ## Impletmented commands
 - Right panel :
-  - Launch a plane on predefined route :
+  * Launch a plane on predefined route :
     after callsign, speed and fl been selected
-  - Pick a plane and then : 
+  * Pick a plane and then : 
     - Change its fl level : climbs or descend to this fl at 2000ft/min 
     - Change a plane heading : turns to the desired heading at 3°/s
     - Give a direct route to the chosen point : takes the shortest way, and resumes its route
 - Left side buttons :
-  - display/hide speed vectors for 3, 6, or 9 minutes
+  * display/hide speed vectors for 3, 6, or 9 minutes
+  * enable mesuring distance and heading between two points of the radar screen
 - Mouse click on plane icon : 
   - left : change flight details position  
       flight infos label turn clockwise in predefined position  
@@ -29,7 +30,6 @@ to give extra practices possibility.
   Developed and tested on firefox 58.x
 
 ## Upcoming features :
-- add mesure tool  
 - Milan departure/arrival
 - possibility to remove a plane
 - minimize info quiting sector
