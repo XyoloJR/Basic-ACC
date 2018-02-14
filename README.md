@@ -30,7 +30,9 @@ to give extra practices possibility.
   Developed and tested on firefox 58.x
 
 ## Upcoming features :
-- Milan departure/arrival
+- exit flow window for etori(Milan departure)
+- scaled speed vector
 - possibility to remove a plane
 - minimize info quiting sector
 - display time
+- mesuring segment sticked on two planes
