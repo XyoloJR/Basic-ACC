@@ -89,15 +89,15 @@ function Plane(actualFL, aimedFL, route, isState, name, kts){
             callsignStyle = document.getElementById(this.name+"name").style;
             this.particular = !this.particular;
             if (this.particular) {
+                this.elt.style.display = "block";
                 iconStyle.backgroundImage = "url('../img/particularIcon.png')";
                 callsignStyle.backgroundColor= "#E53";
             } else {
-                iconStyle.backgroundImage = "url('../img/planeIcon.png')";
+                iconStyle.backgroundImage = "url('../img/planeIcon.png')";//no more particular if possible
                 callsignStyle.backgroundColor= "transparent";
             }
     }
     this.setWarning = function(){
-        var iconName = this.warning ? "plane" : "warning";
         this.warning = !this.warning;
         if (this.warning){
             var diamond = document.createElement('img');
@@ -105,6 +105,7 @@ function Plane(actualFL, aimedFL, route, isState, name, kts){
             diamond.style.marginLeft = "4px";
             this.label.appendChild(diamond);
             this.displayVector(Math.max(3,this.vectorSize));
+            this.icon.style.backgroundImage = "url('../img/warningIcon.png')";
         } else{
             this.label.removeChild(this.label.lastChild);
             if (this.vectorDisp){
@@ -112,8 +113,10 @@ function Plane(actualFL, aimedFL, route, isState, name, kts){
             } else {
                 this.removeVector();
             }
+            var iconName = this.particular ? "particular" : "plane";
+            this.icon.style.backgroundImage = "url('../img/"+iconName+"Icon.png')";
         }
-        this.icon.style.backgroundImage = "url('../img/"+ iconName+"Icon.png')";
+
     }
     this.updateClimb = function(){
         var flDiff = this.aimedFL - this.actualFL;
@@ -157,6 +160,14 @@ addFlowTable = function(plane){
             cells[i].textContent = Entries[i];
             newEntry.appendChild(cells[i]);
         }
+        cells[0].addEventListener(
+            'mousedown',
+            function(event){
+                event.preventDefault();
+                if (event.button == 2){
+                    plane.setParticular();
+                }
+        });
         plane.flow = newEntry
         table.appendChild(newEntry);
     }
@@ -307,6 +318,9 @@ function createPlaneElt(plane){
     var planeElt = document.createElement('div');
     planeElt.id = plane.name;
     planeElt.setAttribute("class", "plane");
+    if (plane.actualFL < 290){
+        planeElt.style.display= "none";
+    }
 
     var iconElt = document.createElement('div');
     iconElt.classList.add("planeIcon");
@@ -327,7 +341,6 @@ function createPlaneElt(plane){
     var infoBox = document.createElement('div');
     infoBox.classList.add("infoBox", plane.route.defaultDisplay);
     infoBox.appendChild(flightDetailsList(plane));
-
     planeElt.appendChild(iconElt);
     planeElt.appendChild(infoBox);
     plane.elt = planeElt;
@@ -348,17 +361,10 @@ function flightDetailsList(plane){
     infosElt.appendChild(speedElt);
 
     var nameElt = document.createElement('li');
-    nameElt.id = plane.name+"name";
-    nameElt.appendChild(document.createTextNode(plane.name));
-    nameElt.addEventListener(
-        'mousedown',
-        function(event){
-            event.preventDefault();
-            if (event.button == 1){
-                plane.setParticular();
-            }
-    });
-
+    var callsign = document.createElement('span');
+    callsign.id = plane.name+"name";
+    callsign.textContent = plane.name;
+    nameElt.appendChild(callsign);
     infosElt.appendChild(nameElt);
 
     var flElt = document.createElement('li');

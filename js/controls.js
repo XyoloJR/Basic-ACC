@@ -222,4 +222,4 @@ document.addEventListener('mousedown', function(event){
     if (event.button==1){event.preventDefault();}
 });
 //right click default
-screenElt.addEventListener('contextmenu', event => event.preventDefault());
+document.body.addEventListener('contextmenu', event => event.preventDefault());
