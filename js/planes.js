@@ -1,7 +1,7 @@
 var PLANE_SIZE = 7;//half icon size
 var timeFactor = 1;//possibility to speed up or down
 var AUTONOMY = 500;
-var VECTORWIDTH = 3;
+var SPEEDVECTORWIDTH = 3;
 console.log("timeFactor : x" + timeFactor);
 var NmToPx = 5.08;//conversion factor
 
@@ -49,21 +49,21 @@ function Plane(actualFL, aimedFL, route, isState, name, kts){
     this.displayVector = function(minutes){
         this.removeVector();
         this.vectorSize = minutes;
+        var color = "rgb(255, 255, 255)";
+        if (this.warning){
+            var color = "darkorange";
+        }
         var endLine = getNextPoint({x:0,y:0}, this.pxSpeed * 60 * minutes, this.headingRad);
-        var width = Math.abs(endLine.x);
-        var height = Math.abs(endLine.y);
-        var vector = document.createElement("canvas");
-        vector.id = this.name + 'vect';
+        var vector = createVector({x:0,y:0},endLine, color,SPEEDVECTORWIDTH);
+        /*var vector = document.createElement("canvas");
         vector.className= 'vector';
         var context = vector.getContext("2d");
-        vector.setAttribute("width", Math.max(width, VECTORWIDTH) + "px");
-        vector.setAttribute("height", Math.max(height, VECTORWIDTH) + "px");
-        if (this.warning) {
-            context.strokeStyle = "darkorange"
-        } else{
-            context.strokeStyle = "#FFFFFF";
-        }
-        context.lineWidth = VECTORWIDTH;
+        var width = Math.abs(endLine.x);
+        var height = Math.abs(endLine.y);
+        vector.setAttribute("width", Math.max(width, SPEEDVECTORWIDTH) + "px");
+        vector.setAttribute("height", Math.max(height, SPEEDVECTORWIDTH) + "px");
+        context.strokeStyle = color;
+        context.lineWidth = SPEEDVECTORWIDTH;
         var drawArguments = [0, 0, width, height];
         if (endLine.x < 0) {
             vector.style.left = endLine.x + "px";
@@ -77,7 +77,8 @@ function Plane(actualFL, aimedFL, route, isState, name, kts){
         }
         context.moveTo(drawArguments[0],drawArguments[1]);
         context.lineTo(drawArguments[2], drawArguments[3]);
-        context.stroke();
+        context.stroke();*/
+        vector.id = this.name + 'vect';
         this.vector = vector;
         this.elt.appendChild(this.vector);
     }
@@ -382,4 +383,34 @@ function flightDetailsList(plane){
     infosElt.appendChild(exitElt);
     plane.label = nameElt;
     return infosElt;
+}
+createVector = function(startPoint, endPoint, color, weight){
+    var diffX = endPoint.x - startPoint.x;
+    var diffY = endPoint.y - startPoint.y;
+    var width = Math.abs(diffX);
+    var height = Math.abs(diffY);
+    var vector = document.createElement("canvas");
+    vector.className= 'vector';
+    vector.setAttribute("width", Math.max(width, weight) + "px");
+    vector.setAttribute("height", Math.max(height, weight) + "px");
+    var context = vector.getContext("2d");
+    context.strokeStyle = color;
+    context.lineWidth = weight;
+    vector.style.left = startPoint.x + "px";
+    vector.style.top = startPoint.y + "px";
+    if (diffX < 0) {
+        vector.style.left = endPoint.x + "px";
+    }
+    if (diffY < 0){
+        vector.style.top = endPoint.y + "px";
+    }
+    if (diffY * diffX > 0){
+        context.moveTo(0,0);
+        context.lineTo(width, height);
+    } else {
+        context.moveTo(width,0);
+        context.lineTo(0, height);
+    }
+    context.stroke();
+    return vector;
 }

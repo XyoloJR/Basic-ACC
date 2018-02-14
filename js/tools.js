@@ -73,6 +73,20 @@ mesureButton.addEventListener('click', function(event){
     }
     mesureButton.firstElementChild.src = "../img/compass"+color+".png";
 });
+var mesurePoint1 = {x:0,y:0};
+var mesurePoint2 = {x:0,y:0};
+mesure = function(event){
+    if (mesurePoint1.x == 0){
+        mesurePoint1.x = event.clientX - 80;
+        mesurePoint1.y = event.clientY;
+    } else {
+        mesurePoint2.x = event.clientX - 80;
+        mesurePoint2.y = event.clientY;
+        console.log(mesurePoint1, mesurePoint2);
+        mesurePoint1 = {x:0,y:0};
+        mesurePoint2 = {x:0,y:0};
+    }
+}
 
 removeMesures = function(){
 
