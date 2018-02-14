@@ -24,15 +24,15 @@ to give extra practices possibility.
       flight infos label turn clockwise in predefined position  
   - middle : put electronical warning  
       display orange icon, diamond marker, and 3' speed vector
-- Middle mouse button click on a callsign to particularize
+- right click on a callsign in the exit flow window to particularize
 
 ## Known issues  
   Developed and tested on firefox 58.x
 
 ## Upcoming features :
-- exit flow window for etori(Milan departure)
 - scaled speed vector
 - possibility to remove a plane
 - minimize info quiting sector
 - display time
 - mesuring segment sticked on two planes
+- add flight details, plane type, destination, pfl on creation
