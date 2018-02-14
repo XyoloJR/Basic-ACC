@@ -10,7 +10,9 @@
             <button type="button" class='leftbutton' name="button3">3'</button>
             <button type="button" class='leftbutton' name="button6">6'</button>
             <button type="button" class='leftbutton' name="button9">9'</button>
-            <button type="button" id='mesure' class='leftbutton' name="mesure"><img src='../img/compass.png'></button>
+            <button type="button" id='mesure' class='leftbutton' name="mesure">
+                <img src='../img/compass.png'>
+            </button>
         </div>
         <div id='mainScreen'>
             <div id='clock'>
@@ -43,7 +45,7 @@
                     </fieldset>
                 </fieldset>
             </form>
-            <p id='dialogBox'>Status : ok</p>
+            <p id='dialogBox'>status : ok</p>
             <form id='launch'>
                 <fieldset>
                     <legend>Add a plane</legend>
@@ -58,7 +60,7 @@
                         <input type="number" name="fl" min="100" max="660" value="300" step="5" required>
                     </p>
                     <p>
-                        route:
+                        Route:
                         <select name="route">
                             <!--order match constant ROUTES definition, see ../js/object.js-->
                             <option name="route" name="UM3">JAMBI MTL CFA</option>
