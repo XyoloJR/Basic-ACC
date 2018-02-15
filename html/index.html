@@ -30,18 +30,18 @@
                     <fieldset class ='planeorder' disabled>
                         <legend>FL change</legend>
                         New FL : <input type="number" name="newfl" min="240" max="660" step="10" required>
-                        <input type="submit" value="Send">
+                        <input type="submit" name="submit" value="FL comfirmed">
                     </fieldset>
                     <fieldset class ='planeorder' disabled>
                         <legend>Change heading to :</legend>
                         <input id='newhead' type="number" name="heading" min="0" max="360" value="">
-                        <input type="submit" name="headingConfirm" value="Confirmed">
+                        <input type="submit" name="submit" value="Heading confirmed">
                     </fieldset>
                     <fieldset class='planeorder' disabled>
                         <legend>Direct to : </legend>
                         <input id='newdirect' type="text" name="direct" value="" autocomplete="off">
                         <ul id='directpoints' class='nameslist'></ul>
-                        <input type="submit" name="directConfirm" value="Confirmed">
+                        <input type="submit" name="submit" value="Route confirmed">
                     </fieldset>
                 </fieldset>
             </form>

@@ -32,21 +32,41 @@ orderForm.addEventListener(
     'submit',
     function(event){
         event.preventDefault();
-        var message = climbTo(getPlane(planeInput.value), newFLInput.valueAsNumber);
-        dial(message, "darkgreen", 10000);
+        var plane = getPlane(planeInput.value);
+        var submitOrder = event.explicitOriginalTarget.defaultValue[0]
+        switch (submitOrder){
+            case "F":
+                var message = climbTo(plane, newFLInput.valueAsNumber);
+                dial(message, "darkgreen", 10000);
+                break;
+            case "H" :
+                if (plane.heading != newHeadInput.valueAsNumber){
+                    plane.freeze();
+                    message = turnTo(plane, newHeadInput.valueAsNumber);
+                    dial(message, "darkgreen", 10000);
+                }
+                break;
+            case "R" :
+                if (!plane.autopilot){
+                    plane.step += nextDirect.indexOf(newDirectInput.value);
+                    plane.freeze();
+                    animPlane(plane);
+                    dial(plane.name + " resume its route to "+ newDirectInput.value, "darkgreen", 10000);
+                } else {
+                    dial(plane.name + " already on route to " + plane.route.pointsList[plane.step + 1].name, "darkred", 5000);
+                }
+                break;
+        }
         resetOrderForm();
 });
 
-
+/*
 orderForm.headingConfirm.addEventListener(
     'click',
     function(event){
         event.preventDefault();
-        var plane = getPlane(planeInput.value);
-        if (plane.heading != newHeadInput.valueAsNumber){
-            plane.freeze();
-            message = turnTo(plane, newHeadInput.valueAsNumber);
-            dial(message, "darkgreen", 10000);
+
+
             resetOrderForm();
         }
     }
@@ -57,17 +77,10 @@ orderForm.directConfirm.addEventListener(
     function(event){
         event.preventDefault();
         var plane = getPlane(planeInput.value);
-        if (!plane.autopilot){
-            plane.step += nextDirect.indexOf(newDirectInput.value);
-            plane.freeze();
-            animPlane(plane);
-            dial(plane.name + " resume its route to "+ newDirectInput.value, "darkgreen", 10000);
-        } else {
-            dial(plane.name + " already on route to " + plane.route.pointsList[plane.step + 1].name, "darkred", 5000);
-        }
+
         resetOrderForm();
     }
-);
+);*/
 resetOrderForm = function(){
     orderForm.reset();
     nextPointsList.innerHTML = "";
