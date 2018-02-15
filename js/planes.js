@@ -78,6 +78,11 @@ function Plane(actualFL, aimedFL, route, isState, name, kts){
         this.heading = heading;
         this.headingRad = Math.PI * (90 - heading)/ 180;
         this.icon.style.transform = "rotate("+ this.heading % 90 +"deg)";
+        if (this.vectorSize){
+            var minutes = this.vectorSize;
+            this.removeVector();
+            this.displayVector(minutes);
+        }
     }
     this.setParticular = function(){
             iconStyle = this.icon.style;
@@ -199,8 +204,8 @@ createVector = function(startPoint, endPoint, color, weight, scale){
     var height = Math.abs(diffY);
     var vector = document.createElement("canvas");
     vector.className= 'vector';
-    vector.setAttribute("width", Math.max(width, weight) + "px");
-    vector.setAttribute("height", Math.max(height, weight) + "px");
+    vector.setAttribute("width", Math.max(width, 2*weight) + "px");
+    vector.setAttribute("height", Math.max(height, 2*weight) + "px");
     var context = vector.getContext("2d");
     context.strokeStyle = color;
     context.lineWidth = weight;
@@ -221,7 +226,7 @@ createVector = function(startPoint, endPoint, color, weight, scale){
                 var x = width - i * width/scale;
                 var y = height - i * height/scale;
                 context.beginPath();
-                context.arc(x,y,3,0,2*Math.PI);
+                context.arc(x,y,2,0,2*Math.PI);
                 context.stroke();
             }
         }
