@@ -1,11 +1,3 @@
-var LABELWIDTH = 80;
-var panelElt = document.body.firstElementChild;
-var vector3Button = panelElt.firstElementChild;
-var vector6Button = panelElt.children[1];
-var vector9Button = panelElt.children[2];
-var mesureButton = panelElt.children[3];
-
-var vectorsDisplayed = false;
 vector3Button.addEventListener("click", function(){
     if (vectorsDisplayed){
         removeVectors();
@@ -55,7 +47,6 @@ displayV = function(buttonId){
     panelElt.children[buttonId].style.backgroundColor = "#777777";
     panelElt.children[buttonId].style.color = "#FFFFFF";
 }
-var mesuring = false;
 mesureButton.addEventListener('click', function(event){
     mesuring = !mesuring;
     var color = ""
@@ -74,17 +65,13 @@ mesureButton.addEventListener('click', function(event){
     mesureButton.firstElementChild.src = "../img/compass"+color+".png";
 });
 removeMesures = function(){
-    mesuresTable.forEach(elt => document.body.children[1].removeChild(elt));
-    mesuresTable = [];
+    mesuresList.forEach(elt => document.body.children[1].removeChild(elt));
+    mesuresList = [];
     radarScreen = document.body.children[1]
     radarScreen.removeEventListener('click', mesure);
     radarScreen.style.cursor = "auto";
     mesurePoint1 = {x:0,y:0};
 }
-var mesuresTable = [];
-var mesurePoint1 = {x:0,y:0};
-var mesurePoint2 = {x:0,y:0};
-var leftPanelWidth = document.body.firstElementChild.offsetWidth;
 mesure = function(event){
     if (mesurePoint1.x == 0){
         mesurePoint1.x = event.pageX - leftPanelWidth;
@@ -105,7 +92,7 @@ mesure = function(event){
         label.appendChild(headingElt);
         label.style.top = Math.max(mesurePoint1.y, mesurePoint2.y) + 5 + "px";
         label.style.left = (mesurePoint1.x + mesurePoint2.x - LABELWIDTH)/2 + "px";
-        mesuresTable.push(segment,label);
+        mesuresList.push(segment,label);
         var radarScreen = document.body.children[1];
         radarScreen.appendChild(segment);
         radarScreen.appendChild(label)

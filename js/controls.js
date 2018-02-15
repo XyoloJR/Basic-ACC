@@ -1,36 +1,3 @@
-
-var planesList= [];
-var planeNames= [];
-var nextDirect = [];
-
-var screenElt = document.getElementById('mainScreen');
-
-
-var dialogElt = document.getElementById('dialogBox');
-
-
-var orderForm = document.forms.order;
-var ordersField = orderForm.firstElementChild;
-var planeInput = orderForm.planeName;
-
-var flField = ordersField.children[4];
-var newFLInput = orderForm.newfl;
-
-var headindField = ordersField.children[5];
-var newHeadInput = orderForm.heading
-
-var directField = ordersField.children[6];
-var newDirectInput = orderForm.direct
-
-var launchForm = document.forms.launch;
-
-var orderNamesList = document.getElementById('orderNames');
-
-var nextPointsList = document.getElementById('directpoints');
-
-orderForm.reset();
-launchForm.reset();
-
 //create a Plane and put on screen the corresponding Element
 //from the launch form values
 launchForm.addEventListener(

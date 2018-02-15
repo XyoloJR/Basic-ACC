@@ -1,10 +1,3 @@
-var PLANE_SIZE = 7;//half icon size
-var timeFactor = 1;//possibility to speed up or down
-var AUTONOMY = 500;
-var SPEEDVECTORWIDTH = 3;
-console.log("timeFactor : x" + timeFactor);
-var NmToPx = 5.08;//conversion factor
-
 //Plane Object constructor
 function Plane(actualFL, aimedFL, route, isState, name, kts){
     this.actualFL = actualFL;
