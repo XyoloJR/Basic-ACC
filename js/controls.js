@@ -35,60 +35,48 @@ orderForm.addEventListener(
     function(event){
         event.preventDefault();
         var plane = getPlane(planeInput.value);
+        var message = "";
+        var color = "darkgreen"
         //var submitOrder = event.explicitOriginalTarget.name //firefox only
         switch (submitOrder){
             case "F":
-                var message = climbTo(plane, newFLInput.valueAsNumber);
-                dial(message, "darkgreen", 10000);
+                climbTo(plane, newFLInput.valueAsNumber);
+                if (plane.climb !=0) {
+                    var upOrDown = plane.climb > 0 ? " climb" : " descend";
+                    message =  plane.name + upOrDown + "ing to FL"+ plane.aimedFL;
+                } else {
+                    message = "no change";
+                    color = "darkred";
+                }
                 break;
             case "H" :
-                if (plane.heading != newHeadInput.valueAsNumber){
+                var newHeading = newHeadInput.valueAsNumber
+                if (plane.heading != newHeading){
                     plane.freeze();
-                    message = turnTo(plane, newHeadInput.valueAsNumber);
-                    dial(message, "darkgreen", 10000);
+                    turnTo(plane, newHeading);
+                    message = plane.name + "heading to" + newHeading +"°";
                 }
                 break;
             case "R" :
                 if (!plane.autopilot){
-                    plane.step += nextDirect.indexOf(newDirectInput.value);
+                    plane.step += nextDirects.indexOf(newDirectInput.value);
                     plane.freeze();
                     animPlane(plane);
-                    dial(plane.name + " resume its route to "+ newDirectInput.value, "darkgreen", 10000);
+                    message = plane.name + " resume its route to "+ newDirectInput.value;
                 } else {
-                    dial(plane.name + " already on route to " + plane.route.pointsList[plane.step + 1].name, "darkred", 5000);
+                    message = plane.name + " already on route to " + newDirectInput.value;
+                    color = "darkred";
                 }
                 break;
         }
+        dial(message, color, 10*1000);
         resetOrderForm();
 });
 
-/*
-orderForm.headingConfirm.addEventListener(
-    'click',
-    function(event){
-        event.preventDefault();
-
-
-            resetOrderForm();
-        }
-    }
-);
-
-orderForm.directConfirm.addEventListener(
-    'click',
-    function(event){
-        event.preventDefault();
-        var plane = getPlane(planeInput.value);
-
-        resetOrderForm();
-    }
-);*/
 resetOrderForm = function(){
     orderForm.reset();
     nextPointsList.innerHTML = "";
-    for(i=4; i<7; i++){
-        ordersField.children[i].setAttribute("disabled", "disabled");
-    }
+    fieldList.forEach(field => field.setAttribute("disabled", "disabled"))
 }
 
 
@@ -163,13 +151,13 @@ function updateList(plane){
 }
 
 getPointList = function(plane){
-    nextDirect = [];
+    nextDirects = [];
     nextPointsList.innerHTML = "";
     var nextPoints = plane.route.pointsList
     for (i=plane.step + 1; i < nextPoints.length; i++){
         var newPoint = document.createElement('li');
         newPoint.textContent = nextPoints[i].name;
-        nextDirect.push(nextPoints[i].name);
+        nextDirects.push(nextPoints[i].name);
         newPoint.addEventListener(
             'click',
             function(event){

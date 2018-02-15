@@ -32,10 +32,13 @@ var ordersField = orderForm.firstElementChild;
     var directButton = orderForm.directSubmit;
     var directField = newDirectInput.parentElement;
 
+    var fieldList = [flField, headindField, directField];
 var orderNamesList = document.getElementById('orderNames');
 var nextPointsList = document.getElementById('directpoints');
 var dialogElt = document.getElementById('dialogBox');
 var launchForm = document.forms.launch;
+
+
 orderForm.reset();
 launchForm.reset();
 
@@ -49,7 +52,7 @@ var leftPanelWidth = panelElt.offsetWidth;
 
 var planesList = [];
 var planeNames = [];
-var nextDirect = [];
+var nextDirects = [];
 var submitOrder = "";
 
 //Points definition expressed in px coordinates

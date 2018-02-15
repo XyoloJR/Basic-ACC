@@ -232,16 +232,9 @@ climbTo = function(plane, newFl){
             } else if (plane.actualFL == 285){
                 plane.elt.style.display = "block";
             }
-
-
         }, 15000
     );
-    if (plane.climb !=0) {
-        var upOrDown = plane.climb > 0 ? " climb" : " descend";
-        return plane.name + upOrDown + "ing to FL"+ plane.aimedFL;
-    } else {
-        return "no change";
-    }
+
 }
 
 turnTo = function(plane, newHeading) {
@@ -281,7 +274,6 @@ turnTo = function(plane, newHeading) {
             plane.icon.style.transform = "rotate("+ plane.heading % 90 +"deg)";
         }, turnTime
     );
-    return plane.name + " heading to " + newHeading + "°";
 }
 
 getNextPoint = function(position, distance, headingRad){
