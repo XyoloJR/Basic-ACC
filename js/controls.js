@@ -14,14 +14,14 @@ launchForm.addEventListener(
                 ROUTES[launchForm["route"].selectedIndex],
                 launchForm["state"].checked,
                 nameGiven,
-                launchForm["kts"].valueAsNumber,
+                launchForm["kts"].valueAsNumber
             );
             updateList(plane);
             addFlowTable(plane);
             createPlaneElt(plane);
             directTo(plane);
             screenElt.appendChild(plane.elt);
-            dial(plane.name + " on air", "darkgreen", 10000)
+            dial(plane.name + " on air", "darkgreen", 10000);
             launchForm.reset();
         }
 });
@@ -54,12 +54,12 @@ orderForm.addEventListener(
                 if (plane.heading != newHeading){
                     plane.autopilot = false;
                     plane.freeze();
-                    var turnTime = turnTo(plane, newHeading);
+                    var waitTime = turnTo(plane, newHeading);
                     plane.anim = setTimeout(
                         function(){
                             plane.freeze();
                             headingTo(plane,newHeading);
-                        }, turnTime
+                        }, waitTime
                     );
                     message = plane.name + " heading to " + newHeading +"°";
                 }

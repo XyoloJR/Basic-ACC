@@ -17,9 +17,9 @@ function Plane(actualFL, aimedFL, route, isState, name, kts){
     this.kts = kts;
     this.name = name.toUpperCase();
     this.particular = false;
-    this.passPoints = route.pointsList
-    this.nextPoint = this.passPoints.shift()
-    this.position = route.startPoint;
+    this.passPoints = route.pointsList;
+    this.position = this.passPoints.shift();
+    this.nextPoint = this.passPoints.shift();
     this.pFL = "PFL"
     this.route = route;
     this.pxSpeed = kts * NmToPx / 3600;
@@ -28,7 +28,6 @@ function Plane(actualFL, aimedFL, route, isState, name, kts){
     this.vectorSize = 0;
     this.vectorDisp = false;
     this.warning = false;
-
     this.changeDisplay = function(){
         var infoBoxClass = this.elt.children[1].classList;
         var newClass = 'left';
@@ -112,6 +111,9 @@ function Plane(actualFL, aimedFL, route, isState, name, kts){
             var iconName = this.particular ? "particular" : "plane";
             this.icon.style.backgroundImage = "url('../img/"+iconName+"Icon.png')";
         }
+    }
+    this.timeTo = function(point){
+        return msFlightTime(this.pxSpeed, pxDist(this.position, point));
     }
 }
 function createPlaneElt(plane){

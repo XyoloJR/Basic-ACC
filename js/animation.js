@@ -1,7 +1,16 @@
+var styleEl = document.createElement('style'),
+    styleSheet;
+document.head.appendChild(styleEl);// Append style element to head
+styleSheet = styleEl.sheet;// Grab style sheet
 addKeyFrames = function(animName, point){
     var keyFramesText = "@keyframes "+animName +
                 "{100%{left:"+point.x+"px; top:"+point.y+"px;}}";
     styleSheet.insertRule(keyFramesText, styleSheet.cssRules.length);
+}
+autoPlay = function(plane){
+    plane.autopilot = true;
+    var delay = 0;
+    var animTime = plane.timeTo(plane.nextPoint);
 }
 climbTo = function(plane, newFl){
     clearInterval(plane.climbId);
@@ -41,7 +50,7 @@ crashing = function(plane){
     }
 }
 directTo = function(plane){
-    var animTime = msFlightTime(plane.pxSpeed, pxDist(plane.position, plane.nextPoint));
+    var animTime = plane.timeTo(plane.nextPoint);
     var animText = plane.nextPoint.dir + " " + animTime + "ms linear forwards";
     plane.elt.style.animation = animText;
     plane.setHeading(getHeading(plane.position, plane.nextPoint));
@@ -61,17 +70,16 @@ directTo = function(plane){
 headingTo = function(plane, heading){
     plane.setHeading(heading);
     var finalPoint = getNextPoint(plane.position, AUTONOMY, plane.headingRad);
-    var animName = "direct" + plane.animId + plane.name + " ";
-    var animTime = msFlightTime(plane.pxSpeed, pxDist(endTurnPoint, finalPoint));
+    var animName = "head" + plane.animId + plane.name + " ";
+    var animTime = plane.timeTo(finalPoint);
     addKeyFrames(animName, finalPoint);
-    animText = animName + animTime + "ms linear forwards";
+    var animText = animName + animTime + "ms linear forwards";
     plane.elt.style.animation = animText;
     plane.animId ++;
 }
 turnTo = function(plane, newHeading) {
     var headingDiff = (newHeading - plane.heading);
     var turnTime = 0;
-    var animTurnText="";
     if (headingDiff != 0){
         var turnAngle = Math.abs(headingDiff);
         if (turnAngle > 180){
@@ -80,7 +88,7 @@ turnTo = function(plane, newHeading) {
         var turnTime = Math.round(1000 * Math.abs(headingDiff) / 3);
         var halfRadDiff = headingDiff * Math.PI/360;
         var chord = 2 * (plane.pxSpeed * 60 / Math.PI) * Math.abs(Math.sin(halfRadDiff));
-        var newHeading = (this.heading + headingDiff/2 - 1)% 360 + 1
+        var newHeading = (plane.heading + headingDiff/2 - 1)% 360 + 1;
         plane.setHeading(newHeading > 0 ? newHeading : 360 + newHeading);
         endTurnPoint = getNextPoint(plane.position, chord, plane.headingRad);
         var animTurnName = "turn" + plane.animId + plane.name + " ";

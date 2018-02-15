@@ -8,7 +8,7 @@ function testRoutes(velocity){
         updateList(plane);
         addFlowTable(plane);
         createPlaneElt(plane);
-        directTo(plane, route.pointsList[1]);
+        directTo(plane);
         screenElt.appendChild(plane.elt);
         flChange +=50;
         flDiff += 10;
@@ -52,5 +52,9 @@ this.setScreenPos = function(xPx,yPx){
         this.headingRad -= Math.PI * angle / 180;
         this.icon.style.transform = "rotate("+ this.heading % 90 +"deg)";
     }
-
-}*/
+//old toute.anims
+    [{name: "toMtl", dist: pxDist(SICIL, MTL), heading : 299},
+    {name: "toMindi", dist: pxDist(MTL, MINDI), heading : 315},
+    {name: "toCfa", dist: pxDist(MINDI, CFA), heading : 315},
+    {name: "toVulca", dist: pxDist(CFA, VULCA), heading : 350}],
+*/

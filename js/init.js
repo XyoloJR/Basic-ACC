@@ -57,10 +57,7 @@ var directPoints = [];
 var directNames = [];
 var submitOrder = "";
 
-var styleEl = document.createElement('style')
-var styleSheet;
-document.head.appendChild(styleEl);// Append style element to head
-styleSheet = styleEl.sheet;// Grab style sheet
+
 
 //Points definition expressed in px coordinates
 var ATN = {name: "ATN", x:509.13, y:96.96};
@@ -114,15 +111,12 @@ function pxDist(point1, point2){
     return Math.sqrt((point1.x - point2.x)**2 + (point1.y - point2.y)**2);
 }
 
-function Route(name, display, anims, exitInfos, halfWay, passPoints){
-    this.anims = anims;
+function Route(name, display, anim, exitInfos, halfWay, passPoints){
     this.defaultDisplay = display;
     this.exit = exitInfos;
     this.halfWay = halfWay;
     this.name = name;
-    this.pointsList = passPoints
-    this.startPoint = this.pointsList.shift();
-    this.steps = anims.length - 1;
+    this.pointsList = passPoints;
 }
 
 var UM3 = new Route(
@@ -134,7 +128,7 @@ var UM3 = new Route(
     {name: "toVulca", dist: pxDist(CFA, VULCA), heading : 350}],
     {point:"CFA",sector:"N3"},
     pxDist(SICIL, MTL) + pxDist(MTL, UM3MID),
-    [SICIL, MTL, MINDI, CFA, VULCA],
+    [SICIL, MTL, MINDI, CFA, VULCA]
 );
 var UM4 = new Route(
     "UM4",
@@ -169,7 +163,7 @@ var UN2 = new Route(
     {name: "toGai", dist :pxDist(MEN, GAI), heading: 234}],
     {point:"MEN", sector:"OS"},
     pxDist(FRI, LSE) + pxDist(LSE, UN2MID),
-    [FRI, LSE, MINDI, LANZA, MEN, GAI],
+    [FRI, LSE, MINDI, LANZA, MEN, GAI]
 );
 var UN64EO = new Route(
     "UN64EO",
