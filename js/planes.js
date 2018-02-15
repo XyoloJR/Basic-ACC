@@ -52,7 +52,7 @@ function Plane(actualFL, aimedFL, route, isState, name, kts){
             var color = "darkorange";
         }
         var endLine = getNextPoint({x:0,y:0}, this.pxSpeed * 60 * minutes, this.headingRad);
-        var vector = createVector({x:0,y:0}, endLine, color, SPEEDVECTORWIDTH);
+        var vector = createVector({x:0,y:0}, endLine, color, SPEEDVECTORWIDTH, minutes);
         vector.id = this.name + 'vect';
         this.vector = vector;
         this.elt.appendChild(this.vector);
@@ -103,7 +103,7 @@ function Plane(actualFL, aimedFL, route, isState, name, kts){
             this.icon.style.backgroundImage = "url('../img/warningIcon.png')";
         } else{
             this.label.removeChild(this.label.lastChild);
-            if (this.vectorDisp){
+            if (vectorsDisplayed){
                 this.displayVector(this.vectorSize);
             } else {
                 this.removeVector();
@@ -192,7 +192,7 @@ function flightDetailsList(plane){
     plane.label = nameElt;
     return infosElt;
 }
-createVector = function(startPoint, endPoint, color, weight){
+createVector = function(startPoint, endPoint, color, weight, scale){
     var diffX = endPoint.x - startPoint.x;
     var diffY = endPoint.y - startPoint.y;
     var width = Math.abs(diffX);
@@ -215,9 +215,29 @@ createVector = function(startPoint, endPoint, color, weight){
     if (diffY * diffX > 0){
         context.moveTo(0,0);
         context.lineTo(width, height);
+        context.stroke();
+        if (scale){
+            for (i=1;i<scale;i++){
+                var x = width - i * width/scale;
+                var y = height - i * height/scale;
+                context.beginPath();
+                context.arc(x,y,2,0,2*Math.PI);
+                context.stroke();
+            }
+        }
     } else {
         context.moveTo(width,0);
         context.lineTo(0, height);
+        context.stroke();
+        if (scale){
+            for (i=1;i<scale;i++){
+                var x = width - i * width/scale;
+                var y = i * height/scale;
+                context.beginPath();
+                context.arc(x,y,2,0,2*Math.PI);
+                context.stroke();
+            }
+        }
     }
     context.stroke();
     return vector;

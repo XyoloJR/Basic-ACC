@@ -2,7 +2,7 @@
 var PLANE_SIZE = 7;//half icon size
 var timeFactor = 1;//possibility to speed up or down
 var AUTONOMY = 500;
-var SPEEDVECTORWIDTH = 3;
+var SPEEDVECTORWIDTH = 1;
 console.log("timeFactor : x" + timeFactor);
 var NmToPx = 5.08;//conversion factor
 var LABELWIDTH = 80;
