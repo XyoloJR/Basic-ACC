@@ -17,7 +17,7 @@ to give extra practices possibility.
     - Change a plane heading : turns to the desired heading at 3°/s
     - Give a direct route to the chosen point : takes the shortest way, and resumes its route
 - Left side buttons :
-  * display/hide speed vectors for 3, 6, or 9 minutes
+  * display/hide graduated speed vectors for 3, 6, or 9 minutes
   * enable mesuring distance and heading between two points of the radar screen
 - Mouse click on plane icon : 
   - left : change flight details position  
@@ -30,7 +30,6 @@ to give extra practices possibility.
   Developed and tested on firefox 58.x
 
 ## Upcoming features :
-- scaled speed vector
 - possibility to remove a plane
 - minimize info quiting sector
 - display time
