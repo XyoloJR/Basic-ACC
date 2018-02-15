@@ -26,18 +26,18 @@ var ordersField = orderForm.firstElementChild;
 
     var newHeadInput = orderForm.heading;
     var headButton = orderForm.headSubmit;
-    var headindField = newHeadInput.parentElement;
+    var headingField = newHeadInput.parentElement;
 
     var newDirectInput = orderForm.direct;
     var directButton = orderForm.directSubmit;
     var directField = newDirectInput.parentElement;
 
-    var fieldList = [flField, headindField, directField];
+    var fieldList = [flField, headingField, directField];
 var orderNamesList = document.getElementById('orderNames');
-var nextPointsList = document.getElementById('directpoints');
+var directPointsElt = document.getElementById('directpoints');
 var dialogElt = document.getElementById('dialogBox');
 var launchForm = document.forms.launch;
-
+var flowBoard = document.getElementById('flow').firstElementChild;
 
 orderForm.reset();
 launchForm.reset();
@@ -52,8 +52,15 @@ var leftPanelWidth = panelElt.offsetWidth;
 
 var planesList = [];
 var planeNames = [];
-var nextDirects = [];
+
+var directPoints = [];
+var directNames = [];
 var submitOrder = "";
+
+var styleEl = document.createElement('style')
+var styleSheet;
+document.head.appendChild(styleEl);// Append style element to head
+styleSheet = styleEl.sheet;// Grab style sheet
 
 //Points definition expressed in px coordinates
 var ATN = {name: "ATN", x:509.13, y:96.96};
@@ -113,7 +120,8 @@ function Route(name, display, anims, exitInfos, halfWay, passPoints){
     this.exit = exitInfos;
     this.halfWay = halfWay;
     this.name = name;
-    this.pointsList = passPoints;
+    this.pointsList = passPoints
+    this.startPoint = this.pointsList.shift();
     this.steps = anims.length - 1;
 }
 
@@ -126,8 +134,7 @@ var UM3 = new Route(
     {name: "toVulca", dist: pxDist(CFA, VULCA), heading : 350}],
     {point:"CFA",sector:"N3"},
     pxDist(SICIL, MTL) + pxDist(MTL, UM3MID),
-
-    [SICIL, MTL, MINDI, CFA, VULCA]
+    [SICIL, MTL, MINDI, CFA, VULCA],
 );
 var UM4 = new Route(
     "UM4",

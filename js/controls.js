@@ -19,7 +19,7 @@ launchForm.addEventListener(
             updateList(plane);
             addFlowTable(plane);
             createPlaneElt(plane);
-            animPlane(plane);
+            directTo(plane);
             screenElt.appendChild(plane.elt);
             dial(plane.name + " on air", "darkgreen", 10000)
             launchForm.reset();
@@ -52,16 +52,33 @@ orderForm.addEventListener(
             case "H" :
                 var newHeading = newHeadInput.valueAsNumber
                 if (plane.heading != newHeading){
+                    plane.autopilot = false;
                     plane.freeze();
-                    turnTo(plane, newHeading);
-                    message = plane.name + "heading to" + newHeading +"°";
+                    var turnTime = turnTo(plane, newHeading);
+                    plane.anim = setTimeout(
+                        function(){
+                            plane.freeze();
+                            headingTo(plane,newHeading);
+                        }, turnTime
+                    );
+                    message = plane.name + " heading to " + newHeading +"°";
                 }
                 break;
             case "R" :
                 if (!plane.autopilot){
-                    plane.step += nextDirects.indexOf(newDirectInput.value);
+                    var pointName = newDirectInput.value
+                    while (pointName != plane.nextPoint.name){
+                        plane.nextPoint = plane.passPoints.shift();
+                    }
                     plane.freeze();
-                    animPlane(plane);
+                    var newHeading = getHeading(plane.position, plane.nextPoint);
+                    var turnTime = turnTo(plane, newHeading);
+                    plane.anim = setTimeout(
+                        function(){
+                            plane.freeze();
+                            directTo(plane);
+                        }, turnTime
+                    );
                     message = plane.name + " resume its route to "+ newDirectInput.value;
                 } else {
                     message = plane.name + " already on route to " + newDirectInput.value;
@@ -75,7 +92,7 @@ orderForm.addEventListener(
 
 resetOrderForm = function(){
     orderForm.reset();
-    nextPointsList.innerHTML = "";
+    directPointsElt.innerHTML = "";
     fieldList.forEach(field => field.setAttribute("disabled", "disabled"))
 }
 
@@ -84,7 +101,7 @@ newDirectInput.addEventListener(
     'click',
     function(event){
         event.stopPropagation();
-        nextPointsList.style.display = "block";
+        directPointsElt.style.display = "block";
         orderNamesList.style.display = "none";
     }
 )
@@ -107,26 +124,36 @@ planeInput.addEventListener(
 document.addEventListener(
     'click',
     function(event){
-        nextPointsList.style.display = "none"
+        directPointsElt.style.display = "none"
         orderNamesList.style.display = "none";
     }
 );
-
-function planeCrash(plane){
-    var planeId = planeNames.indexOf(plane.name);
-    screenElt.removeChild(document.getElementById(plane.name));
-    planeNames.splice(planeId, 1);
-    planesList.splice(planeId, 1);
-    orderNamesList.removeChild(orderNamesList.children[planeId]);
-    if (orderNamesList.childElementCount == 0){
-        ordersField.setAttribute("disabled","disabled");
+addFlowTable = function(plane){
+    if (plane.exitPoint == "ETORI"){
+        var newEntry = document.createElement('tr');
+        var Entries = [plane.name, "TYPE", "DEST", "ETORI", "TIME", plane.pfl, plane.exitSector];
+        var cells = [];
+        for (i = 0; i < 7 ; i++){
+            cells[i] = document.createElement('td');
+            cells[i].textContent = Entries[i];
+            newEntry.appendChild(cells[i]);
+        }
+        cells[0].addEventListener(
+            'mousedown',
+            function(event){
+                event.preventDefault();
+                if (event.button == 2){
+                    plane.setParticular();
+                }
+        });
+        plane.flow = newEntry
+        flowBoard.appendChild(newEntry);
     }
 }
 
 function updateList(plane){
     ordersField.removeAttribute("disabled");
     var orderNamesList = document.getElementById('orderNames')
-    var nextPointsList = document.getElementById('directpoints');
     planesList.push(plane);
     planeNames.push(plane.name);
     var newEntry = document.createElement('li');
@@ -151,22 +178,21 @@ function updateList(plane){
 }
 
 getPointList = function(plane){
-    nextDirects = [];
-    nextPointsList.innerHTML = "";
-    var nextPoints = plane.route.pointsList
-    for (i=plane.step + 1; i < nextPoints.length; i++){
-        var newPoint = document.createElement('li');
-        newPoint.textContent = nextPoints[i].name;
-        nextDirects.push(nextPoints[i].name);
-        newPoint.addEventListener(
-            'click',
-            function(event){
-                newDirectInput.value = event.target.textContent;
-            }
-        );
-        nextPointsList.appendChild(newPoint);
-    }
-    return nextPoints[plane.step+1].name
+    directPointsElt.innerHTML = "";
+    plane.passPoints.forEach(
+        function(point){
+            var newPoint = document.createElement('li');
+            newPoint.textContent = point.name;
+            newPoint.addEventListener(
+                'click',
+                function(event){
+                    newDirectInput.value = event.target.textContent;
+                }
+            );
+            directPointsElt.appendChild(newPoint);
+        }
+    );
+    return plane.passPoints[0].name;
 }
 dial = function(message, color, msTime){
     if (dialogElt.childElementCount == 0){
@@ -182,6 +208,9 @@ dial = function(message, color, msTime){
             dialogElt.textContent = "status : ok"
         }
     }, msTime);
+}
+function getPoint(pointName){
+    return directPoints[directNames.indexOf(pointName)]
 }
 function getPlane(planeName){
     return planesList[planeNames.indexOf(planeName)]

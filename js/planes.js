@@ -4,21 +4,26 @@ function Plane(actualFL, aimedFL, route, isState, name, kts){
     this.aimedFL = aimedFL;
     this.animId = 0;
     this.autopilot = true;
+    var flDiff = aimedFL - actualFL;
+    this.climb = flDiff == 0 ? 0 : (flDiff)/Math.abs(flDiff);
+    this.elt;
     this.exitPoint = route.exit.point;
     if (route == UM4){
         this.exitSector = "I" + (actualFL > 365 ? 3 : 2);
     } else {
         this.exitSector = route.exit.sector;
     }
-    this.elt;
     this.isState = isState;
+    this.kts = kts;
     this.name = name.toUpperCase();
     this.particular = false;
+    this.passPoints = route.pointsList
+    this.nextPoint = this.passPoints.shift()
+    this.position = route.startPoint;
     this.pFL = "PFL"
     this.route = route;
-    this.kts = kts;
     this.pxSpeed = kts * NmToPx / 3600;
-    this.step = 0;
+    this.type = "TYPE"
     this.vector;
     this.vectorSize = 0;
     this.vectorDisp = false;
@@ -60,13 +65,6 @@ function Plane(actualFL, aimedFL, route, isState, name, kts){
             this.vectorSize = 0;
         }
     }
-    this.getPosition = function(){
-        var currentStyle=window.getComputedStyle(this.elt);
-        var left = currentStyle.getPropertyValue('left');
-        var top = currentStyle.getPropertyValue('top');
-        return {x: parseFloat(left), y: parseFloat(top)};
-    }
-
     this.freeze = function(){//returns current coordinates
         var currentStyle=window.getComputedStyle(this.elt);
         var left = currentStyle.getPropertyValue('left');
@@ -75,7 +73,12 @@ function Plane(actualFL, aimedFL, route, isState, name, kts){
         this.elt.style.animation = "";
         this.elt.style.left = left;
         this.elt.style.top = top;
-        this.pos = {x: parseFloat(left), y: parseFloat(top)};
+        this.position = {x: parseFloat(left), y: parseFloat(top)};
+    }
+    this.setHeading = function(heading){
+        this.heading = heading;
+        this.headingRad = Math.PI * (90 - heading)/ 180;
+        this.icon.style.transform = "rotate("+ this.heading % 90 +"deg)";
     }
     this.setParticular = function(){
             iconStyle = this.icon.style;
@@ -109,202 +112,14 @@ function Plane(actualFL, aimedFL, route, isState, name, kts){
             var iconName = this.particular ? "particular" : "plane";
             this.icon.style.backgroundImage = "url('../img/"+iconName+"Icon.png')";
         }
-
-    }
-    this.updateClimb = function(){
-        var flDiff = this.aimedFL - this.actualFL;
-        this.climb = flDiff == 0 ? 0 : (flDiff)/Math.abs(flDiff);
-    }
-    this.updateClimb();
-
-    this.updatePosition = function(){
-        this.pos = {x:this.route.pointsList[this.step].x,
-                    y:this.route.pointsList[this.step].y};
-        this.elt.style.left = this.pos.x + "px";
-        this.elt.style.top = this.pos.y + "px";
-    }
-    this.addHeading = function(angle){
-        var newHeading = (this.heading + angle - 1)% 360 + 1
-        this.heading = newHeading > 0 ? newHeading : 360 + newHeading;
-        this.headingRad -= Math.PI * angle / 180;
-    }
-    this.setHeading = function(heading){
-        this.heading = heading;
-        this.headingRad = Math.PI * (90 - heading)/ 180;
-    }
-    this.setScreenPos = function(xPx,yPx){
-        this.elt.style.left = xPx;
-        this.elt.style.top = yPx;
-        this.pos = {x: parseFloat(xPx), y: parseFloat(yPx)};
-    }
-    this.updateTurn = function(){
-        this.turn = this.headingAsked - this.heading;
-    }
-
-}
-addFlowTable = function(plane){
-    if (plane.exitPoint == "ETORI"){
-        var table = document.getElementById('flow').firstElementChild;
-        var newEntry = document.createElement('tr');
-        var Entries = [plane.name, "TYPE", "DEST", "ETORI", "TIME", plane.pfl, plane.exitSector];
-        var cells = [];
-        for (i = 0; i < 7 ; i++){
-            cells[i] = document.createElement('td');
-            cells[i].textContent = Entries[i];
-            newEntry.appendChild(cells[i]);
-        }
-        cells[0].addEventListener(
-            'mousedown',
-            function(event){
-                event.preventDefault();
-                if (event.button == 2){
-                    plane.setParticular();
-                }
-        });
-        plane.flow = newEntry
-        table.appendChild(newEntry);
     }
 }
-function msFlightTime(pxPerSec, distPx){
-    return Math.round(1000 * distPx / (pxPerSec * timeFactor));
-}
-
-//animate or kill
-function animPlane(plane){
-    var anim = plane.route.anims[plane.step]
-    if (plane.autopilot){
-        plane.updatePosition();
-        plane.setHeading(anim.heading);
-        var distance = anim.dist
-        if (plane.exitPoint == "ETORI" && plane.step == 3){
-            var table = document.getElementById('flow').firstElementChild;
-            table.removeChild(plane.flow);
-        }
-    } else {
-        var endPoint = plane.route.pointsList[plane.step + 1]
-        distance = pxDist(plane.pos, endPoint);
-        plane.setHeading(getHeading(plane.pos, endPoint));
-        console.log(plane.heading);
-        plane.autopilot = true;
-    }
-    var animTime = msFlightTime(plane.pxSpeed, distance);
-    animText = anim.name + " " + animTime + "ms linear forwards";
-    plane.elt.style.animation = animText;
-    plane.icon.style.transform = "rotate("+ plane.heading % 90 +"deg)";
-
-    plane.anim = setTimeout(
-        function(){
-            plane.step ++;
-            if (plane.step == plane.route.anims.length){
-                planeCrash(plane);
-            } else {
-                animPlane(plane);
-            }
-        }, animTime
-    );
-}
-
-getHeading = function(currentPoint, aimedPoint){
-    var rad = Math.atan2(currentPoint.y - aimedPoint.y,
-                         aimedPoint.x- currentPoint.x);
-    var deg = Math.round(90 - rad * 180 / Math.PI);
-    return deg > 0 ? deg : 360 + deg;
-}
-
-climbTo = function(plane, newFl){
-    clearInterval(plane.climbId);
-    plane.aimedFL = newFl;
-    var flElt = document.getElementById(plane.name + "fl");
-    var flDiff = plane.aimedFL - plane.actualFL;
-    plane.climb = flDiff == 0 ? 0 : flDiff/Math.abs(flDiff);//0 or +-1
-    flElt.lastElementChild.src = getFlIcon(plane.climb);
-    plane.climbId = setInterval(
-        function(){
-            plane.actualFL += (plane.climb * 5);
-            flDiff = plane.aimedFL - plane.actualFL;
-            if (flDiff == 0){
-                clearInterval(plane.climbId);
-                flElt.lastElementChild.src = getFlIcon(0);
-            }
-            flElt.firstChild.textContent = plane.actualFL;
-            if (plane.climb < 0 && plane.actualFL < 285 ){
-                if (!plane.particular){plane.elt.style.display = "none";}
-            } else if (plane.actualFL == 285){
-                plane.elt.style.display = "block";
-            }
-        }, 15000
-    );
-
-}
-
-turnTo = function(plane, newHeading) {
-    var headingDiff = (newHeading - plane.heading);
-    var turnTime = 0;
-    var animTurnText="";
-    var endTurnPoint = plane.pos;
-    if (headingDiff != 0){
-        var turnAngle = Math.abs(headingDiff);
-        if (turnAngle > 180){
-            headingDiff = Math.sign(headingDiff) * (turnAngle - 360);
-        }
-        var turnTime = Math.round(1000 * Math.abs(headingDiff) / 3);
-        var halfRadDiff = headingDiff * Math.PI/360;
-        var chord = 2 * (plane.pxSpeed * 60 / Math.PI) * Math.abs(Math.sin(halfRadDiff));
-        plane.addHeading(headingDiff/2);
-        endTurnPoint = getNextPoint(plane.pos, chord, plane.headingRad);
-        var animTurnName = "turn" + plane.animId + plane.name + " ";
-        addKeyFrames(animTurnName, endTurnPoint);
-        animTurnText = animTurnName + turnTime + "ms linear forwards, ";
-        plane.icon.style.transform = "rotate("+ plane.heading % 90 +"deg)";
-    }
-    plane.addHeading(headingDiff/2);
-    var finalPoint = getNextPoint(endTurnPoint, AUTONOMY, plane.headingRad);
-    var animName = "direct" + plane.animId + plane.name + " ";
-    var animTime = msFlightTime(plane.pxSpeed, pxDist(endTurnPoint, finalPoint));
-    addKeyFrames(animName, finalPoint);
-    animTurnText += animName + animTime + "ms linear "+ turnTime +"ms forwards";
-    plane.elt.style.animation = animTurnText;
-    plane.animId ++;
-    if (plane.autopilot){
-        plane.step ++;
-        plane.autopilot = false;
-    }
-    plane.anim = setTimeout(
-        function(){
-            plane.icon.style.transform = "rotate("+ plane.heading % 90 +"deg)";
-        }, turnTime
-    );
-}
-
-getNextPoint = function(position, distance, headingRad){
-    var nextX = Math.round(position.x + distance * Math.cos(headingRad));
-    var nextY = Math.round(position.y - distance * Math.sin(headingRad));
-    return {x: nextX, y: nextY};
-}
-getFlIcon = function(climb){
-    if (climb == 0){
-        return "../img/stableIcon.png"
-    } else if (climb > 0) {
-        return "../img/upIcon.png"
-    } else {
-        return "../img/downIcon.png";
-    }
-}
-
-var styleEl = document.createElement('style'),
-  styleSheet;
-document.head.appendChild(styleEl);// Append style element to head
-styleSheet = styleEl.sheet;// Grab style sheet
-addKeyFrames = function(animName, point){
-    var keyFramesText = "@keyframes "+animName +
-                "{100%{left:"+point.x+"px; top:"+point.y+"px;}}";
-    styleSheet.insertRule(keyFramesText, styleSheet.cssRules.length);
-}
-//return a new animated planeElt
 function createPlaneElt(plane){
     var planeElt = document.createElement('div');
     planeElt.id = plane.name;
-    planeElt.setAttribute("class", "plane");
+    planeElt.className = "plane";
+    planeElt.style.left = plane.position.x + "px";
+    planeElt.style.top = plane.position.y + "px";
     if (plane.actualFL < 290){
         planeElt.style.display= "none";
     }
@@ -317,7 +132,9 @@ function createPlaneElt(plane){
             event.preventDefault();
             switch (event.button){
                 case 0 :
-                    plane.changeDisplay();
+                    if(!mesuring){
+                        plane.changeDisplay();
+                    }
                     break;
                 case 1 :
                     plane.setWarning();
@@ -330,11 +147,9 @@ function createPlaneElt(plane){
     infoBox.appendChild(flightDetailsList(plane));
     planeElt.appendChild(iconElt);
     planeElt.appendChild(infoBox);
-    plane.elt = planeElt;
     plane.icon = iconElt;
+    plane.elt = planeElt;
 }
-
-//return displayed infos of a plane as ListeElement
 function flightDetailsList(plane){
     var infosElt = document.createElement('ul');
     var speedElt = document.createElement('li');
@@ -375,7 +190,6 @@ function flightDetailsList(plane){
     plane.label = nameElt;
     return infosElt;
 }
-
 createVector = function(startPoint, endPoint, color, weight){
     var diffX = endPoint.x - startPoint.x;
     var diffY = endPoint.y - startPoint.y;
