@@ -103,7 +103,7 @@ function Plane(actualFL, aimedFL, route, isState, name, kts){
             this.icon.style.backgroundImage = "url('../img/warningIcon.png')";
         } else{
             this.label.removeChild(this.label.lastChild);
-            if (vectorsDisplayed){
+            if (this.vectorDisp){
                 this.displayVector(this.vectorSize);
             } else {
                 this.removeVector();
@@ -221,7 +221,7 @@ createVector = function(startPoint, endPoint, color, weight, scale){
                 var x = width - i * width/scale;
                 var y = height - i * height/scale;
                 context.beginPath();
-                context.arc(x,y,2,0,2*Math.PI);
+                context.arc(x,y,3,0,2*Math.PI);
                 context.stroke();
             }
         }
