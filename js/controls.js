@@ -25,7 +25,9 @@ launchForm.addEventListener(
             launchForm.reset();
         }
 });
-
+flButton.addEventListener('click', event => submitOrder = "F");
+headButton.addEventListener('click', event => submitOrder = "H");
+directButton.addEventListener('click', event => submitOrder = "R");
 
 //FL change
 orderForm.addEventListener(
@@ -33,7 +35,7 @@ orderForm.addEventListener(
     function(event){
         event.preventDefault();
         var plane = getPlane(planeInput.value);
-        var submitOrder = event.explicitOriginalTarget.defaultValue[0]
+        //var submitOrder = event.explicitOriginalTarget.name //firefox only
         switch (submitOrder){
             case "F":
                 var message = climbTo(plane, newFLInput.valueAsNumber);

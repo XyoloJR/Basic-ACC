@@ -21,12 +21,15 @@ var ordersField = orderForm.firstElementChild;
     var planeInput = orderForm.planeName;
 
     var newFLInput = orderForm.newfl;
+    var flButton = orderForm.flSubmit;
     var flField = newFLInput.parentElement;
 
     var newHeadInput = orderForm.heading;
+    var headButton = orderForm.headSubmit;
     var headindField = newHeadInput.parentElement;
 
     var newDirectInput = orderForm.direct;
+    var directButton = orderForm.directSubmit;
     var directField = newDirectInput.parentElement;
 
 var orderNamesList = document.getElementById('orderNames');
@@ -47,6 +50,7 @@ var leftPanelWidth = panelElt.offsetWidth;
 var planesList = [];
 var planeNames = [];
 var nextDirect = [];
+var submitOrder = "";
 
 //Points definition expressed in px coordinates
 var ATN = {name: "ATN", x:509.13, y:96.96};
