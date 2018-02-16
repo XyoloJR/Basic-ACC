@@ -8,14 +8,15 @@ to give extra practices possibility.
 1 Download and unzip folder  
 2 Catch the index.html file to launch the simulation  
 
-## Impletmented commands
+## Implemented commands
 - Right panel :
   * Launch a plane on predefined route :
-    after callsign, speed and fl been selected
+    - after callsign, speed and fl been selected
+    - possibility to launch from a further point
   * Pick a plane and then : 
     - Change its fl level : climbs or descend to this fl at 2000ft/min 
     - Change a plane heading : turns to the desired heading at 3°/s
-    - Give a direct route to the chosen point : takes the shortest way, and resumes its route
+    - Give a direct route to the chosen point : turns to the right heading and resumes its route
 - Left side buttons :
   * display/hide graduated speed vectors for 3, 6, or 9 minutes
   * enable mesuring distance and heading between two points of the radar screen
@@ -24,7 +25,9 @@ to give extra practices possibility.
       flight infos label turn clockwise in predefined position  
   - middle : put electronical warning  
       display orange icon, diamond marker, and 3' speed vector
-- right click on a callsign in the exit flow window to particularize
+      
+- right click on a callsign in exit flow window to particularize
+  middle click on callsing in radar screen to un particularize
 
 ## Known issues  
   Developed and tested on firefox 58.x
