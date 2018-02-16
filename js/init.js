@@ -58,6 +58,7 @@ var planeNames = [];
 var directPoints = [];
 var directNames = [];
 var submitOrder = "";
+var zMin = -1;
 
 
 

@@ -17,7 +17,7 @@ function Plane(actualFL, aimedFL, route, isState, name, kts){
     this.kts = kts;
     this.name = name.toUpperCase();
     this.particular = false;
-    this.passPoints = route.pointsList;
+    this.passPoints = route.pointsList.slice();
     this.position = this.passPoints.shift();
     this.nextPoint = this.passPoints.shift();
     this.pFL = "PFL"
@@ -53,6 +53,13 @@ function Plane(actualFL, aimedFL, route, isState, name, kts){
         }
         var endLine = getNextPoint({x:0,y:0}, this.pxSpeed * 60 * minutes, this.headingRad);
         var vector = createVector({x:0,y:0}, endLine, color, VECT_WIDTH, minutes);
+        vector.addEventListener(
+            'mousedown',
+            function(){
+                vector.parentElement.style.zIndex=zMin;
+                zMin --;
+            }
+        );
         vector.id = this.name + 'vect';
         this.vector = vector;
         this.elt.appendChild(this.vector);

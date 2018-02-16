@@ -207,6 +207,7 @@ line{
     cursor: pointer;
 }
 #flow{
+    overflow : hidden;
     margin : 20px 0px;
     width : 400px;
     height : 200px;
