@@ -80,6 +80,7 @@ mesure = function(event){
         mesurePoint2.x = event.pageX - leftPanelWidth;
         mesurePoint2.y = event.pageY;
         var segment = createVector(mesurePoint1, mesurePoint2, "white", SEGMENT_WIDTH);
+        segment.className = "segment";
         var dist = Math.round(pxDist(mesurePoint1, mesurePoint2)/NmToPx);
         var heading = getHeading(mesurePoint1, mesurePoint2);
         var label = document.createElement('div');

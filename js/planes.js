@@ -132,7 +132,7 @@ function createPlaneElt(plane){
     }
 
     var iconElt = document.createElement('div');
-    iconElt.classList.add("planeIcon");
+    iconElt.className = "planeIcon";
     iconElt.addEventListener(
         'mousedown',
         function(event){

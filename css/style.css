@@ -47,7 +47,7 @@ body{
     width : 1490px;
     height : 1200px;
     left : 80px;
-
+    z-index : 0;
 }
 
 
@@ -79,11 +79,17 @@ body{
     overflow : visible;
     position : absolute;
     margin: 0;
+    z-index : 50;
 }
 .vector{
     position : absolute;
     left : 0px;
     top : 0px;
+    z-index : 30;
+}
+.segment{
+    position : absolute;
+    z-index :10;
 }
 .planeIcon{
     background-image : url('../img/planeIcon.png');
@@ -92,6 +98,7 @@ body{
     height : 15px;
     left : -7px;
     top : -7px;
+    z-index : 60;
 }
 
 .infoBox{
@@ -103,6 +110,7 @@ body{
     font-size: 1em;
     width : 130px;
     height : 90px;
+    z-index : 20;
 }
 
 .bottom{
