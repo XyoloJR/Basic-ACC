@@ -131,7 +131,7 @@ var UM3 = new Route(
     {name: "toVulca", dist: pxDist(CFA, VULCA), heading : 350}],
     {point:"CFA",sector:"N3"},
     pxDist(SICIL, MTL) + pxDist(MTL, UM3MID),
-    [SICIL, MTL, MINDI, CFA, VULCA]
+    [VULCA, CFA, MINDI, MTL, SICIL]
 );
 var UM4 = new Route(
     "UM4",
@@ -143,7 +143,7 @@ var UM4 = new Route(
     {name: "toJambi", dist: pxDist(SANTO, JAMBI), heading: 148}],
     {point:"SANTO", sector:"I"},
     pxDist(JAMBI, UM4MID),
-    [ATN, LSE, LTP, GRENA, SANTO, JAMBI]
+    [JAMBI, SANTO, GRENA, LTP, LSE, ATN]
 );
 var UN1 = new Route(
     "UN1",
@@ -154,7 +154,7 @@ var UN1 = new Route(
     {name: "toRapid", dist :pxDist(MOZAO, RAPID), heading: 51}],
     {point:"SEVET", sector:"G2"},
     pxDist(MINOR, MTL) + pxDist(MTL, UN1MID),
-    [MINOR, MTL, LTP, MOZAO, RAPID]
+    [RAPID, MOZAO, LTP, MTL, MINOR]
 );
 var UN2 = new Route(
     "UN2",
@@ -166,7 +166,7 @@ var UN2 = new Route(
     {name: "toGai", dist :pxDist(MEN, GAI), heading: 234}],
     {point:"MEN", sector:"OS"},
     pxDist(FRI, LSE) + pxDist(LSE, UN2MID),
-    [FRI, LSE, MINDI, LANZA, MEN, GAI]
+    [GAI, MEN, LANZA, MINDI, LSE, FRI]
 );
 var UN64EO = new Route(
     "UN64EO",
@@ -177,7 +177,7 @@ var UN64EO = new Route(
     {name: "toGai", dist :pxDist(SPIDY, GAI), heading: 252}],
     {point:"ETORI", sector:"OS"},
     pxDist(BIELA, UN64MID),
-    [BIELA, GRENA, MTL, SPIDY, GAI]
+    [GAI, SPIDY, MTL, GRENA, BIELA]
 );
 var UN64OE = new Route(
     "UN64OE",
@@ -188,7 +188,7 @@ var UN64OE = new Route(
     {name:"toBiela", dist :pxDist(BOSUA, BIELA), heading: 72}],
     {point:"JUVEN", sector:"M2"},
     pxDist(GAI, UN64MID),
-    [GAI, MTL, GRENA, BOSUA, BIELA]
+    [BIELA, BOSUA, GRENA, MTL, GAI]
 );
 var UN13 = new Route(
     "UN13",
@@ -199,7 +199,7 @@ var UN13 = new Route(
     {name: "toVulca", dist: pxDist(CFA, VULCA), heading : 350}],
     {point:"CFA",sector:"N3"},
     pxDist(MINOR, MTL) + pxDist(MTL, UN13MID),
-    [MINOR, MTL, MINDI, CFA, VULCA]
+    [VULCA, CFA, MINDI, MTL, MINOR]
 )
 
 var ROUTES = [UM3, UM4, UN1, UN2, UN64EO, UN64OE, UN13]

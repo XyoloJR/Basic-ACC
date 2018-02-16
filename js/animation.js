@@ -61,7 +61,7 @@ directTo = function(plane){
                 crashing(plane);
             } else {
                 plane.freeze();
-                plane.nextPoint = plane.passPoints.shift();
+                plane.nextPoint = plane.passPoints.pop();
                 directTo(plane);
             }
         }, animTime

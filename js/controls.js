@@ -68,7 +68,7 @@ orderForm.addEventListener(
                 if (!plane.autopilot){
                     var pointName = newDirectInput.value
                     while (pointName != plane.nextPoint.name){
-                        plane.nextPoint = plane.passPoints.shift();
+                        plane.nextPoint = plane.passPoints.pop();
                     }
                     plane.freeze();
                     var newHeading = getHeading(plane.position, plane.nextPoint);
@@ -178,11 +178,13 @@ function updateList(plane){
 }
 
 getPointList = function(plane){
+    var pointName;
     directPointsElt.innerHTML = "";
     plane.passPoints.forEach(
         function(point){
+            pointName = point.name;
             var newPoint = document.createElement('li');
-            newPoint.textContent = point.name;
+            newPoint.textContent = pointName;
             newPoint.addEventListener(
                 'click',
                 function(event){
@@ -192,7 +194,7 @@ getPointList = function(plane){
             directPointsElt.appendChild(newPoint);
         }
     );
-    return plane.passPoints[0].name;
+    return pointName;
 }
 dial = function(message, color, msTime){
     if (dialogElt.childElementCount == 0){

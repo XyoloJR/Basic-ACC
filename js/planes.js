@@ -18,8 +18,8 @@ function Plane(actualFL, aimedFL, route, isState, name, kts){
     this.name = name.toUpperCase();
     this.particular = false;
     this.passPoints = route.pointsList.slice();
-    this.position = this.passPoints.shift();
-    this.nextPoint = this.passPoints.shift();
+    this.position = this.passPoints.pop();
+    this.nextPoint = this.passPoints.pop();
     this.pFL = "PFL"
     this.route = route;
     this.pxSpeed = kts * NmToPx / 3600;
