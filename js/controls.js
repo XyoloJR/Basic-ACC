@@ -16,6 +16,9 @@ launchForm.addEventListener(
                 nameGiven,
                 launchForm["kts"].valueAsNumber
             );
+            if (alterStartInput.checked){
+                plane.position = plane.route.extrasList[0]
+            }
             updateList(plane);
             addFlowTable(plane);
             createPlaneElt(plane);
@@ -23,7 +26,13 @@ launchForm.addEventListener(
             screenElt.appendChild(plane.elt);
             dial(plane.name + " on air", "darkgreen", 10000);
             launchForm.reset();
+            alterStartLine.lastChild.textContent = "JAMBI";
         }
+});
+
+routeSelector.addEventListener('input',function(event){
+    var point = ROUTES[launchForm["route"].selectedIndex].extrasList[0];
+    alterStartLine.lastChild.textContent = point.name;
 });
 flButton.addEventListener('click', event => submitOrder = "F");
 headButton.addEventListener('click', event => submitOrder = "H");

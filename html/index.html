@@ -55,7 +55,7 @@
                     </p>
                     <p>
                         Ground speed(kts) :
-                        <input type="number" name="kts" min="100" max="800" value="450" step="10" required>
+                        <input type="number" name="kts" min="100" max="1200" value="" step="10" required>
                         FL :
                         <input type="number" name="fl" min="100" max="660" value="300" step="5" required>
                     </p>
@@ -63,14 +63,19 @@
                         Route:
                         <select name="route">
                             <!--order match constant ROUTES definition, see ../js/object.js-->
-                            <option name="route" name="UM3">JAMBI MTL CFA</option>
-                            <option name="route" name="UM4">BOJOL LSE LTP SANTO</option>
-                            <option name="route" name="UN1">MAJOR MTL LTP SEVET</option>
-                            <option name="route" name="UN2">PAS LSE MEN</option>
-                            <option name="route" name="UN64EO">JUVEN MTL ETORI</option>
-                            <option name="route" name="UN64OE">ETORI MTL JUVEN</option>
-                            <option name="route" name="UN13">MAJOR MTL CFA</option>
+                            <option name="route" value="UM3">JAMBI MTL CFA</option>
+                            <option name="route" value="UM4">BOJOL LSE LTP SANTO</option>
+                            <option name="route" value="UN1">MAJOR MTL LTP SEVET</option>
+                            <option name="route" value="UN2">PAS LSE MEN</option>
+                            <option name="route" value="UN64EO">JUVEN MTL ETORI</option>
+                            <option name="route" value="UN64OE">ETORI MTL JUVEN</option>
+                            <option name="route" value="UN13">MAJOR MTL CFA</option>
                         </select>
+                    </p>
+                    <p id='alter'>
+                        Alternative Start :
+                        <input type="checkbox" name="alterStart" value="">
+                        JAMBI
                     </p>
                     <input type="submit" name="launch" value=" Launch ">
                 </fieldset>

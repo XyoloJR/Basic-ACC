@@ -39,6 +39,9 @@ var orderNamesList = document.getElementById('orderNames');
 var directPointsElt = document.getElementById('directpoints');
 var dialogElt = document.getElementById('dialogBox');
 var launchForm = document.forms.launch;
+var routeSelector = launchForm.route;
+var alterStartInput = launchForm.alterStart;
+var alterStartLine = alterStartInput.parentElement;
 var flowBoard = document.getElementById('flow').firstElementChild;
 
 orderForm.reset();
@@ -65,6 +68,7 @@ var zMin = -1;
 //Points definition expressed in px coordinates
 var ATN = {name: "ATN", x:509.13, y:96.96};
 var BIELA = {name: "BIELA", x:1485.71, y:489.46, dir: "toBiela"};//differs from doc: lacking infos
+var BOJOL = {name: "BOJOL", x:624, y:293}
 var BOSUA = {name: "BOSUA", x:1094.15, y:618.74, dir: "toBosua"};
 var BURGO = {name: "BURGO", "x":557.38, "y":179.39};
 var CFA = {name: "CFA", "x":281.5, "y":405.62, dir: "toCfa"};
@@ -114,12 +118,13 @@ function pxDist(point1, point2){
     return Math.sqrt((point1.x - point2.x)**2 + (point1.y - point2.y)**2);
 }
 
-function Route(name, display, anim, exitInfos, halfWay, passPoints){
+function Route(name, display, anim, exitInfos, wayToHalf, passPoints, extraStarts){
     this.defaultDisplay = display;
     this.exit = exitInfos;
-    this.halfWay = halfWay;
+    this.nextToHalf = wayToHalf;
     this.name = name;
     this.pointsList = passPoints;
+    this.extrasList = extraStarts
 }
 
 var UM3 = new Route(
@@ -130,8 +135,9 @@ var UM3 = new Route(
     {name: "toCfa", dist: pxDist(MINDI, CFA), heading : 315},
     {name: "toVulca", dist: pxDist(CFA, VULCA), heading : 350}],
     {point:"CFA",sector:"N3"},
-    pxDist(SICIL, MTL) + pxDist(MTL, UM3MID),
-    [VULCA, CFA, MINDI, MTL, SICIL]
+    pxDist(MTL, UM3MID),
+    [VULCA, CFA, MINDI, MTL, SICIL],
+    [JAMBI]
 );
 var UM4 = new Route(
     "UM4",
@@ -142,8 +148,9 @@ var UM4 = new Route(
     {name: "toSanto", dist: pxDist(GRENA, SANTO), heading: 148},
     {name: "toJambi", dist: pxDist(SANTO, JAMBI), heading: 148}],
     {point:"SANTO", sector:"I"},
-    pxDist(JAMBI, UM4MID),
-    [JAMBI, SANTO, GRENA, LTP, LSE, ATN]
+    pxDist(LSE, LTP) + pxDist(LTP, UM4MID),
+    [JAMBI, SANTO, GRENA, LTP, LSE, ATN],
+    [BOJOL, LSE, LTP]
 );
 var UN1 = new Route(
     "UN1",
@@ -153,8 +160,9 @@ var UN1 = new Route(
     {name: "toMozao", dist :pxDist(LTP, MOZAO), heading: 51},
     {name: "toRapid", dist :pxDist(MOZAO, RAPID), heading: 51}],
     {point:"SEVET", sector:"G2"},
-    pxDist(MINOR, MTL) + pxDist(MTL, UN1MID),
-    [RAPID, MOZAO, LTP, MTL, MINOR]
+    pxDist(MTL, UN1MID),
+    [RAPID, MOZAO, LTP, MTL, MINOR],
+    [MAJOR, MTL]
 );
 var UN2 = new Route(
     "UN2",
@@ -165,8 +173,9 @@ var UN2 = new Route(
     {name: "toMen", dist :pxDist(LANZA, MEN), heading: 226},
     {name: "toGai", dist :pxDist(MEN, GAI), heading: 234}],
     {point:"MEN", sector:"OS"},
-    pxDist(FRI, LSE) + pxDist(LSE, UN2MID),
-    [GAI, MEN, LANZA, MINDI, LSE, FRI]
+    pxDist(LSE, UN2MID),
+    [GAI, MEN, LANZA, MINDI, LSE, FRI],
+    [LIMAN, LSE]
 );
 var UN64EO = new Route(
     "UN64EO",
@@ -176,8 +185,9 @@ var UN64EO = new Route(
     {name: "toSpidy", dist :pxDist(MTL, SPIDY), heading: 252},
     {name: "toGai", dist :pxDist(SPIDY, GAI), heading: 252}],
     {point:"ETORI", sector:"OS"},
-    pxDist(BIELA, UN64MID),
-    [GAI, SPIDY, MTL, GRENA, BIELA]
+    pxDist(MTL, UN64MID),
+    [GAI, SPIDY, MTL, GRENA, BIELA],
+    [BOSUA, MTL]
 );
 var UN64OE = new Route(
     "UN64OE",
@@ -187,8 +197,9 @@ var UN64OE = new Route(
     {name:"toBosua", dist :pxDist(GRENA, BOSUA), heading: 72},
     {name:"toBiela", dist :pxDist(BOSUA, BIELA), heading: 72}],
     {point:"JUVEN", sector:"M2"},
-    pxDist(GAI, UN64MID),
-    [BIELA, BOSUA, GRENA, MTL, GAI]
+    pxDist(MTL, UN64MID),
+    [BIELA, BOSUA, GRENA, MTL, GAI],
+    [MTL]
 );
 var UN13 = new Route(
     "UN13",
@@ -198,8 +209,9 @@ var UN13 = new Route(
     {name: "toCfa", dist: pxDist(MINDI, CFA), heading : 315},
     {name: "toVulca", dist: pxDist(CFA, VULCA), heading : 350}],
     {point:"CFA",sector:"N3"},
-    pxDist(MINOR, MTL) + pxDist(MTL, UN13MID),
-    [VULCA, CFA, MINDI, MTL, MINOR]
+    pxDist(MTL, UN13MID),
+    [VULCA, CFA, MINDI, MTL, MINOR],
+    [MAJOR]
 )
 
 var ROUTES = [UM3, UM4, UN1, UN2, UN64EO, UN64OE, UN13]

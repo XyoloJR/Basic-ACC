@@ -180,6 +180,10 @@ function flightDetailsList(plane){
     var callsign = document.createElement('span');
     callsign.id = plane.name+"name";
     callsign.textContent = plane.name;
+    callsign.addEventListener(
+        "click",
+         event =>if (event.button == 1 && plane.particular){plane.setParticular}
+     );
     nameElt.appendChild(callsign);
     infosElt.appendChild(nameElt);
 
@@ -196,9 +200,10 @@ function flightDetailsList(plane){
     var sector = document.createElement('span');
     sector.className = "exitSectorOff";
     sector.textContent = plane.exitSector;
+    var wayToHalf = pxDist(plane.position, plane.nextPoint) + plane.route.nextToHalf;
     setTimeout(function(){
                     sector.className ="exitSectorOn";
-                }, msFlightTime(plane.pxSpeed, plane.route.halfWay));
+                }, msFlightTime(plane.pxSpeed, wayToHalf));
     exitElt.appendChild(sector);
     infosElt.appendChild(exitElt);
     plane.label = nameElt;
