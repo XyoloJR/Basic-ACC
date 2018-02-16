@@ -52,7 +52,7 @@ function Plane(actualFL, aimedFL, route, isState, name, kts){
             var color = "darkorange";
         }
         var endLine = getNextPoint({x:0,y:0}, this.pxSpeed * 60 * minutes, this.headingRad);
-        var vector = createVector({x:0,y:0}, endLine, color, SPEEDVECTORWIDTH, minutes);
+        var vector = createVector({x:0,y:0}, endLine, color, VECT_WIDTH, minutes);
         vector.id = this.name + 'vect';
         this.vector = vector;
         this.elt.appendChild(this.vector);
@@ -197,47 +197,49 @@ function flightDetailsList(plane){
     plane.label = nameElt;
     return infosElt;
 }
-createVector = function(startPoint, endPoint, color, weight, scale){
+createVector = function(startPoint, endPoint, color, weight, graduate){
     var diffX = endPoint.x - startPoint.x;
     var diffY = endPoint.y - startPoint.y;
     var width = Math.abs(diffX);
     var height = Math.abs(diffY);
     var vector = document.createElement("canvas");
     vector.className= 'vector';
-    vector.setAttribute("width", Math.max(width, 2*weight) + "px");
-    vector.setAttribute("height", Math.max(height, 2*weight) + "px");
+    vector.setAttribute("width", width + 2 * VECT_WIDTH + "px");
+    vector.setAttribute("height", height + 2 * VECT_WIDTH + "px");
     var context = vector.getContext("2d");
     context.strokeStyle = color;
     context.lineWidth = weight;
-    vector.style.left = startPoint.x + "px";
-    vector.style.top = startPoint.y + "px";
+    vector.style.left = startPoint.x - VECT_WIDTH + "px";
+    vector.style.top = startPoint.y - VECT_WIDTH + "px";
     if (diffX < 0) {
-        vector.style.left = endPoint.x + "px";
+        vector.style.left = endPoint.x - VECT_WIDTH+ "px";
     }
     if (diffY < 0){
-        vector.style.top = endPoint.y + "px";
+        vector.style.top = endPoint.y - VECT_WIDTH+ "px";
     }
+    var endX = width + VECT_WIDTH;
+    var endY = height + VECT_WIDTH;
     if (diffY * diffX > 0){
-        context.moveTo(0,0);
-        context.lineTo(width, height);
+        context.moveTo(VECT_WIDTH,VECT_WIDTH);
+        context.lineTo(endX, endY);
         context.stroke();
-        if (scale){
-            for (i=1;i<scale;i++){
-                var x = width - i * width/scale;
-                var y = height - i * height/scale;
+        if (graduate){
+            for (i=1;i<graduate;i++){
+                var x = endX  - i * width/graduate;
+                var y = endY - i * height/graduate;
                 context.beginPath();
                 context.arc(x,y,2,0,2*Math.PI);
                 context.stroke();
             }
         }
     } else {
-        context.moveTo(width,0);
-        context.lineTo(0, height);
+        context.moveTo(endX,VECT_WIDTH);
+        context.lineTo(VECT_WIDTH, endY);
         context.stroke();
-        if (scale){
-            for (i=1;i<scale;i++){
-                var x = width - i * width/scale;
-                var y = i * height/scale;
+        if (graduate){
+            for (i=1;i<graduate;i++){
+                var x = endX - i * width/graduate;
+                var y = VECT_WIDTH + i * height/graduate;
                 context.beginPath();
                 context.arc(x,y,2,0,2*Math.PI);
                 context.stroke();

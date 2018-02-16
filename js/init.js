@@ -1,11 +1,13 @@
 //CONSTANTS
-var PLANE_SIZE = 7;//half icon size
+var PLANE_SIZE = 7;//half icon size for less css migration
 var timeFactor = 1;//possibility to speed up or down
 var AUTONOMY = 500;
-var SPEEDVECTORWIDTH = 3;
-console.log("timeFactor : x" + timeFactor);
-var NmToPx = 5.08;//conversion factor
+var VECT_WIDTH = 3;
+var SEGMENT_WIDTH = 2;
 var LABELWIDTH = 80;
+var NmToPx = 5.08;//conversion factor
+
+console.log("timeFactor : x" + timeFactor);
 
 //HTML Elements
 var panelElt = document.body.firstElementChild;
