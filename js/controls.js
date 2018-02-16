@@ -17,7 +17,7 @@ launchForm.addEventListener(
                 launchForm["kts"].valueAsNumber
             );
             if (alterStartInput.checked){
-                plane.position = plane.route.extrasList[0]
+                plane.position = plane.route.extraStart;
             }
             updateList(plane);
             addFlowTable(plane);
@@ -31,7 +31,7 @@ launchForm.addEventListener(
 });
 
 routeSelector.addEventListener('input',function(event){
-    var point = ROUTES[launchForm["route"].selectedIndex].extrasList[0];
+    var point = ROUTES[launchForm["route"].selectedIndex].extraStart;
     alterStartLine.lastChild.textContent = point.name;
 });
 flButton.addEventListener('click', event => submitOrder = "F");

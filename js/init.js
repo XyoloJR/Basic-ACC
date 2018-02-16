@@ -118,13 +118,13 @@ function pxDist(point1, point2){
     return Math.sqrt((point1.x - point2.x)**2 + (point1.y - point2.y)**2);
 }
 
-function Route(name, display, anim, exitInfos, wayToHalf, passPoints, extraStarts){
+function Route(name, display, anim, exitInfos, wayToHalf, passPoints, extraStart){
     this.defaultDisplay = display;
     this.exit = exitInfos;
     this.nextToHalf = wayToHalf;
     this.name = name;
     this.pointsList = passPoints;
-    this.extrasList = extraStarts
+    this.extraStart = extraStart
 }
 
 var UM3 = new Route(
@@ -137,7 +137,7 @@ var UM3 = new Route(
     {point:"CFA",sector:"N3"},
     pxDist(MTL, UM3MID),
     [VULCA, CFA, MINDI, MTL, SICIL],
-    [JAMBI]
+    JAMBI
 );
 var UM4 = new Route(
     "UM4",
@@ -150,7 +150,7 @@ var UM4 = new Route(
     {point:"SANTO", sector:"I"},
     pxDist(LSE, LTP) + pxDist(LTP, UM4MID),
     [JAMBI, SANTO, GRENA, LTP, LSE, ATN],
-    [BOJOL, LSE, LTP]
+    BOJOL
 );
 var UN1 = new Route(
     "UN1",
@@ -162,7 +162,7 @@ var UN1 = new Route(
     {point:"SEVET", sector:"G2"},
     pxDist(MTL, UN1MID),
     [RAPID, MOZAO, LTP, MTL, MINOR],
-    [MAJOR, MTL]
+    MAJOR
 );
 var UN2 = new Route(
     "UN2",
@@ -175,7 +175,7 @@ var UN2 = new Route(
     {point:"MEN", sector:"OS"},
     pxDist(LSE, UN2MID),
     [GAI, MEN, LANZA, MINDI, LSE, FRI],
-    [LIMAN, LSE]
+    LIMAN
 );
 var UN64EO = new Route(
     "UN64EO",
@@ -187,7 +187,7 @@ var UN64EO = new Route(
     {point:"ETORI", sector:"OS"},
     pxDist(MTL, UN64MID),
     [GAI, SPIDY, MTL, GRENA, BIELA],
-    [BOSUA, MTL]
+    BOSUA
 );
 var UN64OE = new Route(
     "UN64OE",
@@ -199,7 +199,7 @@ var UN64OE = new Route(
     {point:"JUVEN", sector:"M2"},
     pxDist(MTL, UN64MID),
     [BIELA, BOSUA, GRENA, MTL, GAI],
-    [MTL]
+    MTL
 );
 var UN13 = new Route(
     "UN13",
@@ -211,7 +211,7 @@ var UN13 = new Route(
     {point:"CFA",sector:"N3"},
     pxDist(MTL, UN13MID),
     [VULCA, CFA, MINDI, MTL, MINOR],
-    [MAJOR]
+    MAJOR
 )
 
 var ROUTES = [UM3, UM4, UN1, UN2, UN64EO, UN64OE, UN13]

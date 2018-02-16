@@ -23,22 +23,22 @@
                 <fieldset disabled="disabled">
                     <legend>INSTRUCTIONS</legend>
                     <p>
-                        Callsign :
+                        Indicatif du vol :
                         <input id='orderedPlane' type="text" name="planeName" value="" autocomplete="off" required>
                         <ul id='orderNames' class='nameslist'></ul>
                     </p>
                     <fieldset class ='planeorder' disabled>
-                        <legend>FL change</legend>
-                        New FL : <input type="number" name="newfl" min="100" max="660" step="10" required>
+                        <legend>Changement de niveau</legend>
+                        Nouveau FL : <input type="number" name="newfl" min="100" max="660" step="10" required>
                         <input type="submit" name="flSubmit" value="comfirm">
                     </fieldset>
                     <fieldset class ='planeorder' disabled>
-                        <legend>Change heading to :</legend>
+                        <legend>Changement de cap :</legend>
                         <input id='newhead' type="number" name="heading" min="1" max="360" value="">
                         <input type="submit" name="headSubmit" value="confirm">
                     </fieldset>
                     <fieldset class='planeorder' disabled>
-                        <legend>Direct to : </legend>
+                        <legend>Directe vers : </legend>
                         <input id='newdirect' type="text" name="direct" value="" autocomplete="off">
                         <ul id='directpoints' class='nameslist'></ul>
                         <input type="submit" name="directSubmit" value="confirm">
@@ -48,13 +48,13 @@
             <p id='dialogBox'>status : ok</p>
             <form id='launch'>
                 <fieldset>
-                    <legend>Add a plane</legend>
+                    <legend>Lancer un avion</legend>
                     <p>
-                        Callsign : <input type="text" name="name" size="8" required>
-                        state aircraft <input type="checkbox" name="state" >
+                        Indicatif : <input type="text" name="name" size="8" required>
+                        aéronef d'état <input type="checkbox" name="state" >
                     </p>
                     <p>
-                        Ground speed(kts) :
+                        Vitesse sol(kts) :
                         <input type="number" name="kts" min="100" max="1200" value="450" step="10" required>
                         FL :
                         <input type="number" name="fl" min="100" max="660" value="300" step="5" required>
@@ -73,7 +73,7 @@
                         </select>
                     </p>
                     <p id='alter'>
-                        Alternative Start :
+                        Point de départ alternatif :
                         <input type="checkbox" name="alterStart" value="">
                         JAMBI
                     </p>
@@ -83,7 +83,7 @@
             <div id='flow'>
                 <table>
                     <tr>
-                        <th colspan=7>Exit Flow : ETORI </th>
+                        <th colspan=7>Flux de sortie : ETORI </th>
                     </tr>
 
                 </table>
