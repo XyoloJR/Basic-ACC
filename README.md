@@ -6,7 +6,7 @@ to give extra practices possibility.
 
 ## How To Use
 1 Download and unzip folder  
-2 Catch the index.html file to launch the simulation  
+2 Catch the index.html file to launch the simulation, indexfr.html pour la version française
 
 ## Implemented commands
 - Right panel :
@@ -28,11 +28,14 @@ to give extra practices possibility.
       
 - right click on a callsign in exit flow window to particularize
   middle click on callsing in radar screen to un particularize
+## Commandes disponibles
+- A venir en français
 
 ## Known issues  
   Developed and tested on firefox 58.x
 
 ## Upcoming features :
+- decrease speed on climb
 - possibility to remove a plane
 - minimize info quiting sector
 - display time
