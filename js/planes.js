@@ -181,8 +181,12 @@ function flightDetailsList(plane){
     callsign.id = plane.name+"name";
     callsign.textContent = plane.name;
     callsign.addEventListener(
-        "click",
-         event =>if (event.button == 1 && plane.particular){plane.setParticular}
+        "mousedown",
+         function(event){
+             if (event.button == 1 && plane.particular){
+                 plane.setParticular();
+             }
+         }
      );
     nameElt.appendChild(callsign);
     infosElt.appendChild(nameElt);
