@@ -80,6 +80,7 @@ orderForm.addEventListener(
                         plane.nextPoint = plane.passPoints.pop();
                     }
                     plane.freeze();
+                    plane.autopilot = true;
                     var newHeading = getHeading(plane.position, plane.nextPoint);
                     var turnTime = turnTo(plane, newHeading);
                     plane.anim = setTimeout(

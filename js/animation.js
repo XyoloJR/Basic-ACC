@@ -54,7 +54,7 @@ directTo = function(plane){
     var animText = plane.nextPoint.dir + " " + animTime + "ms linear forwards";
     plane.elt.style.animation = animText;
     plane.setHeading(getHeading(plane.position, plane.nextPoint));
-    plane.autopilot = true;
+
     plane.anim = setTimeout(
         function(){
             if (plane.passPoints.length == 0){
