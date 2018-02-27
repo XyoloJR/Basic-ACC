@@ -151,7 +151,7 @@ addFlowTable = function(plane){
             'mousedown',
             function(event){
                 event.preventDefault();
-                if (event.button == 2){
+                if (event.button == 1){
                     plane.setParticular();
                 }
         });

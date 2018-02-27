@@ -100,7 +100,11 @@ function Plane(actualFL, aimedFL, route, isState, name, kts){
                 iconStyle.backgroundImage = "url('../img/particularIcon.png')";
                 callsignStyle.backgroundColor= "#E53";
             } else {
-                iconStyle.backgroundImage = "url('../img/planeIcon.png')";//no more particular if possible
+                if (this.warning){
+                    iconStyle.backgroundImage = "url('../img/warningIcon.png')";
+                } else {
+                    iconStyle.backgroundImage = "url('../img/planeIcon.png')";//no more particular if possible
+                }
                 callsignStyle.backgroundColor= "transparent";
             }
     }
@@ -180,14 +184,7 @@ function flightDetailsList(plane){
     var callsign = document.createElement('span');
     callsign.id = plane.name+"name";
     callsign.textContent = plane.name;
-    callsign.addEventListener(
-        "mousedown",
-         function(event){
-             if (event.button == 1 && plane.particular){
-                 plane.setParticular();
-             }
-         }
-     );
+
     nameElt.appendChild(callsign);
     infosElt.appendChild(nameElt);
 
@@ -210,6 +207,17 @@ function flightDetailsList(plane){
                 }, msFlightTime(plane.pxSpeed, wayToHalf));
     exitElt.appendChild(sector);
     infosElt.appendChild(exitElt);
+
+    callsign.addEventListener(
+        "mousedown",
+         function(event){
+             if (event.button == 1){
+                 plane.setParticular();
+             } else if (event.button == 0){
+                 sector.className ="exitSectorOn";
+             }
+         }
+     );
     plane.label = nameElt;
     return infosElt;
 }
