@@ -104,7 +104,15 @@ resetOrderForm = function(){
     directPointsElt.innerHTML = "";
     fieldList.forEach(field => field.setAttribute("disabled", "disabled"))
 }
-
+newHeadInput.addEventListener(
+    'input',
+    function(event){
+        if (newHeadInput.value == 361)
+            newHeadInput.value = 1;
+        if (newHeadInput.value == 0)
+            newHeadInput.value = 360;
+    }
+)
 
 newDirectInput.addEventListener(
     'click',
@@ -137,6 +145,8 @@ document.addEventListener(
         orderNamesList.style.display = "none";
     }
 );
+
+
 addFlowTable = function(plane){
     if (plane.exitPoint == "ETORI"){
         var newEntry = document.createElement('tr');
@@ -160,7 +170,7 @@ addFlowTable = function(plane){
     }
 }
 
-function updateList(plane){
+updateList = function(plane){
     ordersField.removeAttribute("disabled");
     var orderNamesList = document.getElementById('orderNames')
     planesList.push(plane);

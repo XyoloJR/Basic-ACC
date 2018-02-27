@@ -58,3 +58,25 @@ this.setScreenPos = function(xPx,yPx){
     {name: "toCfa", dist: pxDist(MINDI, CFA), heading : 315},
     {name: "toVulca", dist: pxDist(CFA, VULCA), heading : 350}],
 */
+/*conversion original to 1200px width
+POINTS.forEach(function(point){
+    var newX = point.x*1200/2562;
+    var newY = point.y*1200/2562;
+    console.log(point.name, newX, newY, );
+})*/
+/*
+//distance tests
+//Scaling Points, distance 240Nm
+var ouestPoint= {"x":295, "y":2045};
+var eastPoint= {"x":2764 , "y":1231};
+console.log(pxDist(ouestPoint, eastPoint)/240);
+//based on etori-BOSUA, distance 164Nm
+console.log(pxDist(ETORI, GRENA)/126, pxDist(MTL, GRENA)/52,
+            pxDist(MTL, LTP)/62, pxDist(LSE, MINDI)/57,
+            pxDist(LTP, GRENA)/49, pxDist(MTL, CFA)/100,
+);
+
+//MTL-MAJOR px distance
+console.log(42*NmToPx);
+console.log(pxDist(MAJOR,MTL));
+*/

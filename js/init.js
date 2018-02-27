@@ -1,9 +1,9 @@
 //CONSTANTS
 var PLANE_SIZE = 7;//half icon size for less css migration
 var timeFactor = 1;//possibility to speed up or down
-var AUTONOMY = 500;
-var VECT_WIDTH = 3;
-var SEGMENT_WIDTH = 2;
+var AUTONOMY = 508;//px distance for a given heading
+var VECT_WIDTH = 3;//speed vector
+var SEGMENT_WIDTH = 2;//mesuring segment
 var LABELWIDTH = 80;
 var NmToPx = 5.08;//conversion factor
 
@@ -63,8 +63,6 @@ var directNames = [];
 var submitOrder = "";
 var zMin = -1;
 
-
-
 //Points definition expressed in px coordinates
 var ATN = {name: "ATN", x:509.13, y:96.96};
 var BIELA = {name: "BIELA", x:1485.71, y:489.46, dir: "toBiela"};//differs from doc: lacking infos
@@ -107,12 +105,6 @@ var POINTS = [ATN, BIELA, BOSUA, BURGO, CFA, ETORI, FRI, GAI, GRENA, JAMBI,
               JUVEN,LANZA, LIMAN, LSE, LTP, MAJOR, MELKA, MEN, MINDI, MOZAO,
               MTL, RAPID,SANTO, SEVET, SICIL, SPIDY, VULCA, MINOR, UM3MID,
               UM4MID, UN1MID,UN2MID, UN64MID, UN13MID];
-
-/*POINTS.forEach(function(point){
-    var newX = point.x*1200/2562;
-    var newY = point.y*1200/2562;
-    console.log(point.name, newX, newY, );
-})*/
 
 function pxDist(point1, point2){
     return Math.sqrt((point1.x - point2.x)**2 + (point1.y - point2.y)**2);
@@ -215,20 +207,3 @@ var UN13 = new Route(
 )
 
 var ROUTES = [UM3, UM4, UN1, UN2, UN64EO, UN64OE, UN13]
-
-/*
-//distance tests
-//Scaling Points, distance 240Nm
-var ouestPoint= {"x":295, "y":2045};
-var eastPoint= {"x":2764 , "y":1231};
-console.log(pxDist(ouestPoint, eastPoint)/240);
-//based on etori-BOSUA, distance 164Nm
-console.log(pxDist(ETORI, GRENA)/126, pxDist(MTL, GRENA)/52,
-            pxDist(MTL, LTP)/62, pxDist(LSE, MINDI)/57,
-            pxDist(LTP, GRENA)/49, pxDist(MTL, CFA)/100,
-);
-
-//MTL-MAJOR px distance
-console.log(42*NmToPx);
-console.log(pxDist(MAJOR,MTL));
-*/
