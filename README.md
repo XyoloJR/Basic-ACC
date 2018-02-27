@@ -25,8 +25,11 @@ to give extra practices possibility.
       flight infos label turn clockwise in predefined position  
   - middle : put electronical warning  
       display or reset orange icon, diamond marker, and 3' speed vector
-- right click on a callsign in exit flow window to particularize
-  middle click on callsing in radar screen to un particularize
+- Mouse click on a callsign
+  - middle : particularize it, works also with the exit flow window  
+    display the plane on radar screen even under monitored fl, callsign background turns red, and icon, blue
+  - left : force coordination
+    next sector label turns white
   
 ## Commandes disponibles
 - Panneau de droite :
@@ -40,15 +43,17 @@ to give extra practices possibility.
 - Boutons de gauche :
   * affiche ou masque les vectors vitesses gradués pour 3, 6, ou 9 minutes
   * permet une prise de mesure entre deux points de l'écran radar
-- Avec la souris sur l'icone de l'avion : 
+- A la souris sur l'icone de l'avion : 
   - clique gauche : change la disposition de l'étiquette des détails du vol  
     tourne dans le sens des aiguilles d'un montre
   - clique milieu : met ou enlève les warnings electroniques  
     l'icone passe en orange, l'étiquette reçoit un losange orange et le vecteur vitesse 3 minutes est affiché
  
- - Clique droit sur l'indicatif dans la fennêtre de flux pour particulariser un avion  
-   clique milieu sur l'indicatif de l'avion sur l'écran radar pour de-particulariser
-
+- A la souris sur l'indicatif de vol
+  - clique milieu pour particulariser un avion, marche aussi sur l'indicatif dans la fenêtre de flux  
+    l'avion apparait quelque soit son niveau de vol, le fond de l'indicatif passe en rouge, et son icone en bleu
+  - clique gauche pour forcer la coordination avec le secteur suivant.  
+    l'étiquette du secteur suivant passe en blanc
 
 ## Known issues  
   Developed and tested on firefox 58.x
