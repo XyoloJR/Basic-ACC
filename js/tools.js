@@ -55,7 +55,7 @@ mesureButton.addEventListener('click', function(event){
         mesureButton.style.backgroundColor = "#777777";
         mesureButton.style.color = "#FFFFFF";
         color = 'White';
-        radarScreen.addEventListener('click', mesure);
+        radarScreen.addEventListener('mouseup', mesure);
         radarScreen.style.cursor = "crosshair";
     } else {
         mesureButton.style.backgroundColor = "#DDDDDD";
@@ -68,7 +68,7 @@ removeMesures = function(){
     mesuresList.forEach(elt => document.body.children[1].removeChild(elt));
     mesuresList = [];
     radarScreen = document.body.children[1]
-    radarScreen.removeEventListener('click', mesure);
+    radarScreen.removeEventListener('mouseup', mesure);
     radarScreen.style.cursor = "auto";
     mesurePoint1 = {x:0,y:0};
 }
