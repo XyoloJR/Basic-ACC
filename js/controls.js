@@ -30,6 +30,9 @@ launchForm.addEventListener(
         }
 });
 
+launchForm.fl.addEventListener('input', event => event.target.focus());
+launchForm.kts.addEventListener('input', event => event.target.focus());
+
 routeSelector.addEventListener('input',function(event){
     var point = ROUTES[launchForm["route"].selectedIndex].extraStart;
     alterStartLine.lastChild.textContent = point.name;
