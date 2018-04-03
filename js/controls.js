@@ -1,3 +1,15 @@
+
+
+var d = new Date();
+clockElt.textContent = "" + d.getHours()+":"+ d.getMinutes();
+setInterval(
+  function(){
+    d.setMinutes(d.getMinutes() + 1) ;
+    clockElt.textContent = "" + d.getHours()+":"+ d.getMinutes()
+  }, 60000
+);
+
+
 //create a Plane and put on screen the corresponding Element
 //from the launch form values
 launchForm.addEventListener(

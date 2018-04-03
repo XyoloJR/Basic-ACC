@@ -17,6 +17,7 @@ var vector9Button = panelElt.children[2];
 var mesureButton = panelElt.children[3];
 
 var screenElt = document.body.children[1];
+var clockElt = screenElt.firstElementChild;
 
 var orderForm = document.forms.order;
 var ordersField = orderForm.firstElementChild;

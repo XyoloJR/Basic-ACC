@@ -50,6 +50,17 @@ body{
     z-index : 0;
 }
 
+#clock{
+    position: absolute;
+    border: 1px black solid;
+    width : 80px;
+    height : 40px;
+    bottom: 40px;
+    left: 40px;
+    font-size: 2em;
+    vertical-align: middle;
+    text-align: center;
+}
 
 
 #controls{
