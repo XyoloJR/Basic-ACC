@@ -4,8 +4,7 @@ function Plane(actualFL, aimedFL, route, isState, name, kts){
     this.aimedFL = aimedFL;
     this.animId = 0;
     this.autopilot = true;
-    var flDiff = aimedFL - actualFL;
-    this.climb = flDiff == 0 ? 0 : (flDiff)/Math.abs(flDiff);
+    this.climb = Math.sign(aimedFL - actualFL);
     this.elt;
     this.exitPoint = route.exit.point;
     if (route == UM4){
@@ -28,6 +27,11 @@ function Plane(actualFL, aimedFL, route, isState, name, kts){
     this.vectorSize = 0;
     this.vectorDisp = false;
     this.warning = false;
+
+    this.setKts = function(vitesse){
+      this.kts = vitesse;
+      this.pxSpeed = vitesse * NmToPx / 3600;
+    }
     this.changeDisplay = function(){
         var infoBoxClass = this.elt.children[1].classList;
         var newClass = 'left';
@@ -172,6 +176,7 @@ function flightDetailsList(plane){
     var infosElt = document.createElement('ul');
     var speedElt = document.createElement('li');
     speedElt.appendChild(document.createTextNode(plane.kts/10));
+    speedElt.id = plane.name + "kts";
     if (plane.isState){
         var noWNotif = document.createElement('span');
         noWNotif.setAttribute("class", "now");

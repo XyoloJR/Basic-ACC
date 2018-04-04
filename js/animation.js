@@ -17,13 +17,26 @@ climbTo = function(plane, newFl){
     plane.aimedFL = newFl;
     var flElt = document.getElementById(plane.name + "fl");
     var flDiff = plane.aimedFL - plane.actualFL;
-    plane.climb = flDiff == 0 ? 0 : flDiff/Math.abs(flDiff);//0 or +-1
+    plane.climb = Math.sign(flDiff);
     flElt.lastElementChild.src = getFlIcon(plane.climb);
+    if (plane.climb > 0){
+        plane.freeze();
+        plane.setKts(plane.kts * 0.8);
+        directTo(plane);
+        var speedLbl = document.getElementById(plane.name + "kts");
+        speedLbl.textContent = plane.kts / 10;
+    }
     plane.climbId = setInterval(
         function(){
             plane.actualFL += plane.climb;
             flDiff = plane.aimedFL - plane.actualFL;
             if (flDiff == 0){
+                if (plane.climb > 0){
+                    plane.freeze();
+                    plane.setKts(plane.kts / 0.8);
+                    directTo(plane);
+                }
+                plane.climb = 0;
                 clearInterval(plane.climbId);
                 flElt.lastElementChild.src = getFlIcon(0);
             }
